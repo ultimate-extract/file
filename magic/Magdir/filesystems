@@ -25,7 +25,7 @@
 >512    belong&077777777	0600407	\b, boot block present
 0x1FE	leshort	0xAA55			x86 boot sector
 >2	string	OSBS			\b, OS/BS MBR
-# Jörg Jenderek <joerg.jenderek@gmx.net>
+# J\xf6rg Jenderek <joerg.jenderek@gmx.net>
 >0x8C	string	Invalid\ partition\ table	\b, MS-DOS MBR
 >0x9D	string	Invalid\ partition\ table	\b, DR-DOS MBR, version 7.01 to 7.03
 >0x10F	string	Ung\201ltige\ Partitionstabelle	\b, MS-DOS MBR, german version 4.10.1998, 4.10.2222
@@ -126,6 +126,9 @@
 >>>>>>71	string		=NO\ NAME	\b, unlabeled
 ### FATs end
 >0x200	lelong	0x82564557		\b, BSD disklabel
+# FATX 
+0		string		FATX		FATX filesystem data
+
 
 # Minix filesystems - Juan Cespedes <cespedes@debian.org>
 0x410	leshort		0x137f		Minix filesystem

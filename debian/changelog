@@ -1,3 +1,39 @@
+file (4.12-1) unstable; urgency=high
+
+  * New upstream version. Closes: #283316, a potential stack smash in ELF
+    header parsing. Urgency set to high.
+  * /etc/magic is read, as it should (Closes: #279324)
+  * No further changes to increase the slim chance of getting into Sarge.
+
+ -- Michael Piefel <piefel@debian.org>  Mon, 06 Dec 2004 10:42:47 +0100
+
+file (4.10-3) unstable; urgency=high
+
+  * The “for the love of Branden” release.
+  * Urgency high in a vain attempt to get this into sarge.
+  * Fix MIME detection for 3DS (actually, remove it because it was hilarious,
+    closes: #216368)
+  * Do _not_ depend on gcc-3.4
+
+ -- Michael Piefel <piefel@debian.org>  Fri, 30 Jul 2004 11:14:48 +0200
+
+file (4.10-2) unstable; urgency=medium
+
+  * Fix multibyte vs. byte issue in files-from (closes: #261799)
+
+ -- Michael Piefel <piefel@debian.org>  Wed, 28 Jul 2004 11:40:53 +0200
+
+file (4.10-1) unstable; urgency=low
+
+  * New upstream version.
+    - No more doubling of file names with -z (closes: #260393)
+  * New magic for SLL16 (closes: #249190)
+  * New magic for SVN dumps (closes: #256652)
+  * Patch for error return code on non-existant files
+    (courtesy of Federico Grau, closes: #257805)
+
+ -- Michael Piefel <piefel@debian.org>  Mon, 26 Jul 2004 12:58:40 +0200
+
 file (4.09-1) unstable; urgency=low
 
   * New upstream version. This includes almost every patch that the Debian

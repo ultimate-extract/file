@@ -12,11 +12,6 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 3. All advertising materials mentioning features or use of this software
- *    must display the following acknowledgement:
- *    This product includes software developed by Ian F. Darwin and others.
- * 4. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission.
  *  
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -77,7 +72,7 @@
 #include "patchlevel.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$Id: file.c,v 1.92 2004/03/22 21:34:39 christos Exp $")
+FILE_RCSID("@(#)$Id: file.c,v 1.95 2004/09/27 15:28:37 christos Exp $")
 #endif	/* lint */
 
 
@@ -314,7 +309,8 @@ main(int argc, char *argv[])
 			process(argv[optind], wid);
 	}
 
-	return 0;
+	magic_close(magic);
+	return magic->haderr ? -1 : 0;
 }
 
 
@@ -365,7 +361,8 @@ unwrap(char *fn)
 	}
 
 	while (fgets(buf, MAXPATHLEN, f) != NULL) {
-		buf[file_mbswidth(buf)-1] = '\0';
+	        // cut off CR, we _need_ bytes here, not characters
+		buf[strlen(buf)-1] = '\0';
 		process(buf, wid);
 		if(nobuffer)
 			(void) fflush(stdout);
@@ -452,7 +449,7 @@ byteconv2(int from, int same, int big_endian)
 size_t
 file_mbswidth(const char *s)
 {
-#ifdef HAVE_WCHAR_H
+#if defined(HAVE_WCHAR_H) && defined(HAVE_MBRTOWC) && defined(HAVE_WCWIDTH)
 	size_t bytesconsumed, old_n, n, width = 0;
 	mbstate_t state;
 	wchar_t nextchar;

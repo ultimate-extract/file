@@ -1,9 +1,0 @@
-# DjVu media format
-# From Frieder Kalisch
-# Officially, it's just "FORM", but that is bad magic; mostly, it has AT&T anyway
-#4	string	FORM	DjVu
-0	string	AT&TFORM	DjVu
->12	string	DJVU		Image
->12	string	PM44		Color IW44 Image 
->12	string	BM44		Greyscale IW44 Image
->12	string	DJVM		Multipage Document

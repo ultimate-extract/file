@@ -11,8 +11,6 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 3. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission.
  *  
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -39,7 +37,7 @@
 #include "readelf.h"
 
 #ifndef lint
-FILE_RCSID("@(#)$Id: readelf.c,v 1.39 2004/03/22 20:28:40 christos Exp $")
+FILE_RCSID("@(#)$Id: readelf.c,v 1.45 2004/11/24 17:38:24 christos Exp $")
 #endif
 
 #ifdef	ELFCORE
@@ -147,6 +145,12 @@ getu64(int swap, uint64_t value)
 			    getu32(swap, ph32.p_align) : 4) \
 			 : (off_t) (ph64.p_align ?	\
 			    getu64(swap, ph64.p_align) : 4)))
+#define ph_filesz	(size_t)((class == ELFCLASS32	\
+			 ? getu32(swap, ph32.p_filesz)	\
+			 : getu64(swap, ph64.p_filesz)))
+#define ph_memsz	(size_t)((class == ELFCLASS32	\
+			 ? getu32(swap, ph32.p_memsz)	\
+			 : getu64(swap, ph64.p_memsz)))
 #define nh_size		(class == ELFCLASS32		\
 			 ? sizeof nh32			\
 			 : sizeof nh64)
@@ -250,7 +254,8 @@ dophn_core(struct magic_set *ms, int class, int swap, int fd, off_t off,
 			file_badseek(ms);
 			return -1;
 		}
-		bufsize = read(fd, nbuf, BUFSIZ);
+		bufsize = read(fd, nbuf,
+		    ((ph_filesz < sizeof(nbuf)) ? ph_filesz : sizeof(nbuf)));
 		if (bufsize == -1) {
 			file_badread(ms);
 			return -1;
@@ -313,7 +318,7 @@ donote(struct magic_set *ms, unsigned char *nbuf, size_t offset, size_t size,
 	noff = offset;
 	doff = ELF_ALIGN(offset + namesz);
 
-	if (offset + namesz >= size) {
+	if (offset + namesz > size) {
 		/*
 		 * We're past the end of the buffer.
 		 */
@@ -321,7 +326,7 @@ donote(struct magic_set *ms, unsigned char *nbuf, size_t offset, size_t size,
 	}
 
 	offset = ELF_ALIGN(doff + descsz);
-	if (offset + descsz >= size) {
+	if (doff + descsz > size) {
 		return offset;
 	}
 
@@ -407,13 +412,34 @@ donote(struct magic_set *ms, unsigned char *nbuf, size_t offset, size_t size,
 
 		/*
 		 * Contents is __FreeBSD_version, whose relation to OS
-		 * versions is defined by a huge table in the Porters'
-		 * Handbook. For up to 5.x, the first three digits are
-		 * the version number.  For 5.x and higher, the scheme
-		 * is: <major><two digit minor> <0 if release branch,
-		 * otherwise 1>xx
+		 * versions is defined by a huge table in the Porter's
+		 * Handbook.  This is the general scheme:
+		 * 
+		 * Releases:
+		 * 	Mmp000 (before 4.10)
+		 * 	Mmi0p0 (before 5.0)
+		 * 	Mmm0p0
+		 * 
+		 * Development branches:
+		 * 	Mmpxxx (before 4.6)
+		 * 	Mmp1xx (before 4.10)
+		 * 	Mmi1xx (before 5.0)
+		 * 	M000xx (pre-M.0)
+		 * 	Mmm1xx
+		 * 
+		 * M = major version
+		 * m = minor version
+		 * i = minor version increment (491000 -> 4.10)
+		 * p = patchlevel
+		 * x = revision
+		 * 
+		 * The first release of FreeBSD to use ELF by default
+		 * was version 3.0.
 		 */
-		if (desc / 100000 < 5) {
+		if (desc == 460002) {
+			if (file_printf(ms, " 4.6.2") == -1)
+				return size;
+		} else if (desc < 460100) {
 			if (file_printf(ms, " %d.%d", desc / 100000,
 			    desc / 10000 % 10) == -1)
 				return size;
@@ -421,17 +447,32 @@ donote(struct magic_set *ms, unsigned char *nbuf, size_t offset, size_t size,
 				if (file_printf(ms, ".%d", desc / 1000 % 10)
 				    == -1)
 					return size;
+			if ((desc % 1000 > 0) || (desc % 100000 == 0))
+				if (file_printf(ms, " (%d)", desc) == -1)
+					return size;
+		} else if (desc < 500000) {
+			if (file_printf(ms, " %d.%d", desc / 100000,
+			    desc / 10000 % 10 + desc / 1000 % 10) == -1)
+				return size;
+			if (desc / 100 % 10 > 0) {
+				if (file_printf(ms, " (%d)", desc) == -1)
+					return size;
+			} else if (desc / 10 % 10 > 0) {
+				if (file_printf(ms, ".%d", desc / 10 % 10)
+				    == -1)
+					return size;
+			}
 		} else {
 			if (file_printf(ms, " %d.%d", desc / 100000,
 			    desc / 1000 % 100) == -1)
 				return size;
-			desc %= 1000;
-			if (desc > 100) {
-				if (file_printf(ms, "-CURRENT (rev %d)",
-				    desc % 100) == -1)
+			if ((desc / 100 % 10 > 0) ||
+			    (desc % 100000 / 100 == 0)) {
+				if (file_printf(ms, " (%d)", desc) == -1)
 					return size;
-			} else if (desc != 0) {
-				if (file_printf(ms, ".%d", desc / 10) == -1)
+			} else if (desc / 10 % 10 > 0) {
+				if (file_printf(ms, ".%d", desc / 10 % 10)
+				    == -1)
 					return size;
 			}
 		}
@@ -670,7 +711,8 @@ dophn_exec(struct magic_set *ms, int class, int swap, int fd, off_t off,
 				file_badseek(ms);
 				return -1;
 			}
-			bufsize = read(fd, nbuf, sizeof(nbuf));
+			bufsize = read(fd, nbuf, ((ph_filesz < sizeof(nbuf)) ?
+			    ph_filesz : sizeof(nbuf)));
 			if (bufsize == -1) {
 				file_badread(ms);
 				return -1;
@@ -684,8 +726,7 @@ dophn_exec(struct magic_set *ms, int class, int swap, int fd, off_t off,
 				if (offset == 0)
 					break;
 			}
-			if (lseek(fd, savedoffset + offset, SEEK_SET)
-			    == (off_t)-1) {
+			if (lseek(fd, savedoffset, SEEK_SET) == (off_t)-1) {
 				file_badseek(ms);
 				return -1;
 			}
