@@ -9,6 +9,8 @@
 # Uncomment this to turn on verbose mode. 
 #export DH_VERBOSE=1
 
+PYTHON_VERSIONS=2.4 2.3
+
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
@@ -33,14 +35,14 @@ else
   CFLAGS += -O2
 endif
 
-build: build-stamp
-build-stamp:
+build: build-stamp $(patsubst %,build-stamp-%,$(PYTHON_VERSIONS))
+build-stamp:	
 	dh_testdir
 
 	mv config.sub config.sub.upstream && ln -s /usr/share/misc/config.sub
 	mv config.guess config.guess.upstream && ln -s /usr/share/misc/config.guess
 	./configure $(CONFFLAGS) --prefix=/usr \
-		'--datadir=$${prefix}/share/misc' '--mandir=$${prefix}/share/man' \
+		'--datadir=$${prefix}/share' '--mandir=$${prefix}/share/man' \
 		--enable-fsect-man5
 	rm config.sub && mv config.sub.upstream config.sub
 	rm config.guess && mv config.guess.upstream config.guess
@@ -49,10 +51,16 @@ build-stamp:
 	rm libtool && mv libtool.upstream libtool
 	touch build-stamp
 
+build-stamp-%:
+	dh_testdir
+	cd python && python$* setup.py build_ext -L$(CURDIR)/src/.libs
+	touch $@
+
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp debian/copyright
+	rm -f build-stamp build-stamp-* debian/copyright
+	rm -rf python/build
 
 	-$(MAKE) clean
 	-$(MAKE) distclean
@@ -77,6 +85,14 @@ install: build
 	install -m644 -D debian/bug.presubj-lib debian/libmagic1/usr/share/bug/libmagic1/presubj
 	install -m644 -D debian/bug.control debian/libmagic-dev/usr/share/bug/libmagic-dev/control
 	dh_install --sourcedir=debian/tmp
+	$(MAKE) -f debian/rules $(patsubst %,install-%,$(PYTHON_VERSIONS))
+
+install-%:
+	dh_testdir
+	dh_testroot
+	dh_installdirs
+	cd python && python$* setup.py install --no-compile\
+		--prefix=$(CURDIR)/debian/python$*-magic/usr
 
 # This single target is used to build all the packages, all at once, or
 # one at a time. So keep in mind: any options passed to commands here will
@@ -86,8 +102,8 @@ binary-common:
 	cat debian/copyright-prolog LEGAL.NOTICE > debian/copyright
 	dh_testdir
 	dh_testroot
-	dh_installchangelogs
-	dh_installdocs ChangeLog
+	dh_installchangelogs ChangeLog
+	dh_installdocs
 	dh_installexamples
 	dh_installmenu
 #	dh_installdebconf
@@ -106,7 +122,7 @@ binary-common:
 	dh_compress
 	dh_fixperms
 #	dh_perl
-#	dh_python
+	dh_python
 	dh_makeshlibs
 	dh_installdeb
 	dh_shlibdeps -Llibmagic1 -ldebian/libmagic1/usr/lib
@@ -117,8 +133,7 @@ binary-common:
 
 # Build architecture independant packages using the common target.
 binary-indep: build install
-# (Uncomment this next line if you have such packages.)
-#	 $(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
+	 $(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
 
 # Build architecture dependent packages using the common target.
 binary-arch: build install

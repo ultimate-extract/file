@@ -95,18 +95,18 @@
 
 # bzip	a block-sorting file compressor
 #	by Julian Seward <sewardj@cs.man.ac.uk> and others
-#
-0	string		BZ		bzip compressed data
->2	byte		x		\b, version: %c
->3	string		=1		\b, compression block size 100k
->3	string		=2		\b, compression block size 200k
->3	string		=3		\b, compression block size 300k
->3	string		=4		\b, compression block size 400k
->3	string		=5		\b, compression block size 500k
->3	string		=6		\b, compression block size 600k
->3	string		=7		\b, compression block size 700k
->3	string		=8		\b, compression block size 800k
->3	string		=9		\b, compression block size 900k
+# Disabled because it is too weak (MPi)
+#0	string		BZ		bzip compressed data
+#>2	byte		x		\b, version: %c
+#>3	string		=1		\b, compression block size 100k
+#>3	string		=2		\b, compression block size 200k
+#>3	string		=3		\b, compression block size 300k
+#>3	string		=4		\b, compression block size 400k
+#>3	string		=5		\b, compression block size 500k
+#>3	string		=6		\b, compression block size 600k
+#>3	string		=7		\b, compression block size 700k
+#>3	string		=8		\b, compression block size 800k
+#>3	string		=9		\b, compression block size 900k
 
 # lzop from <markus.oberhumer@jk.uni-linz.ac.at>
 0	string		\x89\x4c\x5a\x4f\x00\x0d\x0a\x1a\x0a	lzop compressed data
@@ -161,10 +161,10 @@
 >4	belong		0x090A0C0C	very good compression
 >4	belong		0x090A0C0D	best compression
 
-# 7z archiver, from Thomas Klausner (wiz@danbala.tuwien.ac.at)
+# 7-zip archiver, from Thomas Klausner (wiz@danbala.tuwien.ac.at)
 # http://www.7-zip.org or DOC/7zFormat.txt 
 #
-0	string		7z\274\257\047\034	7z archive data,
+0	string		7z\274\257\047\034	7-zip archive data,
 >6	byte		x			version %d
 >7	byte		x			\b.%d
 
