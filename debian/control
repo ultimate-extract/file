@@ -2,8 +2,9 @@ Source: file
 Section: utils
 Priority: standard
 Maintainer: Michael Piefel <piefel@debian.org>
-Build-Depends: debhelper (>= 4), zlib1g-dev, autotools-dev, libtool, python, python2.3-dev, python2.4-dev
-Standards-Version: 3.6.2
+Build-Depends: debhelper (>= 5.0.37.2), zlib1g-dev, autotools-dev, libtool, python (>= 2.3.5-7), python-all-dev
+Standards-Version: 3.7.2
+XS-Python-Version: all
 
 Package: file
 Architecture: any
@@ -39,33 +40,15 @@ Description: File type determination library (development)
  .
  This package contains the development files.
 
-Package: python2.3-magic
-Priority: extra
-Section: python
-Architecture: any
-Depends: ${shlibs:Depends}
-Description: Python binding for the magic library (2.3 version)
- This Python library can be use to query /etc/magic
- information for a given file in Python.
-
-Package: python2.4-magic
-Priority: extra
-Section: python
-Architecture: any
-Depends: ${shlibs:Depends}
-Description: Python binding for the magic library (2.4 version)
- This Python library can be use to query /etc/magic
- information for a given file in Python.
-
 Package: python-magic
 Section: python
-Architecture: all
+Architecture: any
 Priority: extra
-Depends: ${python:Depends}
-Description: Python binding for the magic library (dummy package)
+Depends: ${python:Depends}, ${shlibs:Depends}
+Provides: ${python:Provides}
+Conflicts: python2.3-magic, python2.4-magic
+Replaces: python2.3-magic, python2.4-magic
+XB-Python-Version: ${python:Versions}
+Description: Python binding for the magic library
  This Python library can be use to query /etc/magic
  information for a given file in Python.
- .
- This is a generic package, which always depends on the version
- specific to the default Python version.
- 

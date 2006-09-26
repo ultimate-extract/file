@@ -35,7 +35,6 @@
 #include <sys/types.h>
 #include <sys/param.h>	/* for MAXPATHLEN */
 #include <sys/stat.h>
-#include <fcntl.h>	/* for open() */
 #ifdef QUICK
 #include <sys/mman.h>
 #endif
@@ -63,7 +62,7 @@
 #include "patchlevel.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$Id: magic.c,v 1.28 2005/06/25 15:52:14 christos Exp $")
+FILE_RCSID("@(#)$Id: magic.c,v 1.32 2005/10/17 15:31:10 christos Exp $")
 #endif	/* lint */
 
 #ifdef __EMX__
@@ -75,6 +74,10 @@ protected int file_os2_apptype(struct magic_set *ms, const char *fn,
 private void free_mlist(struct mlist *);
 private void close_and_restore(const struct magic_set *, const char *, int,
     const struct stat *);
+
+#ifndef	STDIN_FILENO
+#define	STDIN_FILENO	0
+#endif
 
 public struct magic_set *
 magic_open(int flags)
@@ -179,8 +182,11 @@ private void
 close_and_restore(const struct magic_set *ms, const char *name, int fd,
     const struct stat *sb)
 {
+	if (fd == STDIN_FILENO)
+		return;
 	(void) close(fd);
-	if (fd != STDIN_FILENO && (ms->flags & MAGIC_PRESERVE_ATIME) != 0) {
+
+	if ((ms->flags & MAGIC_PRESERVE_ATIME) != 0) {
 		/*
 		 * Try to restore access, modification times if read it.
 		 * This is really *bad* because it will modify the status
@@ -237,12 +243,14 @@ magic_file(struct magic_set *ms, const char *inname)
 		goto done;
 	}
 
-#ifndef	STDIN_FILENO
-#define	STDIN_FILENO	0
-#endif
 	if (inname == NULL)
 		fd = STDIN_FILENO;
-	else if ((fd = open(inname, O_RDONLY)) < 0) {
+	else if ((fd = open(inname, O_RDONLY|O_BINARY)) < 0) {
+#ifdef __CYGWIN__
+	    char *tmp = alloca(strlen(inname) + 5);
+	    (void)strcat(strcpy(tmp, inname), ".exe");
+	    if ((fd = open(tmp, O_RDONLY|O_BINARY)) < 0) {
+#endif
 		/* We cannot open it, but we were able to stat it. */
 		if (sb.st_mode & 0222)
 			if (file_printf(ms, "writable, ") == -1)
@@ -257,6 +265,9 @@ magic_file(struct magic_set *ms, const char *inname)
 			goto done;
 		rv = 0;
 		goto done;
+#ifdef __CYGWIN__
+	    }
+#endif
 	}
 
 	/*

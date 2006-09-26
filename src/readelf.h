@@ -50,6 +50,7 @@ typedef	uint32_t 	Elf64_Addr[2];
 typedef	uint32_t 	Elf64_Off[2];
 typedef uint32_t 	Elf64_Xword[2];
 #else
+#undef USE_ARRAY_FOR_64BIT_TYPES
 typedef	uint64_t 	Elf64_Addr;
 typedef	uint64_t 	Elf64_Off;
 typedef uint64_t 	Elf64_Xword;
@@ -231,5 +232,7 @@ typedef struct {
 #define GNU_OS_LINUX	0
 #define GNU_OS_HURD	1
 #define GNU_OS_SOLARIS	2
+#define GNU_OS_KFREEBSD	3
+#define GNU_OS_KNETBSD	4
 
 #endif

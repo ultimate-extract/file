@@ -9,7 +9,7 @@
 # Uncomment this to turn on verbose mode. 
 #export DH_VERBOSE=1
 
-PYTHON_VERSIONS=2.4 2.3
+PYTHON_VERSIONS=$(shell pyversions -r debian/control)
 
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
@@ -35,7 +35,7 @@ else
   CFLAGS += -O2
 endif
 
-build: build-stamp $(patsubst %,build-stamp-%,$(PYTHON_VERSIONS))
+build: build-stamp
 build-stamp:	
 	dh_testdir
 
@@ -49,12 +49,13 @@ build-stamp:
 	mv libtool libtool.upstream && cp /usr/bin/libtool libtool
 	make
 	rm libtool && mv libtool.upstream libtool
-	touch build-stamp
 
-build-stamp-%:
-	dh_testdir
-	cd python && python$* setup.py build_ext -L$(CURDIR)/src/.libs
-	touch $@
+	set -e; \
+	for python in $(PYTHON_VERSIONS); do \
+		(cd python && $$python setup.py build_ext -L$(CURDIR)/src/.libs); \
+	done
+
+	touch build-stamp
 
 clean:
 	dh_testdir
@@ -79,20 +80,21 @@ install: build
 	$(MAKE) prefix=`pwd`/debian/tmp/usr install
 	rm libtool && mv libtool.upstream libtool
 	install -m644 -p -D magic/magic.local debian/tmp/etc/magic
+	install -m644 -p -D magic/magic.local debian/tmp/etc/magic.mime
 
+	install -m644 -D debian/file.override debian/file/usr/share/lintian/overrides/file
 	install -m644 -D debian/bug.presubj debian/file/usr/share/bug/file/presubj
 	install -m644 -D debian/bug.control debian/libmagic1/usr/share/bug/libmagic1/control
 	install -m644 -D debian/bug.presubj-lib debian/libmagic1/usr/share/bug/libmagic1/presubj
 	install -m644 -D debian/bug.control debian/libmagic-dev/usr/share/bug/libmagic-dev/control
 	dh_install --sourcedir=debian/tmp
-	$(MAKE) -f debian/rules $(patsubst %,install-%,$(PYTHON_VERSIONS))
 
-install-%:
-	dh_testdir
-	dh_testroot
-	dh_installdirs
-	cd python && python$* setup.py install --no-compile\
-		--prefix=$(CURDIR)/debian/python$*-magic/usr
+	set -e; \
+	for python in $(PYTHON_VERSIONS); do \
+		(cd python && $$python setup.py install --no-compile \
+			--prefix=$(CURDIR)/debian/python-magic/usr); \
+	done
+
 
 # This single target is used to build all the packages, all at once, or
 # one at a time. So keep in mind: any options passed to commands here will
