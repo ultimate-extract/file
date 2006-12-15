@@ -86,6 +86,7 @@ magic_open(int flags)
 
 	if ((ms = malloc(sizeof(struct magic_set))) == NULL)
 		return NULL;
+	(void) memset((void *)ms, 0, sizeof(struct magic_set));
 
 	if (magic_setflags(ms, flags) == -1) {
 		errno = EINVAL;

@@ -1,3 +1,10 @@
+file (4.17-5) unstable; urgency=high
+
+  * Initialize some previously uninitialized memory, this could lead to a
+    segmentation fault when using magic_compile in libmagic (closes: #403085)
+
+ -- Michael Piefel <piefel@debian.org>  Fri, 15 Dec 2006 13:36:12 +0100
+
 file (4.17-4) unstable; urgency=medium
 
   * Add proper depends for python-magic (fixes not yet filed serious bug)

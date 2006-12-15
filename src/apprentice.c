@@ -387,6 +387,7 @@ apprentice_file(struct magic_set *ms, struct magic **magicp, uint32_t *nmagicp,
 		return -1;
 	}
 	marraycount = 0;
+	(void) memset((void *)marray, 0, maxmagic * sizeof(*marray));
 
 	/* print silly verbose header for USG compat. */
 	if (action == FILE_CHECK)
