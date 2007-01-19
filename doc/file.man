@@ -1,5 +1,5 @@
 .TH FILE __CSECTION__ "March 2006" "Debian/GNU Linux" "Copyrighted but distributable"
-.\" $Id: file.man,v 1.57 2005/08/18 15:18:22 christos Exp $
+.\" $Id: file.man,v 1.59 2006/11/17 16:11:10 christos Exp $
 .SH NAME
 file
 \- determine file type
@@ -201,7 +201,7 @@ traditional human readable ones. Thus it may say
 rather
 than ``ASCII text''.
 In order for this option to work, file changes the way
-it handles files recognised by the command itself (such as many of the
+it handles files recognized by the command itself (such as many of the
 text file types, directories etc), and makes use of an alternative
 ``magic'' file.
 (See ``FILES'' section, below).
@@ -273,6 +273,10 @@ Print the version of the program and exit.
 .TP 8
 .B "\-z, \-\-uncompress"
 Try to look inside compressed files.
+.B "\-0, \-\-print0"
+Output a null character ('\0') after the end of the filename. Nice to
+.BR cut (1)
+the output. This does not affect the separator which is still printed.
 .TP 8
 .B "\-\-help"
 Print a help message and exit.
@@ -329,9 +333,10 @@ options.
 This program is believed to exceed the System V Interface Definition
 of FILE(CMD), as near as one can determine from the vague language
 contained therein. 
-Its behaviour is mostly compatible with the System V program of the same name.
+Its behavior is mostly compatible with the System V program of the same name.
 This version knows more magic, however, so it will produce
 different (albeit more accurate) output in many cases. 
+.\" URL: http://www.opengroup.org/onlinepubs/009695399/utilities/file.html
 .PP
 The one significant difference 
 between this version and System V
@@ -457,7 +462,7 @@ were written by John Gilmore from his public-domain
 program, and are not covered by the above license.
 .SH BUGS
 There must be a better way to automate the construction of the Magic
-file from all the glop in magdir.
+file from all the glop in Magdir.
 What is it?
 Better yet, the magic file should be compiled into binary (say,
 .BR ndbm (3)
@@ -502,7 +507,7 @@ The list of keywords in
 probably belongs in the Magic file.
 This could be done by using some keyword like `*' for the offset value.
 .PP
-Another optimisation would be to sort
+Another optimization would be to sort
 the magic file so that we can just run down all the
 tests for the first byte, first word, first long, etc, once we
 have fetched it.
