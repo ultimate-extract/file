@@ -1,3 +1,167 @@
+file (4.21-1) unstable; urgency=low
+
+  * New upstream release.
+  * Rediffed 211-magic-update-os2rexx.dpatch.
+  * Removed 302-magic-add-ape.dpatch, went upstream.
+  * Rediffed 304-magic-add-arm.dpatch.
+  * Rediffed 317-magic-add-ocfs.dpatch.
+  * Rediffed 318-magic-add-par2.dpatch.
+  * Rediffed 322-magic-add-scummvm.dpatch.
+  * Rediffed 325-magic-add-subversion.dpatch.
+  * Rediffed 326-magic-add-supercollider.dpatch.
+  * Rediffed 328-magic-add-xen.dpatch.
+  * Removed 999-upstream-reg-startend.dpatch, now included in upstream.
+  * Updated 905-file-segfault.dpatch.
+  * Rediffed 999-conglomeration.dpatch.
+
+ -- Daniel Baumann <daniel@debian.org>  Fri,  1 Jun 2007 20:29:00 +0200
+
+file (4.20-8) unstable; urgency=low
+
+  * Build a python-magic-dbg package.
+
+ -- Daniel Baumann <daniel@debian.org>  Thu, 17 May 2007 20:40:00 +0200
+
+file (4.20-7) unstable; urgency=medium
+
+  * Replacing work around patch from Ubuntu with proper fix from
+    Werner Fink <werner@suse.de> of OpenSuse (CVE-2007-2026).
+
+ -- Daniel Baumann <daniel@debian.org>  Thu, 17 May 2007 19:57:00 +0200
+
+file (4.20-6) unstable; urgency=medium
+
+  * Fixed clean: target in rule (Closes: #424269).
+  * Added patch from Anthon van der Neut <anthon@mnt.org> to add magic for LUKS
+    (Closes: #394246).
+  * Added patch from Jelmer Vernooij <jelmer@samba.org> to add magic for
+    Power-Tab.
+  * Added patch from Sven Anders <anders@anduras.de> to fix a segfault with -c.
+  * Added patch from Kees Cook <kees@ubuntu.com> to work around regex DoS
+    (CVE-2007-2026) by disabling the respective magic.
+  * Added patch from Noel Torres <tecnico@ejerciciosresueltos.com> to add magic
+    for SVG (Closes: #417331).
+  * Added patch from Josh Triplett <josh@freedesktop.org> to add magic for
+    Mathcad documents (Closes: #421426).
+  * Added patch from Matthias Urlichs <smurf@debian.org> to update elf magic
+    with missing elf architectures (Closes: #424859).
+  * Added patch from Josef Spillner <2005@kuarepoti-dju.net> to update magic
+    for HFS+ partition table detection (Closes: #405313).
+
+ -- Daniel Baumann <daniel@debian.org>  Thu, 17 May 2007 18:15:00 +0200
+
+file (4.20-5) unstable; urgency=low
+
+  * Added patch from Ralph Amissah <ralph.amissah@gmail.com> to update magic for
+    SiSU Markup Language.
+  * Added patch from Josh Triplett <josh@freedesktop.org> to disable magic for
+    Bennet Yee's face format (Closes: #420855).
+  * Updated copyright file (Closes: #398453).
+
+ -- Daniel Baumann <daniel@debian.org>  Thu, 26 Apr 2007 08:13:00 +0200
+
+file (4.20-4) unstable; urgency=low
+
+  * Rediffed some patches, now having always the same format of adding new
+    magics.
+  * Added patch from Ralph Amissah <ralph.amissah@gmail.com> to add magic for
+    SiSU Markup Language.
+  * Added patch from Radek Vokal <rvokal@redhat.com> to add magic for
+    Xen saved domains.
+  * Added patch from Radek Vokal <rvokal@redhat.com> to add magic for
+    Apple Emulator 2IMG format.
+  * Added patch from Aaron Botsis <redhat@digitalmafia.org> to add magic for
+    Oracle Clustered Filesytem.
+  * Added patch from Werner Fink <werner@suse.de> to update pcp magics.
+  * Added patch from Mads Martin Joergensen <mmj@suse.de> to add magic for
+    NetWare Loadable Modules (NLMs).
+  * Added patch from Reuben Thomas <rrt@sc3d.org> to add magic for
+    Inform interactive fiction language (Closes: #394522).
+  * Added patch to add magic for Erlang BEAM and JAM files (Closes: #388356).
+  * Added patch from David Newgas <david@newgas.net> to add magic for
+    AVG vault files (Closes: #381053).
+  * Added patch from root <ap@insysnet.ru> to add magic for detecting
+    H.264 video in AVI files (Closes: #347263).
+  * Added patch from Seo Sanghyeon <tinuviel@sparcs.kaist.ac.kr> to update
+    lua magic with Lua bytecode (Closes: #335036).
+  * Added patch from Daniel van Eeden <daniel_e@dds.nl> to add magic for
+    PAR2 archive files (Closes: #294070).
+  * Added patch from Mario Lang <mlang@debian.org> to add magic for
+    SuperCollider 3 Synth Definition File Format (Closes: #284803).
+  * Added patch from Russell Coker <russell@coker.com.au> to add magic for
+    Adaptive Multi-Rate Codec files (Closes: #279322).
+  * Added patch from Phil Endecott <phil05@chezphil.org> to add magic for
+    GEDCOME genealogical data files (Closes: #277339).
+  * Added patch from Nicolas François <nicolas.francois@centraliens.net>to
+    fix wrong formating in manpage (Closes: #417511).
+
+ -- Daniel Baumann <daniel@debian.org>  Tue,  3 Apr 2007 14:25:00 +0200
+
+file (4.20-3) unstable; urgency=low
+
+  * Added patch from Josh Triplett <josh@freedesktop.org> to add magic for
+    SNES SPC700 sound files (Closes: #410847).
+  * Added patch from Reuben Thomas <rrt@sc3d.org> to add magic for the
+    Lua scripting language (Closes: #394524).
+  * Added patch from Nigel McNie <nigel@mcnie.name> to detect m4v files as m4v
+    instead of mp4 (Closes: #384018).
+  * Added patch from Mark Hindley <mark@hindley.org.uk> to update
+    sh scripts identifier (Closes: #368613).
+  * Added patch from Robert Millan <rmh@aybabtu.com> to add magic for the
+    LZMA compression format (Closes: #364260).
+  * Added patch from Simon Horman <horms@debian.org> to add magic for the
+    Ulead Photo Explorer5 image format (Closes: #339397).
+  * Added patch from Robert Millan <rmh@aybabtu.com> to add magic for the
+    Monkey's audio format (Closes: #334862).
+  * Added patch from Josh Babcock <jbabcock@atlantech.net> to updated magic for
+    Blender (Closes: #323291).
+  * Added patch from Matthew Palmer <mpalmer@debian.org> to update magic for
+    COW from 2.0 to 3.0 (Closes: #283515, #319128).
+  * Added patch from Robert Millan <rmh@aybabtu.com> to add magic for the
+    OpenRISC binary format (Closes: #316076).
+  * Added patch from Philip Kendall <pak21@srcf.ucam.org> to update the
+    spectrum magics (Closes: #296202).
+  * Added patch from Al Stone <ahs3@debian.org> to add magic for the
+    LLVM byte-codes (Closes: #293427).
+  * Added patch from Julien Blache <jblache@debian.org> to add magic for
+    Clarion files (Closes: #282680).
+  * Added patch from Sven Hartge <debian@ds9.argh.org> to add magic for
+    scummVM savegame files (Closes: #263488).
+  * Added patch from Nicolas Chauvat <nicolas.chauvat@logilab.fr> to add magic
+    for CGNS Advnaced Data Format files (Closes: #242644).
+  * Added patch from Edward Betts <edward@debian.org> to add magic for
+    pmenu (Closes: #38543).
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 27 Mar 2007 17:51:00 +0100
+
+file (4.20-2) unstable; urgency=low
+
+  * New maintainer (Closes: #416263).
+  * Redone debian directory.
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 27 Mar 2007 13:28:00 +0100
+
+file (4.20-1) unstable; urgency=high
+
+  * New upstream version
+    - Fixes supposed vulnerability in the file_fprintf in funcs.c
+      (closes: #415362 and justifies urgency)
+    - MPEG ADTS signedness fixed (closes: #392009)
+    - Better TeX/LaTeX magic (closes: #402062)
+    - Better XML mimetype magic (closes: #345834)
+    - More linespacing in manpage (closes: #402058)
+  * Revert URL in copyright file (see #406820), as the old one is supposed to
+    be correct, even if it disappeared temporarily.
+  * Fixed typo in manpage (closes: #394514)
+  * Make Perl script entries consistent (closes: #394523)
+  * Disable second MS Installer entry (closes: #409895)
+  * Disable one-byte magic for COM (closes: #393775, #339618)
+  * audio/midi mimetype (closes: #401839)
+  * Enable gzip mimetype magic (closes: #324889)
+  * Disabled some QuickTime entries (ASCII words, closes: #366986, #308394)
+
+ -- Michael Piefel <piefel@debian.org>  Mon, 19 Mar 2007 14:55:46 +0100
+
 file (4.19-1) unstable; urgency=low
 
   * New upstream version.
@@ -325,7 +489,7 @@ file (3.39-1) unstable; urgency=low
     - incorporates most Debian patches 
     - adds 9660 filesystem magic (closes: #157050; Upstream has
       a different magic than reporter.)
-    - adds MNG magic (closes 147264, see below)
+    - adds MNG magic (closes: #147264, see below)
     - adds PHP magic (closes: #145929)
     - detects UTF-8 and UTF-16 with BOM (closes: #102076)
     - some short string magic commented out (closes: #134266)
@@ -830,4 +994,3 @@ file (3.19-1)
   * added debian.* files
   * modified Magdir/archive to add debian-split entry to ar archives
   * modified magdir/elf to add more entry for core file
-

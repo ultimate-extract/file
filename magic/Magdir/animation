@@ -14,11 +14,11 @@
 >12     string          cmov            \b movie (fast start, compressed header)
 >12     string          rmra            \b multiple URLs
 4       string          mdat            Apple QuickTime movie (unoptimized)
-#4       string          wide            Apple QuickTime movie (unoptimized)
-#4       string          skip            Apple QuickTime movie (modified)
-#4       string          free            Apple QuickTime movie (modified)
+4       string          wide            Apple QuickTime movie (unoptimized)
+4       string          skip            Apple QuickTime movie (modified)
+4       string          free            Apple QuickTime movie (modified)
 4       string          idsc            Apple QuickTime image (fast start)
-#4       string          idat            Apple QuickTime image (unoptimized)
+4       string          idat            Apple QuickTime image (unoptimized)
 4       string          pckg            Apple QuickTime compressed archive
 4	string/B	jP		JPEG 2000 image
 4	string		ftyp		ISO Media
@@ -320,11 +320,11 @@
 #>3     byte&0x03       3              \b, NR: CCIT J.17
 
 # MPA, M1A
-# modified by Joerg Jenderek
+# updated by Joerg Jenderek
 # GRR the original test are too common for many DOS files, so test 32 <= kbits <= 448
 0	beshort&0xFFFE		0xFFFE	
->2	byte&0xF0	>0x0F		
->>2	byte&0xF0	<0xE1		MPEG ADTS, layer I, v1
+>2	ubyte&0xF0	>0x0F		
+>>2	ubyte&0xF0	<0xE1		MPEG ADTS, layer I, v1
 # rate
 >>>2      byte&0xF0       0x10           \b,  32 kBits
 >>>2      byte&0xF0       0x20           \b,  64 kBits

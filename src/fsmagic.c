@@ -57,7 +57,7 @@
 #undef HAVE_MAJOR
 
 #ifndef	lint
-FILE_RCSID("@(#)$Id: fsmagic.c,v 1.46 2005/06/25 15:52:14 christos Exp $")
+FILE_RCSID("@(#)$File: fsmagic.c,v 1.47 2007/01/12 17:38:28 christos Exp $")
 #endif	/* lint */
 
 protected int
@@ -92,8 +92,7 @@ file_fsmagic(struct magic_set *ms, const char *fn, struct stat *sb)
 		if (file_printf(ms, "cannot open `%s' (%s)",
 		    fn, strerror(errno)) == -1)
 			return -1;
-		ms->haderr++;
-		return -1;
+		return 1;
 	}
 
 	if ((ms->flags & MAGIC_MIME) != 0) {
