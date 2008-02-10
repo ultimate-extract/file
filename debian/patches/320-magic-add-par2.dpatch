@@ -1,0 +1,18 @@
+#!/bin/sh /usr/share/dpatch/dpatch-run
+## 318-magic-add-par2.dpatch by Daniel van Eeden <daniel_e@dds.nl>
+##
+## DP: New magic for PAR2 archive files (Closes: #294070).
+
+@DPATCH@
+
+diff -Naurp file-4.23.orig/magic/Magdir/archive file-4.23/magic/Magdir/archive
+--- file-4.23.orig/magic/Magdir/archive	2007-12-27 16:18:28.000000000 +0000
++++ file-4.23/magic/Magdir/archive	2008-01-12 17:33:01.000000000 +0000
+@@ -748,3 +748,7 @@
+ # .kgb
+ 0	string KGB_arch		KGB Archiver file
+ >10	string x		with compression level %.1s
++
++# Type: Parity Archive
++# From: Daniel van Eeden <daniel_e@dds.nl>
++0	string	PAR2		Parity Archive Volume Set
