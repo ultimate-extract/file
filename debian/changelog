@@ -1,3 +1,38 @@
+file (4.24-2) unstable; urgency=medium
+
+  * Adding plain magic files for compatibility.
+  * Using lintian debhelper to install lintian overrides.
+  * Removing watch file.
+  * Removing useless whitespaces in changelog file.
+  * Adding vcs fields in control file.
+  * Upgrading package to debhelper 6.
+
+ -- Daniel Baumann <daniel@debian.org>  Sat,  3 May 2008 14:09:00 +0200
+
+file (4.24-1) experimental; urgency=low
+
+  * New upstream release:
+    - The following patches went upstream completely:
+      102-magic-remove-bennet, 103-magic-remove-bzip, 104-magic-remove-cgm,
+      105-magic-remove-com, 106-magic-remove-emf, 108-magic-remove-quicktime,
+      201-magic-update-avi, 203-magic-update-cow, 204-magic-update-cracklib,
+      206-magic-update-elf-b, 207-magic-update-elf-c, 208-magic-update-hp,
+      209-magic-update-jpeg, 210-magic-update-m4v, 211-magic-update-macintosh,
+      213-magic-update-pcp, 214-magic-update-perl, 215-magic-update-sh,
+      216-magic-update-spectrum, 301-magic-add-adf, 302-magic-add-apple2,
+      303-magic-add-arm, 304-magic-add-avg, 305-magic-add-clarion,
+      306-magic-add-dds, 307-magic-add-erlang, 308-magic-add-gedcom,
+      309-magic-add-git, 309-magic-add-inform, 310-magic-add-llvm,
+      311-magic-add-lua, 312-magic-add-luks, 313-magic-add-lzma,
+      314-magic-add-mathcad, 315-magic-add-mdi, 316-magic-add-mercurial,
+      317-magic-add-mozilla, 318-magic-add-nlm, and 332-magic-add-svg,
+      901-file-elf, 902-file-kfreebsd, and 905-file-segfault.
+    - The following patches went upstream almost completely:
+      998-doc-manpages and 999-conglomeration.
+    - Thanks to Reuben Thomas <rrt@sc3d.org> to merge them.
+
+ -- Daniel Baumann <daniel@debian.org>  Tue,  1 Apr 2008 11:30:00 +0200
+
 file (4.23-2) unstable; urgency=low
 
   * Applied patch from Neil Williams <codehelp@debian.org> to add crossbuild
@@ -245,7 +280,7 @@ file (4.17-3) unstable; urgency=low
     a magic.mime file if the base magic file exists (closes: #382057)
   * Remove AWK detection by regular expression testing just for ‘BEGIN:’;
     this caused a lot of false guesses (and problems with naughty programs
-    reading other programs’ files), this closes: #308305, #375403 and makes 
+    reading other programs’ files), this closes: #308305, #375403 and makes
     others disappear (for the time being, for example, it closes: #375722)
   * Added Python 2.5 byte-compiled (closes: #376711)
   * Fix some bad MIME types (closes: #379042, thanks to Moritz Naumann)
@@ -447,7 +482,7 @@ file (4.03-1) unstable; urgency=low
   * New upstream
     - fixes Zsh bug (closes: #195583, #196163)
     - incorporates many Debian changes to magic entries
-    - also closes: #196162 (no more Broken HTML) 
+    - also closes: #196162 (no more Broken HTML)
   * Reformatted ancient changelog entries and made sure changelog
     is in UTF-8.
   * File depends on correct library version now (closes: #194697)
@@ -480,7 +515,7 @@ file (4.02-2) unstable; urgency=low
   * Changed Priority of libmagic-dev to optional (closes: #193254)
   * Add Conflicts of libmagic1 to older file (closes: #193236, #193238)
   * Use newer libtool (closes: #193152)
-    
+
  -- Michael Piefel <piefel@debian.org>  Wed, 14 May 2003 13:47:47 +0200
 
 file (4.02-1) unstable; urgency=low
@@ -543,7 +578,7 @@ file (3.39-1) unstable; urgency=low
 
   * NMU
   * New upstream version (closes: #148212, #151907)
-    - incorporates most Debian patches 
+    - incorporates most Debian patches
     - adds 9660 filesystem magic (closes: #157050; Upstream has
       a different magic than reporter.)
     - adds MNG magic (closes: #147264, see below)
@@ -914,7 +949,7 @@ file (3.24-1) unstable; urgency=low
 file (3.23-1) unstable; urgency=low
 
   * Added long version for the new option `-b' (`--brief'). Added long
-    option to manpage. Added the option to the usge message (`--help'). 
+    option to manpage. Added the option to the usge message (`--help').
   * Added GNU message catalog magic, contributed
     by Santiago Vila Doncel <sanvila@unex.es>, fixes bug #14743.
   * Removed duplcated entry for romfs, fixes bug #13977.

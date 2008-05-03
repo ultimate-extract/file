@@ -107,17 +107,20 @@ install: build
 	mkdir -p debian/libmagic-dev/usr/include/file
 	cp src/file.h src/patchlevel.h debian/libmagic-dev/usr/include/file
 
+	# Build plain magic files for compatibility
+	install -D -m 0644 debian/legacy/magic.mime debian/libmagic1/usr/share/file/magic.mime
+	cp magic/Header debian/libmagic1/usr/share/file/magic
+	cat magic/Localstuff >> debian/libmagic1/usr/share/file/magic
+	set -e; for FILE in magic/Magdir/*; \
+	do \
+		grep -v "^!:" $$FILE >> debian/libmagic1/usr/share/file/magic; \
+	done
+
 	# Installing bug congtrols
 	install -D -m 0644 debian/bug/presubj debian/file/usr/share/bug/file/presubj
 	install -D -m 0644 debian/bug/control debian/libmagic1/usr/share/bug/libmagic1/control
 	install -D -m 0644 debian/bug/presubj-lib debian/libmagic1/usr/share/bug/libmagic1/presubj
 	install -D -m 0644 debian/bug/control debian/libmagic-dev/usr/share/bug/libmagic-dev/control
-
-	# Installing lintian overrides
-	set -e; for LINTIAN in debian/lintian/*; \
-	do \
-		install -D -m 0644 $$LINTIAN debian/`basename $$LINTIAN`/usr/share/lintian/overrides/`basename $$LINTIAN`; \
-	done
 
 binary-indep: build install
 
@@ -128,6 +131,7 @@ binary-arch: build install
 	dh_installdocs
 	dh_installexamples
 	dh_install --sourcedir=debian/tmp
+	dh_lintian
 	dh_python
 	dh_link
 ifeq (,$(findstring -i, $(DH_OPTIONS)))

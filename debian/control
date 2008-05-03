@@ -2,9 +2,11 @@ Source: file
 Section: utils
 Priority: standard
 Maintainer: Daniel Baumann <daniel@debian.org>
-Build-Depends: debhelper (>= 5.0.37.2), dpatch, autotools-dev, libtool, python, python-all-dev, python-all-dbg, zlib1g-dev
+Build-Depends: debhelper (>= 6), dpatch, autotools-dev, libtool, python, python-all-dev, python-all-dbg, zlib1g-dev
 Standards-Version: 3.7.3
 Homepage: http://www.darwinsys.com/file/
+Vcs-Browser: http://git.debian.net/?p=file.git
+Vcs-Git: git://git.debian.net/git/file.git
 XS-Python-Version: all
 
 Package: file
@@ -55,7 +57,7 @@ Description: File type determination library using "magic" numbers (Python bindi
  This library can be used to classify files according to magic number tests. It
  implements the core functionality of the file command.
  .
- This package contains the python bindings to query /etc/magic information for a
+ This package contains the Python bindings to query /etc/magic information for a
  given file in Python.
 
 Package: python-magic-dbg
