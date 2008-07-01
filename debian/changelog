@@ -1,3 +1,64 @@
+file (4.24-4) unstable; urgency=high
+
+  * Adding patch from Jelmer Vernooij <jelmer@samba.org> to add new
+    magics for bzr (Closes: #488742).
+  * Adding symlinks to /usr/share/misc to conform to the LSB, thanks to
+    Matthias Klose <doko@debian.org>.
+  * Adding zlibg1-dev to libmagic-dev depends (Closes: #472856).
+  * Adding patch to revert upstream change to stop build plain magic
+    files. This fixes #481247 correctly now (Closes: #481247).
+  * Reverting previous wrong NMU.
+
+ -- Daniel Baumann <daniel@debian.org>  Tue,  1 Jul 2008 18:46:00 +0200
+
+file (4.24-3.1) unstable; urgency=low
+
+  * Non-maintainer upload from the Cambridge BSP.
+  * Work around bug #488562, that file assumes readdir() will return sorted
+    names - instead of compiling magic.mgc from Magdir directly, use the logic
+    already in debian/rules to build (the file that will become)
+    /usr/share/file/magic, then compile magic.mgc from that. (Closes: #481247)
+
+ -- Simon McVittie <smcv@debian.org>  Sun, 29 Jun 2008 19:32:24 +0000
+
+file (4.24-3) unstable; urgency=medium
+
+  * Rewriting copyright file in machine-interpretable format.
+  * Updating package to debhelper 7.
+  * Adding patch to update pfm magic.
+  * Adding patch to update mono magic.
+  * Adding patch to update Digifax magic.
+  * Adding patch to update OS/2 REXX magic.
+  * Adding patch to update real media magic.
+  * Adding patch to update zip magic.
+  * Updating bash magic to also look for /usr/bin/bash.
+  * Updating tcsh magic to also look for /usr/bin/tcsh.
+  * Adding patch from Russell Coker <russell@coker.com.au> to add new magic for
+    selinux (Closes: #485886).
+  * Updating to standards 3.8.0.
+  * Adding patch to add mime for asf magics (Closes: #483797).
+  * Adding patch from Werner Fink <werner@suse.de> to add new magic for scribus.
+  * Adding patch from Werner Fink <werner@suse.de> to update reiserfs magic also
+    detecting ReiserFS V3.6.19.
+  * Adding patch from Werner Fink <werner@suse.de> to add new magic for CROM
+    filesystem.
+  * Adding patch from Werner Fink <werner@suse.de> to update (and re-enabled)
+    awk magic.
+  * Adding patch from Werner Fink <werner@suse.de> to fix regressions with mp3
+    files (Closes: #480683, #481377).
+  * Adding patch for new TokyoCabinet database magic, thanks Benoit Sibaud
+    <bsibaud@april.org> (Closes: #481768).
+  * Adding patch for new QDBM Quick Database Manager magic, thanks Benoit Sibaud
+    <bsibaud@april.org> (Closes: #481717).
+  * Fixing regression in file 4.24 with file_printf(), thanks Martin Dorey
+    <mdorey@bluearc.com> (Closes: #481523).
+  * Removing annoying warnings when files can't be opened, thanks Martin Dorey
+    <mdorey@bluearc.com> (Closes: #481512).
+  * Adding new magic for freemind, thanks to Jamie Thompson
+    <debian-bugs@jamie-thompson.co.uk> (Closes: #472385).
+
+ -- Daniel Baumann <daniel@debian.org>  Thu, 26 Jun 2008 16:06:00 +0200
+
 file (4.24-2) unstable; urgency=medium
 
   * Adding plain magic files for compatibility.
