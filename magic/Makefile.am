@@ -1,3 +1,6 @@
+#
+# $File: Makefile.am,v 1.43 2008/08/08 08:24:06 christos Exp $
+#
 MAGIC_FRAGMENT_BASE = Magdir
 MAGIC_FRAGMENT_DIR = $(top_srcdir)/magic/$(MAGIC_FRAGMENT_BASE)
 
@@ -76,6 +79,7 @@ $(MAGIC_FRAGMENT_DIR)/gnome-keyring \
 $(MAGIC_FRAGMENT_DIR)/gnu \
 $(MAGIC_FRAGMENT_DIR)/gnumeric \
 $(MAGIC_FRAGMENT_DIR)/grace \
+$(MAGIC_FRAGMENT_DIR)/graphviz \
 $(MAGIC_FRAGMENT_DIR)/gringotts \
 $(MAGIC_FRAGMENT_DIR)/hitachi-sh \
 $(MAGIC_FRAGMENT_DIR)/hp \
@@ -160,6 +164,7 @@ $(MAGIC_FRAGMENT_DIR)/revision \
 $(MAGIC_FRAGMENT_DIR)/riff \
 $(MAGIC_FRAGMENT_DIR)/rpm \
 $(MAGIC_FRAGMENT_DIR)/rtf \
+$(MAGIC_FRAGMENT_DIR)/ruby \
 $(MAGIC_FRAGMENT_DIR)/sc \
 $(MAGIC_FRAGMENT_DIR)/sccs \
 $(MAGIC_FRAGMENT_DIR)/scientific \
@@ -201,6 +206,9 @@ $(MAGIC_FRAGMENT_DIR)/vms \
 $(MAGIC_FRAGMENT_DIR)/vmware \
 $(MAGIC_FRAGMENT_DIR)/vorbis \
 $(MAGIC_FRAGMENT_DIR)/vxl \
+$(MAGIC_FRAGMENT_DIR)/warc \
+$(MAGIC_FRAGMENT_DIR)/weak \
+$(MAGIC_FRAGMENT_DIR)/windows \
 $(MAGIC_FRAGMENT_DIR)/wordprocessors \
 $(MAGIC_FRAGMENT_DIR)/xdelta \
 $(MAGIC_FRAGMENT_DIR)/xenix \
@@ -217,10 +225,12 @@ CLEANFILES = ${MAGIC}
 # the target's magic file
 if IS_CROSS_COMPILE
 FILE_COMPILE = file
+FILE_COMPILE_DEP =
 else
 FILE_COMPILE = $(top_builddir)/src/file
+FILE_COMPILE_DEP = $(FILE_COMPILE)
 endif
 
-${MAGIC}: $(EXTRA_DIST) $(FILE_COMPILE)
+${MAGIC}: $(EXTRA_DIST) $(FILE_COMPILE_DEP)
 	$(FILE_COMPILE) -C -m $(MAGIC_FRAGMENT_DIR)
 	@mv $(MAGIC_FRAGMENT_BASE).mgc $@

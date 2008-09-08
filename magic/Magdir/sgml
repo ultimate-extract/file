@@ -8,6 +8,12 @@
 >>23	search/400	\<gnc-v2		GnuCash file
 !:mime	application/x-gnucash
 
+# Sitemap file
+0	string		\<?xml\ version="
+>15	string		>\0
+>>23	search/400	\<urlset		XML Sitemap document text
+!:mime	application/xml-sitemap
+
 #------------------------------------------------------------------------------
 # sgml:  file(1) magic for Standard Generalized Markup Language
 # HyperText Markup Language (HTML) is an SGML document type,
@@ -25,14 +31,23 @@
 # Extensible markup language (XML), a subset of SGML
 # from Marc Prud'hommeaux (marc@apocalypse.org)
 0	search/1/cb	\<?xml			XML document text
+!:mime	application/xml
 0	string		\<?xml\ version\ "	XML
+!:mime	application/xml
 0	string		\<?xml\ version="	XML
+!:mime	application/xml
+>15	search/1	>\0			%.3s document text
+>>23	search/1	\<xsl:stylesheet	(XSL stylesheet)
+>>24	search/1	\<xsl:stylesheet	(XSL stylesheet)
 0	string		\<?xml\ version='	XML
+!:mime	application/xml
 >15	search/1	>\0			%.3s document text
 >>23	search/1	\<xsl:stylesheet	(XSL stylesheet)
 >>24	search/1	\<xsl:stylesheet	(XSL stylesheet)
 0	search/1/b	\<?xml			XML document text
+!:mime	application/xml
 0	search/1/b	\<?XML			broken XML document text
+!:mime	application/xml
 
 
 # SGML, mostly from rph@sq

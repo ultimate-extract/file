@@ -1,4 +1,3 @@
-201-magic-update-mp3.dpatch
 202-magic-update-awk.dpatch
 203-magic-update-reiserfs.dpatch
 204-magic-update-asf.dpatch
@@ -10,6 +9,9 @@
 210-magic-update-digifax.dpatch
 211-magic-update-mono.dpatch
 212-magic-update-pfm.dpatch
+213-magic-update-ocaml.dpatch
+214-magic-update-linuxswap.dpatch
+215-magic-update-linuxext.dpatch
 320-magic-add-par2.dpatch
 321-magic-add-pe5.dpatch
 322-magic-add-pmenu.dpatch
@@ -34,8 +36,6 @@
 901-file-mgc.dpatch
 903-file-localmagic.dpatch
 904-file-make.dpatch
-905-file-printf.dpatch
 906-file-hurd.dpatch
-907-file-funcs.dpatch
 998-doc-manpages.dpatch
 999-conglomeration.dpatch

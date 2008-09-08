@@ -49,7 +49,7 @@
 #include "names.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: ascmagic.c,v 1.62 2008/03/01 22:21:48 rrt Exp $")
+FILE_RCSID("@(#)$File: ascmagic.c,v 1.64 2008/07/16 18:00:57 christos Exp $")
 #endif	/* lint */
 
 #define MAXLINELEN 300	/* longest sane line length */
@@ -59,7 +59,6 @@ FILE_RCSID("@(#)$File: ascmagic.c,v 1.62 2008/03/01 22:21:48 rrt Exp $")
 private int looks_ascii(const unsigned char *, size_t, unichar *, size_t *);
 private int looks_utf8_with_BOM(const unsigned char *, size_t, unichar *,
     size_t *);
-protected int file_looks_utf8(const unsigned char *, size_t, unichar *, size_t *);
 private int looks_ucs16(const unsigned char *, size_t, unichar *, size_t *);
 private int looks_latin1(const unsigned char *, size_t, unichar *, size_t *);
 private int looks_extended(const unsigned char *, size_t, unichar *, size_t *);
@@ -104,9 +103,11 @@ file_ascmagic(struct magic_set *ms, const unsigned char *buf, size_t nbytes)
 	while (nbytes > 1 && buf[nbytes - 1] == '\0')
 		nbytes--;
 
-	if ((nbuf = calloc(1, (nbytes + 1) * sizeof(nbuf[0]))) == NULL)
+	if ((nbuf = CAST(unsigned char *, calloc((size_t)1,
+	    (nbytes + 1) * sizeof(nbuf[0])))) == NULL)
 		goto done;
-	if ((ubuf = calloc(1, (nbytes + 1) * sizeof(ubuf[0]))) == NULL)
+	if ((ubuf = CAST(unichar *, calloc((size_t)1,
+	    (nbytes + 1) * sizeof(ubuf[0])))) == NULL)
 		goto done;
 
 	/*
@@ -172,7 +173,7 @@ file_ascmagic(struct magic_set *ms, const unsigned char *buf, size_t nbytes)
 	   re-converting improved, or at least realloced after
 	   re-converting conversion. */
 	mlen = ulen * 6;
-	if ((utf8_buf = malloc(mlen)) == NULL) {
+	if ((utf8_buf = CAST(unsigned char *, malloc(mlen))) == NULL) {
 		file_oomem(ms, mlen);
 		goto done;
 	}
