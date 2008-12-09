@@ -30,7 +30,7 @@ endif
 
 PYTHON_VERSIONS=$(shell pyversions -r debian/control)
 
-config.status: configure patch
+config.status: configure patch-stamp
 	dh_testdir
 
 	rm -f ltmain.sh
@@ -83,7 +83,7 @@ clean: unpatch
 install: build
 	dh_testdir
 	dh_testroot
-	dh_clean -k
+	dh_prep
 	dh_installdirs
 
 	# Installing package
