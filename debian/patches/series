@@ -1,4 +1,3 @@
-100-magic-update-asf.patch
 101-magic-update-awk.patch
 102-magic-update-bash.patch
 103-magic-update-reiserfs.patch
@@ -13,7 +12,6 @@
 112-magic-update-linuxswap.patch
 113-magic-update-linuxext.patch
 114-magic-update-llvm.patch
-115-magic-update-ruby.patch
 116-magic-update-gimp.patch
 117-magic-update-wav.patch
 118-magic-update-z-machine.patch
@@ -21,7 +19,6 @@
 121-magic-update-utf.patch
 122-magic-update-spectrum.patch
 123-magic-update-tgif.patch
-124-magic-update-postscript-fonts.patch
 125-magic-update-truetype-fonts.patch
 126-magic-update-7zip.patch
 200-magic-add-par2.patch
@@ -54,7 +51,6 @@
 227-magic-add-gstreamer.patch
 228-magic-add-mdmp.patch
 229-magic-add-xfsdump.patch
-230-magic-add-ppc-swapfile.patch
 231-magic-add-delta-iso.patch
 232-magic-add-delta-rpm.patch
 233-magic-add-avchd.patch
@@ -65,7 +61,6 @@
 900-file-mgc.patch
 901-file-localmagic.patch
 902-file-make.patch
-903-file-hurd.patch
 904-doc-manpages.patch
 905-doc-manpages-typo.patch
 906-file-python.patch
