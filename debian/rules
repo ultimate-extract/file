@@ -93,9 +93,6 @@ install: build
 	mkdir -p debian/libmagic-dev/usr/include/file
 	cp src/file.h src/patchlevel.h debian/libmagic-dev/usr/include/file
 
-	# Installing plain magic.mime for compatibility
-	install -D -m 0644 debian/local/magic.mime debian/libmagic1/usr/share/file/magic.mime
-
 binary: binary-arch
 
 binary-arch: install

@@ -1,3 +1,24 @@
+file (5.04-2) unstable; urgency=low
+
+  * Bumping versioned build-depends on debhelper because of dh_bugfiles
+    usage.
+  * Shortening package long-descriptions (Closes: #570817).
+  * Updating copyright file to current state of the art (Closes:
+    #573519).
+  * Sorting and wrapping build-depends.
+  * Sorting and wrapping depends.
+  * Sorting fields in control.
+  * Stopping to ship (partially outdated) plain text mime files, which
+    was always unsupported, the only supported interface still is using
+    the library.
+  * Adding README.Debian to file to tell users and package maintainers
+    on how to add their own magics.
+  * Dropping la files.
+  * Moving local magics stubs from file to libmagic1 where they actually
+    belong.
+
+ -- Daniel Baumann <daniel@debian.org>  Sat, 27 Mar 2010 11:55:37 +0100
+
 file (5.04-1) unstable; urgency=low
 
   * Updating year in copyright file.
