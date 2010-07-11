@@ -21,6 +21,8 @@
 123-magic-update-tgif.patch
 125-magic-update-truetype-fonts.patch
 126-magic-update-7zip.patch
+127-magic-update-lzma.patch
+128-magic-update-xz.patch
 200-magic-add-par2.patch
 201-magic-add-pe5.patch
 202-magic-add-pmenu.patch
@@ -58,6 +60,7 @@
 235-magic-add-hdr.patch
 236-magic-add-foveon-x3f.patch
 237-magic-add-paint-net.patch
+238-magic-add-dact.patch
 901-file-localmagic.patch
 902-file-make.patch
 904-doc-manpages.patch

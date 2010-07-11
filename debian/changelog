@@ -1,3 +1,17 @@
+file (5.04-3) unstable; urgency=low
+
+  * Adding patch to add new magic for DACT (Closes: #582945).
+  * Updating magic-add-dact.patch to append to compress instead of
+    archive magic files.
+  * Updating standards version to 3.9.0.
+  * Adding patch from Eloi Notario <entfe001@gmail.com> to update lzma
+    magics (Closes: #576950).
+  * Adding (empty) directory holding custom magics (Closes: #582944).
+  * Adding patch for consistent spelling of XZ compression (Closes:
+    #541087).
+
+ -- Daniel Baumann <daniel@debian.org>  Sun, 11 Jul 2010 02:41:19 +0200
+
 file (5.04-2) unstable; urgency=low
 
   * Bumping versioned build-depends on debhelper because of dh_bugfiles
