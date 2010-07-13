@@ -23,6 +23,9 @@
 126-magic-update-7zip.patch
 127-magic-update-lzma.patch
 128-magic-update-xz.patch
+129-magic-update-qemu.patch
+130-magic-update-psf2.patch
+131-magic-update-dyatic.patch
 200-magic-add-par2.patch
 201-magic-add-pe5.patch
 202-magic-add-pmenu.patch
@@ -61,9 +64,16 @@
 236-magic-add-foveon-x3f.patch
 237-magic-add-paint-net.patch
 238-magic-add-dact.patch
+239-magic-add-datafork.patch
+240-magic-add-pdb.patch
+241-magic-add-canon.patch
+242-magic-add-gdsii.patch
+243-magic-add-git-index.patch
 901-file-localmagic.patch
 902-file-make.patch
 904-doc-manpages.patch
 905-doc-manpages-typo.patch
-906-file-python.patch
+906-doc-manpages-typo2.patch
+907-file-python.patch
+908-file-coredump.patch
 999-conglomeration.patch

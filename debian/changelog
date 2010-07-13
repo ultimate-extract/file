@@ -1,3 +1,30 @@
+file (5.04-4) unstable; urgency=low
+
+  * Adding patch from Arnaud Giersch <arnaud.giersch@iut-bm.univ-
+    fcomte.fr> to fix that file does not always correctly report the
+    faulty command for core files (Closes: #422524, #427876).
+  * Adding patch from Adam Buchbinder <adam.buchbinder@gmail.com> to
+    update qemu magics (Closes: #451524).
+  * Adding patch from Ori Avtalion <ori@avtalion.name> to fix a typo and
+    a formating issue in file manpage (Closes: #499754).
+  * Renumbering patches.
+  * Adding patch from Adam Buchbinder <adam.buchbinder@gmail.com> to add
+    new magic for datafork fonts (Closes: #291908).
+  * Adding patch from Adam Buchbinder <adam.buchbinder@gmail.com> to add
+    new magics for PDB files (Closes: #480829).
+  * Adding patch from Adam Buchbinder <adam.buchbinder@gmail.com> to
+    update PSF2 magics (Closes: #492035).
+  * Adding patch from Adam Buchbinder <adam.buchbinder@gmail.com> to add
+    new magics for Canon CRW and CR2 files (Closes: #516054).
+  * Adding patch from Richard Smith <busreply@broadmeadow.eu> to update
+    Dyalog APL magics (Closes: #537893).
+  * Adding patch from Євгеній Мещеряков <eugen@debian.org> to add new
+    magic for GDSII (Closes: #576462).
+  * Adding patch from Frédéric Brière <fbriere@fbriere.net> to add new
+    magics for Git index files (Closes: #583679).
+
+ -- Daniel Baumann <daniel@debian.org>  Tue, 13 Jul 2010 19:37:04 +0200
+
 file (5.04-3) unstable; urgency=low
 
   * Adding patch to add new magic for DACT (Closes: #582945).
