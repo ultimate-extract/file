@@ -26,6 +26,7 @@
 129-magic-update-qemu.patch
 130-magic-update-psf2.patch
 131-magic-update-dyatic.patch
+132-magic-update-bio-rad.patch
 200-magic-add-par2.patch
 201-magic-add-pe5.patch
 202-magic-add-pmenu.patch
@@ -69,6 +70,8 @@
 241-magic-add-canon.patch
 242-magic-add-gdsii.patch
 243-magic-add-git-index.patch
+244-magic-add-jfs.patch
+245-magic-add-erlang.patch
 901-file-localmagic.patch
 902-file-make.patch
 904-doc-manpages.patch

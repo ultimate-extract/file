@@ -1,3 +1,20 @@
+file (5.04-5) unstable; urgency=low
+
+  [ Daniel Baumann ]
+  * Adding patch from Adam Buchbinder <adam.buchbinder@gmail.com> to fix
+    false positives in Bio-Rad PIC detection (Closes: #589056).
+  * Adding patch from Adam Buchbinder <adam.buchbinder@gmail.com> to add
+    new magics for JFS filesystem images (Closes: #589067).
+  * Adding patch from Nahuel Greco <ngreco@gmail.com> to add new magics
+    for Erlang DETS files (Closes: #589723).
+
+  [ Judit Foglszinger ]
+  * Adding myself to uploaders.
+  * Replacing dh_python with dh_pysupport in debian/rules (Closes:
+    #529351).
+
+ -- Daniel Baumann <daniel@debian.org>  Thu, 05 Aug 2010 17:06:03 +0200
+
 file (5.04-4) unstable; urgency=low
 
   * Adding patch from Arnaud Giersch <arnaud.giersch@iut-bm.univ-

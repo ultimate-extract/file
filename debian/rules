@@ -105,7 +105,7 @@ binary-arch: install
 	dh_install --sourcedir=debian/tmp
 	dh_lintian
 	dh_link
-	dh_python
+	dh_pysupport
 ifeq (,$(findstring -i, $(DH_OPTIONS)))
 	dh_strip -Npython-magic -Npython-magic-dbg
 	DH_OPTIONS= dh_strip -ppython-magic --dbg-package=python-magic-dbg
