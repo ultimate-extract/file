@@ -1,3 +1,18 @@
+file (5.04-6) experimental; urgency=low
+
+  [ Judit Foglszinger ]
+  * Fixing incorrect argument in manpage (Closes: #524648).
+  * Fixing typo in output for x-icon (Closes: #593488).
+
+  [ Daniel Baumann ]
+  * Adding patch from Adam Buchbinder <adam.buchbinder@gmail.com> to add
+    new magic for EPUB (Closes: #596873).
+  * Rediffing doc-manpages1.patch and renaming to doc-manpages-typo3 for
+    consistency.
+  * Rediffing magic-update-icon.patch.
+
+ -- Daniel Baumann <daniel@debian.org>  Sat, 18 Sep 2010 11:44:13 +0200
+
 file (5.04-5) unstable; urgency=low
 
   [ Daniel Baumann ]

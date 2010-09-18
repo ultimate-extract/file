@@ -1,0 +1,15 @@
+Author: Judit Foglszinger <fgrfgr@freenet.de>
+Description: Fixing incorrect argument in manpage (Closes: #524648).
+
+diff -Naurp file.orig/doc/file.man file/doc/file.man
+--- file.orig/doc/file.man	2010-09-18 11:39:25.277836590 +0200
++++ file/doc/file.man	2010-09-18 11:39:37.825841079 +0200
+@@ -184,7 +184,7 @@ are:
+ .It apptype
+ .Dv EMX
+ application type (only on EMX).
+-.It text
++.It ascii
+ Various types of text files (this test will try to guess the text encoding, irrespective of the setting of the
+ .Sq encoding
+ option).
