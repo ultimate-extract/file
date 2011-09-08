@@ -1,6 +1,5 @@
 #!/usr/bin/make -f
 
-include /usr/share/quilt/quilt.make
 -include /usr/share/python/python.mk
 
 DEB_HOST_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
@@ -17,7 +16,7 @@ CFLAGS += -DHOWMANY=0x18000
 
 PYTHON_VERSIONS=$(shell pyversions -r debian/control)
 
-clean: unpatch
+clean:
 	dh_testdir
 	dh_testroot
 	rm -f build-stamp
@@ -29,7 +28,7 @@ clean: unpatch
 
 	dh_clean
 
-config.status: configure patch
+config.status: configure
 	dh_testdir
 
 ifneq "$(wildcard /usr/share/misc/config.guess)" ""
@@ -91,7 +90,7 @@ install: build
 
 	# Installing additional headers
 	mkdir -p debian/libmagic-dev/usr/include/file
-	cp src/file.h src/patchlevel.h debian/libmagic-dev/usr/include/file
+	cp src/file.h debian/libmagic-dev/usr/include/file
 
 binary: binary-arch
 
@@ -105,7 +104,7 @@ binary-arch: install
 	dh_install --sourcedir=debian/tmp
 	dh_lintian
 	dh_link
-	dh_pysupport
+	dh_python2
 ifeq (,$(findstring -i, $(DH_OPTIONS)))
 	dh_strip -Npython-magic -Npython-magic-dbg
 	DH_OPTIONS= dh_strip -ppython-magic --dbg-package=python-magic-dbg

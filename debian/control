@@ -1,17 +1,14 @@
 Source: file
 Section: utils
 Priority: standard
-Maintainer: Daniel Baumann <daniel@lists.debian-maintainers.org>
-Uploaders:
- Daniel Baumann <daniel@debian.org>, Judit Foglszinger <fgrfgr@freenet.de>
+Maintainer: Daniel Baumann <daniel.baumann@progress-technologies.net>
+Uploaders: Judit Foglszinger <fgrfgr@freenet.de>
 Build-Depends:
- debhelper (>= 7.4.3~), autotools-dev, python, python-all-dev, python-all-dbg,
- python-support, quilt (>= 0.46-7), zlib1g-dev
-Standards-Version: 3.9.0
+ debhelper (>= 8), autotools-dev, python (>= 2.6.6-3~),
+ python-all-dev (>= 2.6.6-3~), python-all-dbg (>= 2.6.6-3~),
+ zlib1g-dev
+Standards-Version: 3.9.2
 Homepage: http://www.darwinsys.com/file/
-Vcs-Browser: http://git.debian-maintainers.org/?p=daniel/file.git
-Vcs-Git: git://git.debian-maintainers.org/git/daniel/file.git
-XS-Python-Version: all
 
 Package: file
 Section: utils
@@ -54,7 +51,6 @@ Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
 Provides: ${python:Provides}
 Suggests: python-magic-dbg
-XB-Python-Version: ${python:Versions}
 Description: File type determination library using "magic" numbers (Python bindings)
  This library can be used to classify files according to magic number tests. It
  implements the core functionality of the file command.

@@ -1,5 +1,5 @@
 #
-# $File: Makefile.am,v 1.52 2010/01/22 21:44:30 christos Exp $
+# $File: Makefile.am,v 1.70 2011/08/03 16:55:40 christos Exp $
 #
 MAGIC_FRAGMENT_BASE = Magdir
 MAGIC_DIR = $(top_srcdir)/magic
@@ -15,7 +15,6 @@ $(MAGIC_FRAGMENT_DIR)/adi \
 $(MAGIC_FRAGMENT_DIR)/adventure \
 $(MAGIC_FRAGMENT_DIR)/allegro \
 $(MAGIC_FRAGMENT_DIR)/alliant \
-$(MAGIC_FRAGMENT_DIR)/alpha \
 $(MAGIC_FRAGMENT_DIR)/amanda \
 $(MAGIC_FRAGMENT_DIR)/amigaos \
 $(MAGIC_FRAGMENT_DIR)/animation \
@@ -28,10 +27,12 @@ $(MAGIC_FRAGMENT_DIR)/att3b \
 $(MAGIC_FRAGMENT_DIR)/audio \
 $(MAGIC_FRAGMENT_DIR)/basis \
 $(MAGIC_FRAGMENT_DIR)/bflt \
+$(MAGIC_FRAGMENT_DIR)/blcr \
 $(MAGIC_FRAGMENT_DIR)/blender \
 $(MAGIC_FRAGMENT_DIR)/blit \
 $(MAGIC_FRAGMENT_DIR)/bout \
 $(MAGIC_FRAGMENT_DIR)/bsdi \
+$(MAGIC_FRAGMENT_DIR)/bsi \
 $(MAGIC_FRAGMENT_DIR)/btsnoop \
 $(MAGIC_FRAGMENT_DIR)/c-lang \
 $(MAGIC_FRAGMENT_DIR)/c64 \
@@ -59,6 +60,7 @@ $(MAGIC_FRAGMENT_DIR)/digital \
 $(MAGIC_FRAGMENT_DIR)/dolby \
 $(MAGIC_FRAGMENT_DIR)/dump \
 $(MAGIC_FRAGMENT_DIR)/dyadic \
+$(MAGIC_FRAGMENT_DIR)/ebml \
 $(MAGIC_FRAGMENT_DIR)/editors \
 $(MAGIC_FRAGMENT_DIR)/efi \
 $(MAGIC_FRAGMENT_DIR)/elf \
@@ -76,6 +78,7 @@ $(MAGIC_FRAGMENT_DIR)/freebsd \
 $(MAGIC_FRAGMENT_DIR)/fsav \
 $(MAGIC_FRAGMENT_DIR)/games \
 $(MAGIC_FRAGMENT_DIR)/gcc \
+$(MAGIC_FRAGMENT_DIR)/geo \
 $(MAGIC_FRAGMENT_DIR)/geos \
 $(MAGIC_FRAGMENT_DIR)/gimp \
 $(MAGIC_FRAGMENT_DIR)/gnome-keyring \
@@ -96,6 +99,7 @@ $(MAGIC_FRAGMENT_DIR)/intel \
 $(MAGIC_FRAGMENT_DIR)/interleaf \
 $(MAGIC_FRAGMENT_DIR)/island \
 $(MAGIC_FRAGMENT_DIR)/ispell \
+$(MAGIC_FRAGMENT_DIR)/isz \
 $(MAGIC_FRAGMENT_DIR)/java \
 $(MAGIC_FRAGMENT_DIR)/jpeg \
 $(MAGIC_FRAGMENT_DIR)/karma \
@@ -119,6 +123,7 @@ $(MAGIC_FRAGMENT_DIR)/mathematica \
 $(MAGIC_FRAGMENT_DIR)/matroska \
 $(MAGIC_FRAGMENT_DIR)/mcrypt \
 $(MAGIC_FRAGMENT_DIR)/mercurial \
+$(MAGIC_FRAGMENT_DIR)/metastore \
 $(MAGIC_FRAGMENT_DIR)/mime \
 $(MAGIC_FRAGMENT_DIR)/mips \
 $(MAGIC_FRAGMENT_DIR)/mirage \
@@ -130,6 +135,7 @@ $(MAGIC_FRAGMENT_DIR)/modem \
 $(MAGIC_FRAGMENT_DIR)/motorola \
 $(MAGIC_FRAGMENT_DIR)/mozilla \
 $(MAGIC_FRAGMENT_DIR)/msdos \
+$(MAGIC_FRAGMENT_DIR)/msooxml \
 $(MAGIC_FRAGMENT_DIR)/msvc \
 $(MAGIC_FRAGMENT_DIR)/mup \
 $(MAGIC_FRAGMENT_DIR)/natinst \
@@ -139,6 +145,7 @@ $(MAGIC_FRAGMENT_DIR)/netscape \
 $(MAGIC_FRAGMENT_DIR)/netware \
 $(MAGIC_FRAGMENT_DIR)/news \
 $(MAGIC_FRAGMENT_DIR)/nitpicker \
+$(MAGIC_FRAGMENT_DIR)/oasis \
 $(MAGIC_FRAGMENT_DIR)/ocaml \
 $(MAGIC_FRAGMENT_DIR)/octave \
 $(MAGIC_FRAGMENT_DIR)/ole2compounddocs \
@@ -149,6 +156,7 @@ $(MAGIC_FRAGMENT_DIR)/os9 \
 $(MAGIC_FRAGMENT_DIR)/osf1 \
 $(MAGIC_FRAGMENT_DIR)/palm \
 $(MAGIC_FRAGMENT_DIR)/parix \
+$(MAGIC_FRAGMENT_DIR)/parrot \
 $(MAGIC_FRAGMENT_DIR)/pbm \
 $(MAGIC_FRAGMENT_DIR)/pdf \
 $(MAGIC_FRAGMENT_DIR)/pdp \
@@ -165,6 +173,7 @@ $(MAGIC_FRAGMENT_DIR)/pyramid \
 $(MAGIC_FRAGMENT_DIR)/python \
 $(MAGIC_FRAGMENT_DIR)/revision \
 $(MAGIC_FRAGMENT_DIR)/riff \
+$(MAGIC_FRAGMENT_DIR)/rinex \
 $(MAGIC_FRAGMENT_DIR)/rpm \
 $(MAGIC_FRAGMENT_DIR)/rtf \
 $(MAGIC_FRAGMENT_DIR)/ruby \
@@ -172,12 +181,14 @@ $(MAGIC_FRAGMENT_DIR)/sc \
 $(MAGIC_FRAGMENT_DIR)/sccs \
 $(MAGIC_FRAGMENT_DIR)/scientific \
 $(MAGIC_FRAGMENT_DIR)/securitycerts \
+$(MAGIC_FRAGMENT_DIR)/selinux \
 $(MAGIC_FRAGMENT_DIR)/sendmail \
 $(MAGIC_FRAGMENT_DIR)/sequent \
 $(MAGIC_FRAGMENT_DIR)/sgi \
 $(MAGIC_FRAGMENT_DIR)/sgml \
 $(MAGIC_FRAGMENT_DIR)/sharc \
 $(MAGIC_FRAGMENT_DIR)/sinclair \
+$(MAGIC_FRAGMENT_DIR)/sisu \
 $(MAGIC_FRAGMENT_DIR)/sketch \
 $(MAGIC_FRAGMENT_DIR)/smalltalk \
 $(MAGIC_FRAGMENT_DIR)/sniffer \
@@ -185,8 +196,11 @@ $(MAGIC_FRAGMENT_DIR)/softquad \
 $(MAGIC_FRAGMENT_DIR)/spec \
 $(MAGIC_FRAGMENT_DIR)/spectrum \
 $(MAGIC_FRAGMENT_DIR)/sql \
+$(MAGIC_FRAGMENT_DIR)/ssh \
+$(MAGIC_FRAGMENT_DIR)/ssl \
 $(MAGIC_FRAGMENT_DIR)/sun \
 $(MAGIC_FRAGMENT_DIR)/sysex \
+$(MAGIC_FRAGMENT_DIR)/tcl \
 $(MAGIC_FRAGMENT_DIR)/teapot \
 $(MAGIC_FRAGMENT_DIR)/terminfo \
 $(MAGIC_FRAGMENT_DIR)/tex \
@@ -215,6 +229,7 @@ $(MAGIC_FRAGMENT_DIR)/weak \
 $(MAGIC_FRAGMENT_DIR)/windows \
 $(MAGIC_FRAGMENT_DIR)/wireless \
 $(MAGIC_FRAGMENT_DIR)/wordprocessors \
+$(MAGIC_FRAGMENT_DIR)/wsdl \
 $(MAGIC_FRAGMENT_DIR)/xdelta \
 $(MAGIC_FRAGMENT_DIR)/xenix \
 $(MAGIC_FRAGMENT_DIR)/xilinx \
@@ -227,7 +242,7 @@ MAGIC = magic.mgc
 CLEANFILES = ${MAGIC} $(MAGIC_FRAGMENT_DIR)/Localstuff
 
 # FIXME: Build file natively as well so that it can be used to compile
-# the target's magic file
+# the target's magic file; for now we bail if the local version does not match
 if IS_CROSS_COMPILE
 FILE_COMPILE = file
 FILE_COMPILE_DEP =
@@ -237,6 +252,18 @@ FILE_COMPILE_DEP = $(FILE_COMPILE)
 endif
 
 ${MAGIC}: $(EXTRA_DIST) $(FILE_COMPILE_DEP)
+	@rm -fr magic
 	@mkdir magic && cp -p $(EXTRA_DIST) magic
+	@(if expr "${FILE_COMPILE}" : '.*/.*' > /dev/null; then \
+	    echo "Using ${FILE_COMPILE} to generate ${MAGIC}" > /dev/null; \
+	  else \
+	    v=$$(file --version | sed -e s/file-// -e q); \
+	    if [ "$$v" != "${PACKAGE_VERSION}" ]; then \
+		echo "Cannot use the installed version of file ($$v) to"; \
+		echo "cross-compile file ${PACKAGE_VERSION}"; \
+		echo "Please install file ${PACKAGE_VERSION} locally first"; \
+		exit 1; \
+	    fi; \
+	  fi)
 	$(FILE_COMPILE) -C -m magic
 	@rm -fr magic
