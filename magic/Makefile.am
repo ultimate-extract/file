@@ -1,5 +1,5 @@
 #
-# $File: Makefile.am,v 1.70 2011/08/03 16:55:40 christos Exp $
+# $File: Makefile.am,v 1.73 2011/09/08 21:58:42 christos Exp $
 #
 MAGIC_FRAGMENT_BASE = Magdir
 MAGIC_DIR = $(top_srcdir)/magic
@@ -76,6 +76,7 @@ $(MAGIC_FRAGMENT_DIR)/fortran \
 $(MAGIC_FRAGMENT_DIR)/frame \
 $(MAGIC_FRAGMENT_DIR)/freebsd \
 $(MAGIC_FRAGMENT_DIR)/fsav \
+$(MAGIC_FRAGMENT_DIR)/fusecompress \
 $(MAGIC_FRAGMENT_DIR)/games \
 $(MAGIC_FRAGMENT_DIR)/gcc \
 $(MAGIC_FRAGMENT_DIR)/geo \
@@ -118,6 +119,7 @@ $(MAGIC_FRAGMENT_DIR)/macintosh \
 $(MAGIC_FRAGMENT_DIR)/magic \
 $(MAGIC_FRAGMENT_DIR)/mail.news \
 $(MAGIC_FRAGMENT_DIR)/maple \
+$(MAGIC_FRAGMENT_DIR)/marc21 \
 $(MAGIC_FRAGMENT_DIR)/mathcad \
 $(MAGIC_FRAGMENT_DIR)/mathematica \
 $(MAGIC_FRAGMENT_DIR)/matroska \
@@ -191,6 +193,7 @@ $(MAGIC_FRAGMENT_DIR)/sinclair \
 $(MAGIC_FRAGMENT_DIR)/sisu \
 $(MAGIC_FRAGMENT_DIR)/sketch \
 $(MAGIC_FRAGMENT_DIR)/smalltalk \
+$(MAGIC_FRAGMENT_DIR)/smile \
 $(MAGIC_FRAGMENT_DIR)/sniffer \
 $(MAGIC_FRAGMENT_DIR)/softquad \
 $(MAGIC_FRAGMENT_DIR)/spec \

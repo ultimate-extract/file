@@ -4,8 +4,7 @@ Priority: standard
 Maintainer: Daniel Baumann <daniel.baumann@progress-technologies.net>
 Uploaders: Judit Foglszinger <fgrfgr@freenet.de>
 Build-Depends:
- debhelper (>= 8), autotools-dev, python (>= 2.6.6-3~),
- python-all-dev (>= 2.6.6-3~), python-all-dbg (>= 2.6.6-3~),
+ debhelper (>= 8), autotools-dev, python, python-all-dev, python-all-dbg,
  zlib1g-dev
 Standards-Version: 3.9.2
 Homepage: http://www.darwinsys.com/file/
@@ -26,7 +25,6 @@ Section: libs
 Priority: standard
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends}
-Conflicts: file (<< 5.04-2)
 Suggests: file
 Description: File type determination library using "magic" numbers
  This library can be used to classify files according to magic number tests. It

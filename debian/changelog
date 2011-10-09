@@ -1,3 +1,16 @@
+file (5.09-1) unstable; urgency=low
+
+  [ Daniel Baumann ]
+  * Removing pre-squeeze conflicts against file in libmagic1.
+  * Removing pre-squeeze version from python build-depends.
+  * Merging upstream version 5.09.
+
+  [ Judit Foglszinger ]
+  * Removing magic-add-lrf.patch, went upstream.
+  * Renaming doc-manpages.patch.
+
+ -- Judit Foglszinger <fgrfgr@freenet.de>  Sun, 09 Oct 2011 12:12:45 +0000
+
 file (5.08-1) unstable; urgency=low
 
   [ Judit Foglszinger ]
