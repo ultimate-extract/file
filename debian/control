@@ -46,7 +46,9 @@ Package: python-magic
 Section: python
 Priority: extra
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends}
+Depends:
+ ${misc:Depends}, ${shlibs:Depends}, ${python:Depends},
+ libmagic1 (= ${binary:Version})
 Provides: ${python:Provides}
 Suggests: python-magic-dbg
 Description: File type determination library using "magic" numbers (Python bindings)
