@@ -1,3 +1,20 @@
+file (5.10-1) unstable; urgency=low
+
+  [ Daniel Baumann ]
+  * Adding patch from Eloi Notario <entfe001@gmail.com> to add new magic
+    for GNU tar incremental snapshots files (Closes: #608944).
+  * Adding multi-arch support, thanks to Riku Voipio
+    <riku.voipio@iki.fi> (Closes: #333717, #638314).
+
+  [ Judit Foglszinger ]
+  * Removing rpath from usr/bin/file.
+  * Merging upstream version 5.10.
+  * Removing magic-gnu-tar.patch, went upstream.
+  * Changing ./configure string to not compile in rpath and removing
+    workaround with chrpath, thanks to Riku Voipio <riku.voipio@iki.fi>.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Tue, 07 Feb 2012 15:50:45 +0100
+
 file (5.09-2) unstable; urgency=low
 
   * Adding build-arch and build-indep to rules.
