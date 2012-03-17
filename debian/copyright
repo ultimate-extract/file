@@ -1,15 +1,19 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: file
+Upstream-Contact: Christos Zoulas <christos@zoulas.com>
+Source: ftp://ftp.astron.com/pub/file/
+
 Files: *
-Copyright:
- (C) 1985-1995 Ian F. Darwin
- (C) 1994-2011 Christos Zoulas <christos@zoulas.com>
+Copyright: 1985-1995 Ian F. Darwin
+           1994-2011 Christos Zoulas <christos@zoulas.com>
 License: BSD (2 Clause)
 
 Files: magic/Magdir/os9
-Copyright: (C) 1996 Ignatios Souvatzis
+Copyright: 1996 Ignatios Souvatzis
 License: BSD (4 Clause)
 
 Files: debian/*
-Copyright: (C) 2007-2011 Daniel Baumann <daniel.baumann@progress-technologies.net>
+Copyright: 2007-2012 Daniel Baumann <daniel.baumann@progress-technologies.net>
 License: BSD (2 Clause)
 
 License: BSD (2 Clause)

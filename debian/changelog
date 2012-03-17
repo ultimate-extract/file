@@ -1,3 +1,17 @@
+file (5.11-1) unstable; urgency=low
+
+  [ Judit Foglszinger ]
+  * Merging upstream version 5.11.
+
+  [ Daniel Baumann ]
+  * Updating to debhelper version 9.
+  * Removing uneeded versioned build-depends against dpkg-dev.
+  * Updating to standards version 3.9.3.
+  * Updating copyright file machine-readable format version 1.0.
+  * Adding todo file.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sat, 17 Mar 2012 10:20:34 +0100
+
 file (5.10-1) unstable; urgency=low
 
   [ Daniel Baumann ]
