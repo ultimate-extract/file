@@ -1,3 +1,11 @@
+file (5.11-2) unstable; urgency=low
+
+  * Removing leading slash in debhelper install files.
+  * Minimizing rules file.
+  * Switching to xz compression.
+
+ -- Daniel Baumann <daniel.baumann@progress-technologies.net>  Sat, 30 Jun 2012 19:27:00 +0200
+
 file (5.11-1) unstable; urgency=low
 
   [ Judit Foglszinger ]

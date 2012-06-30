@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+SHELL := sh -e
+
 -include /usr/share/python/python.mk
 
 DEB_HOST_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
@@ -17,77 +19,49 @@ CFLAGS += -DHOWMANY=0x18000
 
 PYTHON_VERSIONS=$(shell pyversions -r debian/control)
 
-clean:
-	dh_testdir
-	dh_testroot
-	rm -f build-stamp
-	rm -f config.guess config.sub
+%:
+	dh ${@} --with autotools_dev,python2
 
-	[ ! -f Makefile ] || $(MAKE) clean
-	[ ! -f Makefile ] || $(MAKE) distclean
+override_dh_auto_clean:
+	dh_auto_clean
+
 	rm -rf python/build
 
-	dh_clean
+override_dh_auto_build:
+	dh_auto_build
 
-config.status: configure
-	dh_testdir
-
-ifneq "$(wildcard /usr/share/misc/config.guess)" ""
-	cp -f /usr/share/misc/config.guess config.guess
-endif
-ifneq "$(wildcard /usr/share/misc/config.sub)" ""
-	cp -f /usr/share/misc/config.sub config.sub
-endif
-
-	./configure $(CROSS) --prefix=/usr --datadir=\$${prefix}/share --libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) --mandir=\$${prefix}/share/man --enable-fsect-man5 CFLAGS="$(CFLAGS)"
-
-build: build-arch build-indep
-build-arch: build-stamp
-build-indep: build-stamp
-build-stamp: config.status
-	dh_testdir
-
-	$(MAKE)
-
-	set -e; \
 	for python in $(PYTHON_VERSIONS); \
 	do \
 		(cd python && $$python setup.py build_ext \
 			-L$(CURDIR)/src/.libs); \
 	done
-	set -e; \
+
 	for python in $(PYTHON_VERSIONS); do \
 		(cd python && $$python-dbg setup.py build_ext -L$(CURDIR)/src/.libs); \
 	done
 
-	touch build-stamp
+override_dh_auto_configure:
+	dh_auto_configure -- $(CROSS) --prefix=/usr --datadir=\$${prefix}/share --libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) --mandir=\$${prefix}/share/man --enable-fsect-man5 CFLAGS="$(CFLAGS)"
 
+override_dh_auto_install:
+	dh_auto_install
 
-install: build
-	dh_testdir
-	dh_testroot
-	dh_prep
-	dh_installdirs
-
-	# Installing package
-	$(MAKE) prefix=$(CURDIR)/debian/tmp/usr install
 	mv debian/tmp/usr/share/misc debian/tmp/usr/share/file
 
 	install -D -m 0644 magic/magic.local debian/tmp/etc/magic
 	install -D -m 0644 magic/magic.local debian/tmp/etc/magic.mime
 
-	set -e; \
 	for python in $(PYTHON_VERSIONS); \
 	do \
 		(cd python && $$python setup.py install --no-compile \
 			--root=$(CURDIR)/debian/python-magic $(py_setup_install_args)); \
 	done
 
-	set -e; \
 	for python in $(PYTHON_VERSIONS); do \
 		(cd python && $$python-dbg setup.py install --no-compile \
 			--root=$(CURDIR)/debian/python-magic-dbg $(py_setup_install_args)); \
 	done
+
 	find debian/python-*-dbg ! -type d ! -name '*.so' | xargs rm -f
 	find debian/python-*-dbg -depth -empty -exec rmdir {} \;
 
@@ -95,19 +69,19 @@ install: build
 	mkdir -p debian/libmagic-dev/usr/include/file
 	cp src/file.h debian/libmagic-dev/usr/include/file
 
-binary: binary-arch
+	# Removing useless files
+	rm -f debian/tmp/usr/lib/*/*.la
 
-binary-arch: install
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs ChangeLog
-	dh_installdocs
-	dh_installexamples
-	dh_bugfiles
-	dh_install --sourcedir=debian/tmp
-	dh_lintian
-	dh_link
-	dh_python2
+override_dh_builddeb:
+	dh_builddeb -- -Zxz -z9
+
+override_dh_install:
+	dh_install --fail-missing
+
+override_dh_shlibdeps:
+	dh_shlibdeps -Llibmagic1 -ldebian/libmagic1/usr/lib
+
+override_dh_strip:
 ifeq (,$(findstring -i, $(DH_OPTIONS)))
 	dh_strip -Npython-magic -Npython-magic-dbg
 	DH_OPTIONS= dh_strip -ppython-magic --dbg-package=python-magic-dbg
@@ -116,15 +90,3 @@ ifeq (,$(findstring -i, $(DH_OPTIONS)))
 	mkdir -p debian/python-magic-dbg/usr/share/doc
 	ln -s python-magic debian/python-magic-dbg/usr/share/doc/python-magic-dbg
 endif
-	dh_compress
-	dh_fixperms
-	dh_makeshlibs
-	dh_installdeb
-	dh_shlibdeps -Llibmagic1 -ldebian/libmagic1/usr/lib
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
-
-binary-indep:
-
-.PHONY: clean build install binary binary-arch binary-indep
