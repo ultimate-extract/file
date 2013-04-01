@@ -1,6 +1,6 @@
 
 #------------------------------------------------------------------------------
-# $File: fonts,v 1.23 2010/09/20 18:55:20 rrt Exp $
+# $File: fonts,v 1.25 2013/02/06 14:18:52 christos Exp $
 # fonts:  file(1) magic for font data
 #
 0	search/1	FONT		ASCII vfont text
@@ -75,7 +75,7 @@
 0	string		OTTO		OpenType font data
 !:mime application/vnd.ms-opentype
 
-# Gürkan Sengün <gurkan@linuks.mine.nu>, www.linuks.mine.nu 
+# Gurkan Sengun <gurkan@linuks.mine.nu>, www.linuks.mine.nu 
 0	string		SplineFontDB:	Spline Font Database 
 !:mime application/vnd.font-fontforge-sfd
 >14	string		x		version %s
@@ -83,3 +83,11 @@
 # EOT
 34	string		LP		Embedded OpenType (EOT)
 !:mime application/vnd.ms-fontobject
+
+# Web Open Font Format (.woff)
+# http://www.w3.org/TR/WOFF/
+0	string		wOFF	Web Open Font Format
+>4	belong		x	\b, flavor %d
+>8	belong		x	\b, length %d
+>20	beshort		x	\b, version %hd
+>22	beshort		x	\b.%hd

@@ -3,14 +3,11 @@ Section: utils
 Priority: standard
 Maintainer: Luk Claes <luk@debian.org>
 Build-Depends:
- debhelper (>= 9), autotools-dev, python, python-all-dev,
- python-all-dbg, zlib1g-dev
+ debhelper (>= 9), autotools-dev, python-all-dev, python3-all-dev, zlib1g-dev
 Standards-Version: 3.9.4
 Homepage: http://www.darwinsys.com/file/
 
 Package: file
-Section: utils
-Priority: standard
 Architecture: any
 Multi-Arch: foreign
 Depends: ${misc:Depends}, ${shlibs:Depends}, libmagic1 (= ${binary:Version})
@@ -20,9 +17,22 @@ Description: Determines file type using "magic" numbers
  language tests. The first test that succeeds causes the file type to be
  printed.
 
+Package: file-dbg
+Section: debug
+Priority: extra
+Architecture: any
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}, libmagic1 (= ${binary:Version})
+Description: Determines file type using "magic" numbers (debug)
+ File tests each argument in an attempt to classify it. There are three sets of
+ tests, performed in this order: filesystem tests, magic number tests, and
+ language tests. The first test that succeeds causes the file type to be
+ printed.
+ .
+ This package contains the debugging symbols.
+
 Package: libmagic1
 Section: libs
-Priority: standard
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
@@ -47,7 +57,7 @@ Description: File type determination library using "magic" numbers (development)
 
 Package: python-magic
 Section: python
-Priority: extra
+Priority: optional
 Architecture: any
 Depends:
  ${misc:Depends}, ${shlibs:Depends}, ${python:Depends},
@@ -58,3 +68,16 @@ Description: File type determination library using "magic" numbers (Python bindi
  implements the core functionality of the file command.
  .
  This package contains the Python bindings.
+
+Package: python3-magic
+Section: python
+Priority: optional
+Architecture: all
+Depends:
+ ${misc:Depends}, ${python3:Depends}, libmagic1 (>= ${binary:Version})
+Provides: ${python3:Provides}
+Description: File type determination library using "magic" numbers (Python 3 bindings)
+ This library can be used to classify files according to magic number tests. It
+ implements the core functionality of the file command.
+ .
+ This package contains the Python 3 bindings.
