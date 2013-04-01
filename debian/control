@@ -1,12 +1,11 @@
 Source: file
 Section: utils
 Priority: standard
-Maintainer: Daniel Baumann <daniel.baumann@progress-technologies.net>
-Uploaders: Judit Foglszinger <fgrfgr@freenet.de>
+Maintainer: Luk Claes <luk@debian.org>
 Build-Depends:
  debhelper (>= 9), autotools-dev, python, python-all-dev,
  python-all-dbg, zlib1g-dev
-Standards-Version: 3.9.3
+Standards-Version: 3.9.4
 Homepage: http://www.darwinsys.com/file/
 
 Package: file
@@ -54,23 +53,8 @@ Depends:
  ${misc:Depends}, ${shlibs:Depends}, ${python:Depends},
  libmagic1 (= ${binary:Version})
 Provides: ${python:Provides}
-Suggests: python-magic-dbg
 Description: File type determination library using "magic" numbers (Python bindings)
  This library can be used to classify files according to magic number tests. It
  implements the core functionality of the file command.
  .
  This package contains the Python bindings.
-
-Package: python-magic-dbg
-Section: debug
-Priority: extra
-Architecture: any
-Depends:
- ${misc:Depends}, ${shlibs:Depends}, python-magic (= ${binary:Version}),
- python-dbg
-Description: File type determination library using "magic" numbers (Python bindings/debug)
- This library can be used to classify files according to magic number tests. It
- implements the core functionality of the file command.
- .
- This package contains the Python bindings, built for the Python debug
- interpreter.

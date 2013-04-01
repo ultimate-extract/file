@@ -57,14 +57,6 @@ override_dh_auto_install:
 			--root=$(CURDIR)/debian/python-magic $(py_setup_install_args)); \
 	done
 
-	for python in $(PYTHON_VERSIONS); do \
-		(cd python && $$python-dbg setup.py install --no-compile \
-			--root=$(CURDIR)/debian/python-magic-dbg $(py_setup_install_args)); \
-	done
-
-	find debian/python-*-dbg ! -type d ! -name '*.so' | xargs rm -f
-	find debian/python-*-dbg -depth -empty -exec rmdir {} \;
-
 	# Installing additional headers
 	mkdir -p debian/libmagic-dev/usr/include/file
 	cp src/file.h debian/libmagic-dev/usr/include/file
@@ -80,13 +72,3 @@ override_dh_install:
 
 override_dh_shlibdeps:
 	dh_shlibdeps -Llibmagic1 -ldebian/libmagic1/usr/lib
-
-override_dh_strip:
-ifeq (,$(findstring -i, $(DH_OPTIONS)))
-	dh_strip -Npython-magic -Npython-magic-dbg
-	DH_OPTIONS= dh_strip -ppython-magic --dbg-package=python-magic-dbg
-
-	rm -rf debian/python-magic-dbg/usr/share/doc/python-magic-dbg
-	mkdir -p debian/python-magic-dbg/usr/share/doc
-	ln -s python-magic debian/python-magic-dbg/usr/share/doc/python-magic-dbg
-endif
