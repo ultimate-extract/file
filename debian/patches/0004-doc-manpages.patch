@@ -23,7 +23,7 @@ diff -Naurp file.orig/doc/file.man file/doc/file.man
  magic file
  .Pa __MAGIC__.mgc ,
  or the files in the directory
-@@ -415,12 +416,6 @@ will be distributed periodically.
+@@ -434,12 +435,6 @@ will be distributed periodically.
  The order of entries in the magic file is significant.
  Depending on what system you are using, the order that
  they are put together may be incorrect.

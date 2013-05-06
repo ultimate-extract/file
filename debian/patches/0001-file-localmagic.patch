@@ -5,9 +5,10 @@ Description:
  No longer includes Localstuff in /usr/share/misc/magic, local definitions
  should go to /etc/magic.
 
-diff -Naurp file.orig/magic/Header file/magic/Header
---- file.orig/magic/Header
-+++ file/magic/Header
+Index: file-5.14/magic/Header
+===================================================================
+--- file-5.14.orig/magic/Header	2010-12-15 03:06:49.000000000 +0000
++++ file-5.14/magic/Header	2013-05-06 17:41:20.000000000 +0000
 @@ -1,5 +1,6 @@
  # Magic data for file(1) command.
 -# Format is described in magic(files), where:
@@ -18,17 +19,19 @@ diff -Naurp file.orig/magic/Header file/magic/Header
 +# to the upstream maintainers, at file@mx.gw.com
 +# or send your suggested inclusions
 +# as a wishlist bug against file (using the reportbug utility).
-diff -Naurp file.orig/magic/magic.local file/magic/magic.local
---- file.orig/magic/magic.local
-+++ file/magic/magic.local
+Index: file-5.14/magic/magic.local
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ file-5.14/magic/magic.local	2013-05-06 17:41:20.000000000 +0000
 @@ -0,0 +1,3 @@
 +# Magic local data for file(1) command.
 +# Insert here your local magic data. Format is described in magic(5).
 +
-diff -Naurp file.orig/src/apprentice.c file/src/apprentice.c
---- file.orig/src/apprentice.c
-+++ file/src/apprentice.c
-@@ -419,7 +419,7 @@ apprentice_1(struct magic_set *ms, const
+Index: file-5.14/src/apprentice.c
+===================================================================
+--- file-5.14.orig/src/apprentice.c	2013-03-21 17:45:14.000000000 +0000
++++ file-5.14/src/apprentice.c	2013-05-06 17:41:20.000000000 +0000
+@@ -419,7 +419,7 @@
  #ifndef COMPILE_ONLY
  	map = apprentice_map(ms, fn);
  	if (map == NULL) {
@@ -37,10 +40,11 @@ diff -Naurp file.orig/src/apprentice.c file/src/apprentice.c
  			file_magwarn(ms, "using regular magic file `%s'", fn);
  		map = apprentice_load(ms, fn, action);
  		if (map == NULL)
-diff -Naurp file.orig/src/Makefile.am file/src/Makefile.am
---- file.orig/src/Makefile.am
-+++ file/src/Makefile.am
-@@ -4,7 +4,7 @@ include_HEADERS = magic.h
+Index: file-5.14/src/Makefile.am
+===================================================================
+--- file-5.14.orig/src/Makefile.am	2013-03-21 17:45:14.000000000 +0000
++++ file-5.14/src/Makefile.am	2013-05-06 17:41:20.000000000 +0000
+@@ -4,7 +4,7 @@
  
  bin_PROGRAMS = file
  
@@ -49,10 +53,11 @@ diff -Naurp file.orig/src/Makefile.am file/src/Makefile.am
  AM_CFLAGS = $(CFLAG_VISIBILITY) @WARNINGS@
  
  libmagic_la_SOURCES = magic.c apprentice.c softmagic.c ascmagic.c \
-diff -Naurp file.orig/src/Makefile.in file/src/Makefile.in
---- file.orig/src/Makefile.in
-+++ file/src/Makefile.in
-@@ -247,7 +247,7 @@ top_srcdir = @top_srcdir@
+Index: file-5.14/src/Makefile.in
+===================================================================
+--- file-5.14.orig/src/Makefile.in	2013-03-21 17:51:39.000000000 +0000
++++ file-5.14/src/Makefile.in	2013-05-06 17:41:20.000000000 +0000
+@@ -282,7 +282,7 @@
  MAGIC = $(pkgdatadir)/magic
  lib_LTLIBRARIES = libmagic.la
  include_HEADERS = magic.h

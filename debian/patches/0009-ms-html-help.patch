@@ -4,7 +4,7 @@ Description: Updating MS Windows HtmlHelp Data magics (Closes: #653911).
 diff -Naurp file.orig/magic/Magdir/msdos file/magic/Magdir/msdos
 --- file.orig/magic/Magdir/msdos
 +++ file/magic/Magdir/msdos
-@@ -720,7 +720,7 @@
+@@ -712,7 +712,7 @@
  0	ulequad	0x3a000000024e4c	MS Advisor help file
  
  # HtmlHelp files (.chm)
