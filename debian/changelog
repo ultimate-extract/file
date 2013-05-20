@@ -1,3 +1,9 @@
+file (1:5.14-2) unstable; urgency=high
+
+  * Eliminate global variable to fix segfault (Closes: #708281).
+
+ -- Luk Claes <luk@debian.org>  Mon, 20 May 2013 18:13:41 +0200
+
 file (1:5.14-1) unstable; urgency=low
 
   * New upstream version
