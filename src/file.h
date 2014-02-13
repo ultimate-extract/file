@@ -27,7 +27,7 @@
  */
 /*
  * file.h - definitions for file(1) program
- * @(#)$File: file.h,v 1.144 2013/02/18 15:40:59 christos Exp $
+ * @(#)$File: file.h,v 1.148 2014/02/12 23:20:53 christos Exp $
  */
 
 #ifndef __file_h__
@@ -133,7 +133,7 @@
 #define MAXstring 64		/* max len of "string" types */
 
 #define MAGICNO		0xF11E041C
-#define VERSIONNO	10
+#define VERSIONNO	11
 #define FILE_MAGICSIZE	248
 
 #define	FILE_LOAD	0
@@ -222,7 +222,8 @@ struct magic {
 #define				FILE_BEQWDATE	44
 #define				FILE_NAME	45
 #define				FILE_USE	46
-#define				FILE_NAMES_SIZE	47 /* size of array to contain all names */
+#define				FILE_CLEAR	47
+#define				FILE_NAMES_SIZE	48 /* size of array to contain all names */
 
 #define IS_STRING(t) \
 	((t) == FILE_STRING || \
@@ -232,8 +233,7 @@ struct magic {
 	 (t) == FILE_REGEX || \
 	 (t) == FILE_SEARCH || \
 	 (t) == FILE_NAME || \
-	 (t) == FILE_USE || \
-	 (t) == FILE_DEFAULT)
+	 (t) == FILE_USE)
 
 #define FILE_FMT_NONE 0
 #define FILE_FMT_NUM  1 /* "cduxXi" */
@@ -415,7 +415,8 @@ protected int file_buffer(struct magic_set *, int, const char *, const void *,
     size_t);
 protected int file_fsmagic(struct magic_set *, const char *, struct stat *);
 protected int file_pipe2file(struct magic_set *, int, const void *, size_t);
-protected int file_vprintf(struct magic_set *, const char *, va_list);
+protected int file_vprintf(struct magic_set *, const char *, va_list)
+    __attribute__((__format__(__printf__, 2, 0)));
 protected size_t file_printedlen(const struct magic_set *);
 protected int file_replace(struct magic_set *, const char *, const char *);
 protected int file_printf(struct magic_set *, const char *, ...)
@@ -438,7 +439,7 @@ protected int file_encoding(struct magic_set *, const unsigned char *, size_t,
     unichar **, size_t *, const char **, const char **, const char **);
 protected int file_is_tar(struct magic_set *, const unsigned char *, size_t);
 protected int file_softmagic(struct magic_set *, const unsigned char *, size_t,
-    int, int);
+    size_t, int, int);
 protected int file_apprentice(struct magic_set *, const char *, int);
 protected int file_magicfind(struct magic_set *, const char *, struct mlist *);
 protected uint64_t file_signextend(struct magic_set *, struct magic *,
@@ -491,18 +492,21 @@ ssize_t pread(int, void *, size_t, off_t);
 int vasprintf(char **, const char *, va_list);
 #endif
 #ifndef HAVE_ASPRINTF
-int asprintf(char **ptr, const char *format_string, ...);
+int asprintf(char **, const char *, ...);
 #endif
 
 #ifndef HAVE_STRLCPY
-size_t strlcpy(char *dst, const char *src, size_t siz);
+size_t strlcpy(char *, const char *, size_t);
 #endif
 #ifndef HAVE_STRLCAT
-size_t strlcat(char *dst, const char *src, size_t siz);
+size_t strlcat(char *, const char *, size_t);
+#endif
+#ifndef HAVE_STRCASESTR
+char *strcasestr(const char *, const char *);
 #endif
 #ifndef HAVE_GETLINE
-ssize_t getline(char **dst, size_t *len, FILE *fp);
-ssize_t getdelim(char **dst, size_t *len, int delimiter, FILE *fp);
+ssize_t getline(char **, size_t *, FILE *);
+ssize_t getdelim(char **, size_t *, int, FILE *);
 #endif
 #ifndef HAVE_CTIME_R
 char   *ctime_r(const time_t *, char *);

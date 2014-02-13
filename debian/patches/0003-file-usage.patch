@@ -1,13 +1,12 @@
 Author: Daniel Baumann <mail@daniel-baumann.ch>
 Description: Adding POSIXLY_CORRECT reference in usage message (Closes: #576679).
 
-diff -Naurp file.orig/src/file_opts.h file/src/file_opts.h
---- file.orig/src/file_opts.h
-+++ file/src/file_opts.h
-@@ -34,8 +34,8 @@ OPT_LONGONLY("mime-encoding", 0, "
+--- a/src/file_opts.h
++++ b/src/file_opts.h
+@@ -34,8 +34,8 @@
  OPT('k', "keep-going", 0, "           don't stop at the first match\n")
- #ifdef S_IFLNK
  OPT('l', "list", 0, "                 list magic strength\n")
+ #ifdef S_IFLNK
 -OPT('L', "dereference", 0, "          follow symlinks (default)\n")
 -OPT('h', "no-dereference", 0, "       don't follow symlinks\n")
 +OPT('L', "dereference", 0, "          follow symlinks (default if POSIXLY_CORRECT is set)\n")

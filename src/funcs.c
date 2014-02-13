@@ -27,7 +27,7 @@
 #include "file.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: funcs.c,v 1.61 2012/10/30 23:11:51 christos Exp $")
+FILE_RCSID("@(#)$File: funcs.c,v 1.67 2014/02/12 23:20:53 christos Exp $")
 #endif	/* lint */
 
 #include "magic.h"
@@ -44,6 +44,9 @@ FILE_RCSID("@(#)$File: funcs.c,v 1.61 2012/10/30 23:11:51 christos Exp $")
 #if defined(HAVE_LIMITS_H)
 #include <limits.h>
 #endif
+#if defined(HAVE_LOCALE_H)
+#include <locale.h>
+#endif
 
 #ifndef SIZE_MAX
 #define SIZE_MAX	((size_t)~0)
@@ -58,6 +61,8 @@ file_vprintf(struct magic_set *ms, const char *fmt, va_list ap)
 	int len;
 	char *buf, *newstr;
 
+	if (ms->event_flags & EVENT_HAD_ERR)
+		return 0;
 	len = vasprintf(&buf, fmt, ap);
 	if (len < 0)
 		goto out;
@@ -93,6 +98,7 @@ file_printf(struct magic_set *ms, const char *fmt, ...)
  * error - print best error message possible
  */
 /*VARARGS*/
+__attribute__((__format__(__printf__, 3, 0)))
 private void
 file_error_core(struct magic_set *ms, int error, const char *f, va_list va,
     size_t lineno)
@@ -166,22 +172,18 @@ file_buffer(struct magic_set *ms, int fd, const char *inname __attribute__ ((unu
 	size_t ulen;
 	const char *code = NULL;
 	const char *code_mime = "binary";
-	const char *type = NULL;
+	const char *type = "application/octet-stream";
+	const char *def = "data";
 
 
 
 	if (nb == 0) {
-		if ((!mime || (mime & MAGIC_MIME_TYPE)) &&
-		    file_printf(ms, mime ? "application/x-empty" :
-		    "empty") == -1)
-			return -1;
-		return 1;
+		def = "empty";
+		type = "application/x-empty";
+		goto simple;
 	} else if (nb == 1) {
-		if ((!mime || (mime & MAGIC_MIME_TYPE)) &&
-		    file_printf(ms, mime ? "application/octet-stream" :
-		    "very short file (no magic)") == -1)
-			return -1;
-		return 1;
+		def = "very short file (no magic)";
+		goto simple;
 	}
 
 	if ((ms->flags & MAGIC_NO_CHECK_ENCODING) == 0) {
@@ -207,7 +209,7 @@ file_buffer(struct magic_set *ms, int fd, const char *inname __attribute__ ((unu
 		if ((m = file_zmagic(ms, fd, inname, ubuf, nb)) != 0) {
 			if ((ms->flags & MAGIC_DEBUG) != 0)
 				(void)fprintf(stderr, "zmagic %d\n", m);
-			goto done;
+			goto done_encoding;
 		}
 #endif
 	/* Check if we have a tar file */
@@ -228,7 +230,7 @@ file_buffer(struct magic_set *ms, int fd, const char *inname __attribute__ ((unu
 
 	/* try soft magic tests */
 	if ((ms->flags & MAGIC_NO_CHECK_SOFT) == 0)
-		if ((m = file_softmagic(ms, ubuf, nb, BINTEST,
+		if ((m = file_softmagic(ms, ubuf, nb, 0, BINTEST,
 		    looks_text)) != 0) {
 			if ((ms->flags & MAGIC_DEBUG) != 0)
 				(void)fprintf(stderr, "softmagic %d\n", m);
@@ -276,10 +278,11 @@ file_buffer(struct magic_set *ms, int fd, const char *inname __attribute__ ((unu
 		}
 	}
 
+simple:
 	/* give up */
 	m = 1;
 	if ((!mime || (mime & MAGIC_MIME_TYPE)) &&
-	    file_printf(ms, mime ? "application/octet-stream" : "data") == -1) {
+	    file_printf(ms, "%s", mime ? type : def) == -1) {
 	    rv = -1;
 	}
  done:
@@ -290,6 +293,7 @@ file_buffer(struct magic_set *ms, int fd, const char *inname __attribute__ ((unu
 		if (file_printf(ms, "%s", code_mime) == -1)
 			rv = -1;
 	}
+ done_encoding:
 	free(u8buf);
 	if (rv)
 		return rv;
@@ -437,14 +441,14 @@ protected int
 file_replace(struct magic_set *ms, const char *pat, const char *rep)
 {
 	regex_t rx;
-	int rc;
+	int rc, rv = -1;
 
+	(void)setlocale(LC_CTYPE, "C");
 	rc = regcomp(&rx, pat, REG_EXTENDED);
 	if (rc) {
 		char errmsg[512];
 		(void)regerror(rc, &rx, errmsg, sizeof(errmsg));
 		file_magerror(ms, "regex error %d, (%s)", rc, errmsg);
-		return -1;
 	} else {
 		regmatch_t rm;
 		int nm = 0;
@@ -452,10 +456,13 @@ file_replace(struct magic_set *ms, const char *pat, const char *rep)
 			ms->o.buf[rm.rm_so] = '\0';
 			if (file_printf(ms, "%s%s", rep,
 			    rm.rm_eo != 0 ? ms->o.buf + rm.rm_eo : "") == -1)
-				return -1;
+				goto out;
 			nm++;
 		}
 		regfree(&rx);
-		return nm;
+		rv = nm;
 	}
+out:
+	(void)setlocale(LC_CTYPE, "");
+	return rv;
 }

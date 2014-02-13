@@ -1,5 +1,5 @@
 #
-# $File: Makefile.am,v 1.89 2013/02/18 18:31:09 christos Exp $
+# $File: Makefile.am,v 1.95 2014/01/31 01:51:32 christos Exp $
 #
 MAGIC_FRAGMENT_BASE = Magdir
 MAGIC_DIR = $(top_srcdir)/magic
@@ -17,6 +17,7 @@ $(MAGIC_FRAGMENT_DIR)/allegro \
 $(MAGIC_FRAGMENT_DIR)/alliant \
 $(MAGIC_FRAGMENT_DIR)/amanda \
 $(MAGIC_FRAGMENT_DIR)/amigaos \
+$(MAGIC_FRAGMENT_DIR)/android \
 $(MAGIC_FRAGMENT_DIR)/animation \
 $(MAGIC_FRAGMENT_DIR)/aout \
 $(MAGIC_FRAGMENT_DIR)/apl \
@@ -29,6 +30,7 @@ $(MAGIC_FRAGMENT_DIR)/att3b \
 $(MAGIC_FRAGMENT_DIR)/audio \
 $(MAGIC_FRAGMENT_DIR)/basis \
 $(MAGIC_FRAGMENT_DIR)/bflt \
+$(MAGIC_FRAGMENT_DIR)/blackberry \
 $(MAGIC_FRAGMENT_DIR)/blcr \
 $(MAGIC_FRAGMENT_DIR)/blender \
 $(MAGIC_FRAGMENT_DIR)/blit \
@@ -54,6 +56,7 @@ $(MAGIC_FRAGMENT_DIR)/console \
 $(MAGIC_FRAGMENT_DIR)/convex \
 $(MAGIC_FRAGMENT_DIR)/cracklib \
 $(MAGIC_FRAGMENT_DIR)/ctags \
+$(MAGIC_FRAGMENT_DIR)/ctf \
 $(MAGIC_FRAGMENT_DIR)/cubemap \
 $(MAGIC_FRAGMENT_DIR)/cups \
 $(MAGIC_FRAGMENT_DIR)/dact \
@@ -150,6 +153,7 @@ $(MAGIC_FRAGMENT_DIR)/motorola \
 $(MAGIC_FRAGMENT_DIR)/mozilla \
 $(MAGIC_FRAGMENT_DIR)/msdos \
 $(MAGIC_FRAGMENT_DIR)/msooxml \
+$(MAGIC_FRAGMENT_DIR)/msx \
 $(MAGIC_FRAGMENT_DIR)/msvc \
 $(MAGIC_FRAGMENT_DIR)/mup \
 $(MAGIC_FRAGMENT_DIR)/music \
@@ -173,6 +177,7 @@ $(MAGIC_FRAGMENT_DIR)/palm \
 $(MAGIC_FRAGMENT_DIR)/parix \
 $(MAGIC_FRAGMENT_DIR)/parrot \
 $(MAGIC_FRAGMENT_DIR)/pascal \
+$(MAGIC_FRAGMENT_DIR)/pbf \
 $(MAGIC_FRAGMENT_DIR)/pbm \
 $(MAGIC_FRAGMENT_DIR)/pdf \
 $(MAGIC_FRAGMENT_DIR)/pdp \
@@ -217,6 +222,7 @@ $(MAGIC_FRAGMENT_DIR)/sql \
 $(MAGIC_FRAGMENT_DIR)/ssh \
 $(MAGIC_FRAGMENT_DIR)/ssl \
 $(MAGIC_FRAGMENT_DIR)/sun \
+$(MAGIC_FRAGMENT_DIR)/symbos \
 $(MAGIC_FRAGMENT_DIR)/sysex \
 $(MAGIC_FRAGMENT_DIR)/tcl \
 $(MAGIC_FRAGMENT_DIR)/teapot \
@@ -264,10 +270,10 @@ CLEANFILES = ${MAGIC} $(MAGIC_FRAGMENT_DIR)/Localstuff
 # FIXME: Build file natively as well so that it can be used to compile
 # the target's magic file; for now we bail if the local version does not match
 if IS_CROSS_COMPILE
-FILE_COMPILE = file
+FILE_COMPILE = file${EXEEXT}
 FILE_COMPILE_DEP =
 else
-FILE_COMPILE = $(top_builddir)/src/file
+FILE_COMPILE = $(top_builddir)/src/file${EXEEXT}
 FILE_COMPILE_DEP = $(FILE_COMPILE)
 endif
 
