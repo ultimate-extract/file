@@ -1,0 +1,28 @@
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sat Feb 15 01:30:52 2014 +0000
+Upstream-Commit: eced9dbd4aa438de22ff453c723136beac41a558
+Description:
+ comment out python comment magic cause other things like mediawiki use it.
+
+--- a/magic/Magdir/python
++++ b/magic/Magdir/python
+@@ -44,13 +44,13 @@
+ !:mime text/x-python
+ 
+ # comments
+-0	search/4096	'''
+->&0	regex	.*'''$	Python script text executable
+-!:mime text/x-python
++#0	search/4096	'''
++#>&0	regex	.*'''$	Python script text executable
++#!:mime text/x-python
+ 
+-0	search/4096	"""
+->&0	regex	.*"""$	Python script text executable
+-!:mime text/x-python
++#0	search/4096	"""
++#>&0	regex	.*"""$	Python script text executable
++#!:mime text/x-python
+ 
+ # try:
+ # except: or finally:

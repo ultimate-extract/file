@@ -1,3 +1,23 @@
+file (1:5.17-1) unstable; urgency=high
+
+  * Urgency set to high to complete the fix for CVE-2014-2270
+  * New maintainer. Thanks Luk for handing over.
+  * Acknowledge my own NMU :)
+  * Upgrade to Standards-Version: 3.9.5, no changes
+  * Trim python build dependencies and make python-magic arch-all,
+    thanks Scott Kitterman. Closes: #709269
+  * Cherry-pick upstream commit FILE5_17-4-geced9db:
+    "comment out python comment magic". Closes: #729970
+  * Cherry-pick upstram commit FILE5_17-8-gc0c0032:
+    "Fix memory leak". Closes: #740694
+  * Cherry-pick upstream commit FILE5_17-17-gf9d8564:
+    "encode [python] filename". Closes: #435397
+  * Replace 8-bit characters in CDF summary data with spaces
+  * Cherry-pick upstream commit FILE5_17-20-g70c65d2:
+    "off by one in out of bounds calculations" (CVE-2014-2270 amendment)
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Wed, 05 Mar 2014 22:54:25 +0100
+
 file (1:5.17-0.1) unstable; urgency=high
 
   * Non-maintainer upload.

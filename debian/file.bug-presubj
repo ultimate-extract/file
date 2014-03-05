@@ -1,11 +1,16 @@
-Please consider your severities.
+Reporting missing or buggy detection
 
-If you wish for a new filetype being recognized, this is a wishlist bug.
-Most bugs reported against the file package are in this category.
-If what file reports now is wildly wrong or misleading, a higher severity
-may be appropriate.
+* Wanted: Reproducers and file format description
 
-If file correctly reports the filetype, but you would like to receive
-additional information about the file (such as the resolution of an image),
-this is also wishlist. Please bear in mind that such requests will likely
-be ignored when they are not accompanied by a patch.
+It's crucial to understand any mis-detection and being able to test
+any fix, so please provide something suitable: Attach a short
+sample, or send an information where to find it. Double-check this
+file neither contains sensitive data nor infringes a copyright.
+
+Also welcome: Pointers to documents that describe the file format.
+
+* Suggested bug severities
+
+  - Missing detection (just 'data'), or enhancements: wishlist
+  - Mis-detection: normal
+  - Overall correct detection, but with some errors: minor

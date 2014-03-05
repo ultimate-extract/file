@@ -9,3 +9,8 @@
 0010-mdadm.patch
 0011-btrfs.patch
 0012-lxt.patch
+cherry-pick.eced9db.python-over-detection.patch
+cherry-pick.c0c0032.fix-memory-leak.patch
+cherry-pick.f9d8564.fix-python-8bit-filenames.patch
+extra.fix-8bit-in-cdf.patch
+cherry-pick.70c65d2.fix-off-by-one.patch

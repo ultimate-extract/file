@@ -9,7 +9,9 @@ Copyright: 1985-1995 Ian F. Darwin
 License: BSD
 
 Files: debian/*
-Copyright: 2007-2013 Daniel Baumann <mail@daniel-baumann.ch>
+Copyright:
+    2007-2013 Daniel Baumann <mail@daniel-baumann.ch>
+    2014 Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
 License: BSD
 
 License: BSD

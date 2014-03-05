@@ -1,33 +1,38 @@
 Source: file
 Section: utils
 Priority: standard
-Maintainer: Luk Claes <luk@debian.org>
-Build-Depends:
- debhelper (>= 9), autotools-dev, python-all-dev, python3-all-dev, zlib1g-dev
-Standards-Version: 3.9.4
+Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Build-Depends: debhelper (>= 9),
+    autotools-dev,
+    python-all,
+    python3-all,
+    zlib1g-dev,
+Standards-Version: 3.9.5
 Homepage: http://www.darwinsys.com/file/
 
 Package: file
 Architecture: any
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${shlibs:Depends}, libmagic1 (= ${binary:Version})
+Depends: ${misc:Depends}, ${shlibs:Depends},
+    libmagic1 (= ${binary:Version}),
 Description: Determines file type using "magic" numbers
- File tests each argument in an attempt to classify it. There are three sets of
- tests, performed in this order: filesystem tests, magic number tests, and
- language tests. The first test that succeeds causes the file type to be
- printed.
+ File tests each argument in an attempt to classify it. There are
+ three sets of tests, performed in this order: filesystem tests,
+ magic number tests, and language tests. The first test that
+ succeeds causes the file type to be printed.
 
 Package: file-dbg
 Section: debug
 Priority: extra
 Architecture: any
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${shlibs:Depends}, libmagic1 (= ${binary:Version})
+Depends: ${misc:Depends}, ${shlibs:Depends},
+    libmagic1 (= ${binary:Version}),
 Description: Determines file type using "magic" numbers (debug)
- File tests each argument in an attempt to classify it. There are three sets of
- tests, performed in this order: filesystem tests, magic number tests, and
- language tests. The first test that succeeds causes the file type to be
- printed.
+ File tests each argument in an attempt to classify it. There are
+ three sets of tests, performed in this order: filesystem tests,
+ magic number tests, and language tests. The first test that
+ succeeds causes the file type to be printed.
  .
  This package contains the debugging symbols.
 
@@ -36,36 +41,40 @@ Section: libs
 Architecture: any
 Multi-Arch: same
 Pre-Depends: ${misc:Pre-Depends}
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends},
 Suggests: file
 Description: File type determination library using "magic" numbers
- This library can be used to classify files according to magic number tests. It
- implements the core functionality of the file command.
+ This library can be used to classify files according to magic
+ number tests. It implements the core functionality of the file
+ command.
 
 Package: libmagic-dev
 Section: libdevel
 Priority: optional
 Architecture: any
 Multi-Arch: same
-Depends: ${misc:Depends}, libmagic1 (= ${binary:Version})
+Depends: ${misc:Depends},
+    libmagic1 (= ${binary:Version}),
 Suggests: file
 Description: File type determination library using "magic" numbers (development)
- This library can be used to classify files according to magic number tests. It
- implements the core functionality of the file command.
+ This library can be used to classify files according to magic
+ number tests. It implements the core functionality of the file
+ command.
  .
  This package contains the development files.
 
 Package: python-magic
 Section: python
 Priority: optional
-Architecture: any
-Depends:
- ${misc:Depends}, ${shlibs:Depends}, ${python:Depends},
- libmagic1 (= ${binary:Version})
+Architecture: all
+Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends},
+    libmagic1 (>= ${binary:Version}),
+    libmagic1 (<< ${binary:Version}.1~),
 Provides: ${python:Provides}
 Description: File type determination library using "magic" numbers (Python bindings)
- This library can be used to classify files according to magic number tests. It
- implements the core functionality of the file command.
+ This library can be used to classify files according to magic
+ number tests. It implements the core functionality of the file
+ command.
  .
  This package contains the Python bindings.
 
@@ -73,11 +82,13 @@ Package: python3-magic
 Section: python
 Priority: optional
 Architecture: all
-Depends:
- ${misc:Depends}, ${python3:Depends}, libmagic1 (>= ${binary:Version})
+Depends: ${misc:Depends}, ${python3:Depends},
+    libmagic1 (>= ${binary:Version}),
+    libmagic1 (<< ${binary:Version}.1~),
 Provides: ${python3:Provides}
 Description: File type determination library using "magic" numbers (Python 3 bindings)
- This library can be used to classify files according to magic number tests. It
- implements the core functionality of the file command.
+ This library can be used to classify files according to magic
+ number tests. It implements the core functionality of the file
+ command.
  .
  This package contains the Python 3 bindings.
