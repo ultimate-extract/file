@@ -1,0 +1,51 @@
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sat Mar 15 21:47:40 2014 +0000
+Upstream-Commit: beb312b5bda6072dd9c609cd3cebd59212f93d2c
+Description:
+ Revert fmtcheck
+Comment: This introduces a lot of regressions, see
+ http://mx.gw.com/pipermail/file/2014/001439.html
+
+--- a/configure.ac
++++ b/configure.ac
+@@ -136,10 +136,10 @@
+ fi])
+ 
+ dnl Checks for functions
+-AC_CHECK_FUNCS(strerror strndup strtoul mkstemp mkostemp utimes utime wcwidth strtof)
++AC_CHECK_FUNCS(strerror strndup strtoul mkstemp mkostemp utimes utime wcwidth strtof fmtcheck)
+ 
+ dnl Provide implementation of some required functions if necessary
+-AC_REPLACE_FUNCS(getopt_long asprintf vasprintf strlcpy strlcat getline ctime_r asctime_r pread strcasestr fmtcheck)
++AC_REPLACE_FUNCS(getopt_long asprintf vasprintf strlcpy strlcat getline ctime_r asctime_r pread strcasestr)
+ 
+ dnl Checks for libraries
+ AC_CHECK_LIB(z,gzopen)
+--- a/src/file.h
++++ b/src/file.h
+@@ -514,10 +514,6 @@
+ #ifndef HAVE_ASCTIME_R
+ char   *asctime_r(const struct tm *, char *);
+ #endif
+-#ifndef HAVE_FMTCHECK
+-const char *fmtcheck(const char *, const char *) 
+-     __attribute__((__format_arg__(2)));
+-#endif
+ 
+ #if defined(HAVE_MMAP) && defined(HAVE_SYS_MMAN_H) && !defined(QUICK)
+ #define QUICK
+--- a/src/softmagic.c
++++ b/src/softmagic.c
+@@ -36,7 +36,12 @@
+ #endif	/* lint */
+ 
+ #include "magic.h"
++#ifdef HAVE_FMTCHECK
++#include <stdio.h>
+ #define F(a, b) fmtcheck((a), (b))
++#else
++#define F(a, b) (a)
++#endif
+ #include <assert.h>
+ #include <string.h>
+ #include <ctype.h>

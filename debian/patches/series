@@ -9,8 +9,10 @@
 0010-mdadm.patch
 0011-btrfs.patch
 0012-lxt.patch
-cherry-pick.eced9db.python-over-detection.patch
-cherry-pick.c0c0032.fix-memory-leak.patch
-cherry-pick.f9d8564.fix-python-8bit-filenames.patch
 extra.fix-8bit-in-cdf.patch
-cherry-pick.70c65d2.fix-off-by-one.patch
+revert.beb312b.add-fmtcheck.patch
+cherry-pick.FILE5_18-2-g1ecdd15.fix-targa-detection.patch
+cherry-pick.FILE5_18-7-g2c947ac.raise-the-strength-of-the-targa.patch
+cherry-pick.FILE5_18-4-g966ca13.improve-palm-library-detection.patch
+cherry-pick.FILE5_18-6-g0b62876.remove-extra-line.patch
+cherry-pick.FILE5_18-11-ge14d88d.fix-python-regression.patch

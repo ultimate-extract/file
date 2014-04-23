@@ -1,3 +1,39 @@
+file (1:5.18-1) unstable; urgency=low
+
+  * Support profile build (without python). Closes: #709558, #720655
+    Thanks to Daniel Schepler and Eleanor Chen.
+  * Add a debian/watch file. Closes: #741665
+  * Update debian/copyright
+  * New upstream version 5.18. Closes: #742262, #742265
+    This also addresses (in order of appearance):
+    - Identify Microsoft Installer (MSI) files. Closes: #216451
+    - Correctly detect RIFF/WAVE files with more sections. Closes: #498076
+    - Detect Microsoft cursor (.cur) files. Closes: #562250
+    - Detect UBI images. Closes: #573362
+    - Detect avr32 ELF objects. Closes: #588953
+    - Clarify search options in magic(5) manpage. Closes: #589844
+    - Fix formatting errors in detection of MS-DOS executables,
+      Closes: #605143
+    - Fix MIME type for MPEG Layer II. Closes: #609211
+    - Improve detection of some JPEG files. Closes: #657545
+    - Detect ocaml bytecode executables. Closes: #664679
+    - Provide manpage pointer for "magic_errno". Closes: #696113
+    - Detect "#!/bin/sh" with embedded binary data. Closes: #707014
+    - Detect Delphi compiled form data. Closes: #712046
+    - Document --apple option. Closes: #723628
+  * Revert upstream commit FILE5_17-62-gbeb312b:
+    "add fmtcheck", several regressions
+    Also Closes: #745086 "use dh-autoreconf"
+  * Cherry-pick from upstream:
+    - FILE5_18-2-g1ecdd15, FILE5_18-7-g2c947ac:
+      Fix regression in detection of Microsoft cursor files.
+    - FILE5_18-4-g966ca13, FILE5_18-6-g0b62876:
+      Improve Palm OS library detection, so gvfs-less finally is
+      detected as a shell script.
+    - FILE5_18-11-ge14d88d: Fix [Python] regression
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Wed, 23 Apr 2014 15:53:37 +0000
+
 file (1:5.17-1) unstable; urgency=high
 
   * Urgency set to high to complete the fix for CVE-2014-2270

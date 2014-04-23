@@ -1,0 +1,45 @@
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sun Mar 30 21:41:45 2014 +0000
+Commit: 2c947accbc7066cf1c78a9268a1d5b27ab798945
+Description:
+    raise the strength of the targa magic, instead of dropping the cursor magic
+    so that they does not get recognized as lotus 123 files. From Christoph Biedl
+
+--- a/magic/Magdir/images
++++ b/magic/Magdir/images
+@@ -18,14 +18,17 @@
+ # `xv' recognizes only a subset of the following (RGB with pixelsize = 24)
+ # `tgatoppm' recognizes a superset (Index may be anything)
+ 1	belong&0xfff7ffff	0x01010000	Targa image data - Map
++!:strength + 2
+ >2	byte&8			8		- RLE
+ >12	leshort			>0		%hd x
+ >14	leshort			>0		%hd
+ 1	belong&0xfff7ffff	0x00020000	Targa image data - RGB
++!:strength + 2
+ >2	byte&8			8		- RLE
+ >12	leshort			>0		%hd x
+ >14	leshort			>0		%hd
+ 1	belong&0xfff7ffff	0x00030000	Targa image data - Mono
++!:strength + 2
+ >2	byte&8			8		- RLE
+ >12	leshort			>0		%hd x
+ >14	leshort			>0		%hd
+--- a/magic/Magdir/msdos
++++ b/magic/Magdir/msdos
+@@ -590,7 +590,6 @@
+ >4  ubyte   !0  \b, %d colors
+ 
+ 0   belong  0x00000100
+-!:strength - 2
+ >9  byte    0
+ >>0 byte    x           MS Windows icon resource
+ !:mime	image/x-icon
+@@ -614,7 +613,6 @@
+ 
+ 0   belong  0x00000200
+ >9  byte    0
+-!:strength - 2
+ >>0 byte    x           MS Windows cursor resource
+ !:mime image/x-cur
+ >>4 use     cur-dir

@@ -1,0 +1,26 @@
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Fri Mar 28 19:06:09 2014 +0000
+Upstream-Commit: 1ecdd15c966ae6bee3ba558a53edf1dd4155d204
+Description:
+    reduce strength of windows cursors so that they don't win over Targa files
+    (Christoph Biedl)
+
+--- a/magic/Magdir/msdos
++++ b/magic/Magdir/msdos
+@@ -590,7 +590,7 @@
+ >4  ubyte   !0  \b, %d colors
+ 
+ 0   belong  0x00000100
+-
++!:strength - 2
+ >9  byte    0
+ >>0 byte    x           MS Windows icon resource
+ !:mime	image/x-icon
+@@ -614,6 +614,7 @@
+ 
+ 0   belong  0x00000200
+ >9  byte    0
++!:strength - 2
+ >>0 byte    x           MS Windows cursor resource
+ !:mime image/x-cur
+ >>4 use     cur-dir

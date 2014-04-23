@@ -1,3 +1,37 @@
+2014-03-26  11:25  Christos Zoulas <christos@zoulas.com>
+
+	* release 5.18
+
+2014-03-15  17:45  Christos Zoulas <christos@zoulas.com>
+
+        * add fmtcheck(3) for those who don't have it
+
+2014-03-14  15:12  Christos Zoulas <christos@zoulas.com>
+
+	* prevent mime entries from being attached to magic
+	  entries with no descriptions
+
+	* adjust magic strength for regex type
+
+	* remove superfluous ascmagic with encoding test
+
+2014-03-06  12:01  Christos Zoulas <christos@zoulas.com>
+
+	* fix regression fix echo -ne "\012\013\014" | file -i -
+	  which printed "binary" instead of "application/octet-stream"
+
+	* add size_t overflow check for magic file size
+
+2014-02-27  16:01  Christos Zoulas <christos@zoulas.com>
+
+	* experimental support for matching with CFD CLSID
+
+2014-02-18  13:04  Kimmo Suominen (kimmo@suominen.com)
+
+	* Cache old LC_CTYPE locale before setting it to "C", so
+	  we can use it to restore LC_CTYPE instead of asking
+	  setlocale() to scan the environment variables.
+
 2014-02-12  18:21  Christos Zoulas <christos@zoulas.com>
 
 	* Count recursion levels through indirect magic

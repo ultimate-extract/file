@@ -1,0 +1,22 @@
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Fri Mar 28 19:11:40 2014 +0000
+Upstream-Commit: 966ca13cd9ad80c163643bdf9e7497976f36aafd
+Description:
+    Improve library detection, (Christoph Biedl)
+
+--- a/magic/Magdir/palm
++++ b/magic/Magdir/palm
+@@ -141,7 +141,12 @@
+ >>(0x4E.L+1)	byte		x		%02d)
+ 
+ # Palm OS .prc file types
+-60		string		libr		Palm OS dynamic library data
++60		string		libr
++# flags, only bit 0 or bit 6
++# http://en.wikipedia.org/wiki/PRC_%28Palm_OS%29
++# http://web.mit.edu/tytso/www/pilot/prc-format.html
++>0x20		beshort&0xffbe	0
++>>0		string		>\0		Palm OS dynamic library data "%s"
+ >0		string		>\0		"%s"
+ 60		string		ptch		Palm OS operating system patch data
+ >0		string		>\0		"%s"
