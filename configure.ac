@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([file],[5.18],[christos@astron.com])
+AC_INIT([file],[5.19],[christos@astron.com])
 AM_INIT_AUTOMAKE([subdir-objects foreign])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
@@ -107,6 +107,8 @@ AC_TYPE_UINT32_T
 AC_TYPE_INT32_T
 AC_TYPE_UINT64_T
 AC_TYPE_INT64_T
+AC_TYPE_INTPTR_T
+AC_TYPE_UINTPTR_T
 AC_FUNC_MMAP
 AC_FUNC_FORK
 AC_FUNC_MBRTOWC

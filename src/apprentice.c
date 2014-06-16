@@ -32,7 +32,7 @@
 #include "file.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: apprentice.c,v 1.202 2014/03/14 18:48:11 christos Exp $")
+FILE_RCSID("@(#)$File: apprentice.c,v 1.211 2014/06/03 19:01:34 christos Exp $")
 #endif	/* lint */
 
 #include "magic.h"
@@ -517,14 +517,18 @@ apprentice_unmap(struct magic_map *map)
 {
 	if (map == NULL)
 		return;
-	if (map->p == NULL)
-		return;
+	if (map->p != NULL) {
 #ifdef QUICK
-	if (map->len)
-		(void)munmap(map->p, map->len);
-	else
+		if (map->len)
+			(void)munmap(map->p, map->len);
+		else
 #endif
 		free(map->p);
+	} else {
+		uint32_t j;
+		for (j = 0; j < MAGIC_SETS; j++)
+			free(map->magic[j]);
+	}
 	free(map);
 }
 
@@ -779,7 +783,6 @@ apprentice_magic_strength(const struct magic *m)
 		break;
 
 	default:
-		val = 0;
 		(void)fprintf(stderr, "Bad type %d\n", m->type);
 		abort();
 	}
@@ -1290,11 +1293,7 @@ out:
 		magic_entry_free(mset[j].me, mset[j].count);
 
 	if (errs) {
-		for (j = 0; j < MAGIC_SETS; j++) {
-			if (map->magic[j])
-				free(map->magic[j]);
-		}
-		free(map);
+		apprentice_unmap(map);
 		return NULL;
 	}
 	return map;
@@ -1383,7 +1382,8 @@ string_modifier_check(struct magic_set *ms, struct magic *m)
 	if ((ms->flags & MAGIC_CHECK) == 0)
 		return 0;
 
-	if (m->type != FILE_PSTRING && (m->str_flags & PSTRING_LEN) != 0) {
+	if ((m->type != FILE_REGEX || (m->str_flags & REGEX_LINE_COUNT) == 0) &&
+	    (m->type != FILE_PSTRING && (m->str_flags & PSTRING_LEN) != 0)) {
 		file_magwarn(ms,
 		    "'/BHhLl' modifiers are only allowed for pascal strings\n");
 		return -1;
@@ -1749,7 +1749,7 @@ parse(struct magic_set *ms, struct magic_entry *me, const char *line,
 			 */
 			m->type = get_standard_integer_type(l, &l);
 		}
-		// It's unsigned.
+		/* It's unsigned. */
 		if (m->type != FILE_INVALID)
 			m->flag |= UNSIGNED;
 	} else {
@@ -1876,8 +1876,13 @@ parse(struct magic_set *ms, struct magic_entry *me, const char *line,
 					m->str_flags = (m->str_flags & ~PSTRING_LEN) | PSTRING_4_BE;
 					break;
 				case CHAR_PSTRING_4_LE:
-					if (m->type != FILE_PSTRING)
+					switch (m->type) {
+					case FILE_PSTRING:
+					case FILE_REGEX:
+						break;
+					default:
 						goto bad;
+					}
 					m->str_flags = (m->str_flags & ~PSTRING_LEN) | PSTRING_4_LE;
 					break;
 				case CHAR_PSTRING_LENGTH_INCLUDES_ITSELF:
@@ -2133,17 +2138,41 @@ parse_mime(struct magic_set *ms, struct magic_entry *me, const char *line)
 private int
 check_format_type(const char *ptr, int type)
 {
-	int quad = 0;
+	int quad = 0, h;
 	if (*ptr == '\0') {
 		/* Missing format string; bad */
 		return -1;
 	}
 
-	switch (type) {
+	switch (file_formats[type]) {
 	case FILE_FMT_QUAD:
 		quad = 1;
 		/*FALLTHROUGH*/
 	case FILE_FMT_NUM:
+		if (quad == 0) {
+			switch (type) {
+			case FILE_BYTE:
+				h = 2;
+				break;
+			case FILE_SHORT:
+			case FILE_BESHORT:
+			case FILE_LESHORT:
+				h = 1;
+				break;
+			case FILE_LONG:
+			case FILE_BELONG:
+			case FILE_LELONG:
+			case FILE_MELONG:
+			case FILE_LEID3:
+			case FILE_BEID3:
+			case FILE_INDIRECT:
+				h = 0;
+				break;
+			default:
+				abort();
+			}
+		} else
+			h = 0;
 		if (*ptr == '-')
 			ptr++;
 		if (*ptr == '.')
@@ -2160,6 +2189,8 @@ check_format_type(const char *ptr, int type)
 		}
 	
 		switch (*ptr++) {
+#ifdef STRICT_FORMAT 	/* "long" formats are int formats for us */
+		/* so don't accept the 'l' modifier */
 		case 'l':
 			switch (*ptr++) {
 			case 'i':
@@ -2168,14 +2199,22 @@ check_format_type(const char *ptr, int type)
 			case 'o':
 			case 'x':
 			case 'X':
-				return 0;
+				return h != 0 ? -1 : 0;
 			default:
 				return -1;
 			}
 		
+		/*
+		 * Don't accept h and hh modifiers. They make writing
+		 * magic entries more complicated, for very little benefit
+		 */
 		case 'h':
+			if (h-- <= 0)
+				return -1;
 			switch (*ptr++) {
 			case 'h':
+				if (h-- <= 0)
+					return -1;
 				switch (*ptr++) {
 				case 'i':
 				case 'd':
@@ -2187,21 +2226,30 @@ check_format_type(const char *ptr, int type)
 				default:
 					return -1;
 				}
+			case 'i':
 			case 'd':
-				return 0;
+			case 'u':
+			case 'o':
+			case 'x':
+			case 'X':
+				return h != 0 ? -1 : 0;
 			default:
 				return -1;
 			}
-
-		case 'i':
+#endif
 		case 'c':
+			return h != 2 ? -1 : 0;
+		case 'i':
 		case 'd':
 		case 'u':
 		case 'o':
 		case 'x':
 		case 'X':
+#ifdef STRICT_FORMAT
+			return h != 0 ? -1 : 0;
+#else
 			return 0;
-			
+#endif
 		default:
 			return -1;
 		}
@@ -2288,7 +2336,7 @@ check_format(struct magic_set *ms, struct magic *m)
 	}
 
 	ptr++;
-	if (check_format_type(ptr, file_formats[m->type]) == -1) {
+	if (check_format_type(ptr, m->type) == -1) {
 		/*
 		 * TODO: this error message is unhelpful if the format
 		 * string is not one character long
@@ -2334,6 +2382,16 @@ getvalue(struct magic_set *ms, struct magic *m, const char **p, int action)
 				file_magwarn(ms, "cannot get string from `%s'",
 				    m->value.s);
 			return -1;
+		}
+		if (m->type == FILE_REGEX) {
+			file_regex_t rx;
+			int rc = file_regcomp(&rx, m->value.s, REG_EXTENDED);
+			if (rc) {
+				if (ms->flags & MAGIC_CHECK)
+					file_regerror(&rx, rc, ms);
+			}
+			file_regfree(&rx);
+			return rc ? -1 : 0;
 		}
 		return 0;
 	case FILE_FLOAT:
@@ -2715,7 +2773,8 @@ apprentice_map(struct magic_set *ms, const char *fn)
 	}
 	entries = (uint32_t)(st.st_size / sizeof(struct magic));
 	if ((off_t)(entries * sizeof(struct magic)) != st.st_size) {
-		file_error(ms, 0, "Size of `%s' %llu is not a multiple of %zu",
+		file_error(ms, 0, "Size of `%s' %" INT64_T_FORMAT "u is not "
+		    "a multiple of %" SIZE_T_FORMAT "u",
 		    dbname, (unsigned long long)st.st_size,
 		    sizeof(struct magic));
 		goto error;
@@ -2750,10 +2809,6 @@ error:
 	return NULL;
 }
 
-private const uint32_t ar[] = {
-    MAGICNO, VERSIONNO
-};
-
 /*
  * handle an mmaped file.
  */
@@ -2767,6 +2822,10 @@ apprentice_compile(struct magic_set *ms, struct magic_map *map, const char *fn)
 	char *dbname;
 	int rv = -1;
 	uint32_t i;
+	union {
+		struct magic m;
+		uint32_t h[2 + MAGIC_SETS];
+	} hdr;
 
 	dbname = mkdbname(ms, fn, 1);
 
@@ -2778,21 +2837,13 @@ apprentice_compile(struct magic_set *ms, struct magic_map *map, const char *fn)
 		file_error(ms, errno, "cannot open `%s'", dbname);
 		goto out;
 	}
+	memset(&hdr, 0, sizeof(hdr));
+	hdr.h[0] = MAGICNO;
+	hdr.h[1] = VERSIONNO;
+	memcpy(hdr.h + 2, map->nmagic, nm);
 
-	if (write(fd, ar, sizeof(ar)) != (ssize_t)sizeof(ar)) {
+	if (write(fd, &hdr, sizeof(hdr)) != (ssize_t)sizeof(hdr)) {
 		file_error(ms, errno, "error writing `%s'", dbname);
-		goto out;
-	}
-
-	if (write(fd, map->nmagic, nm) != (ssize_t)nm) {
-		file_error(ms, errno, "error writing `%s'", dbname);
-		goto out;
-	}
-
-	assert(nm + sizeof(ar) < m);
-
-	if (lseek(fd, (off_t)m, SEEK_SET) != (off_t)m) {
-		file_error(ms, errno, "error seeking `%s'", dbname);
 		goto out;
 	}
 

@@ -13,4 +13,4 @@ diff -Naurp file.orig/magic/Magdir/c64 file/magic/Magdir/c64
 +# Esa Hyytiä <esa@netlab.tkk.fi>
 +0	string		C64-TAPE-RAW	C64 Raw Tape File (.tap),
 +>0x0c	byte		x		Version:%u,
-+>0x10   lelong		x		Length:%lu cycles
++>0x10   lelong		x		Length:%u cycles
