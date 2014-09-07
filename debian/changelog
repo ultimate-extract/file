@@ -1,3 +1,10 @@
+file (1:5.19-2) unstable; urgency=high
+
+  * urgency set to high to address a security problem
+  * Cherry-pick upstream commit 0641e56 to fix CVE-2014-3587
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 07 Sep 2014 19:01:36 +0200
+
 file (1:5.19-1) unstable; urgency=low
 
   * New upstream version 5.19. Addresses:
