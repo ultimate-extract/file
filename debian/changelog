@@ -1,3 +1,12 @@
+file (1:5.20-1) unstable; urgency=low
+
+  * New upstream version 5.20. Addresses:
+    - more audio/video formats. Closes: #762561
+    - relax dis-detection of Perl scripts as AWK, part of #698569
+  * Update the syntax of the Build-Profiles field. Closes: #764218
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 19 Oct 2014 15:03:08 +0200
+
 file (1:5.19-2) unstable; urgency=high
 
   * urgency set to high to address a security problem

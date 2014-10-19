@@ -2,7 +2,7 @@ Source: file
 Section: utils
 Priority: standard
 Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
-Build-Depends: debhelper (>= 9.20140227~),
+Build-Depends: debhelper (>= 9.20141010~),
     dh-autoreconf,
     python-all,
     python3-all,
@@ -67,7 +67,7 @@ Package: python-magic
 Section: python
 Priority: optional
 Architecture: all
-Build-Profiles: !stage1
+Build-Profiles: <!stage1>
 Depends: ${misc:Depends}, ${shlibs:Depends}, ${python:Depends},
     libmagic1 (>= ${binary:Version}),
     libmagic1 (<< ${binary:Version}.1~),
@@ -83,7 +83,7 @@ Package: python3-magic
 Section: python
 Priority: optional
 Architecture: all
-Build-Profiles: !stage1
+Build-Profiles: <!stage1>
 Depends: ${misc:Depends}, ${python3:Depends},
     libmagic1 (>= ${binary:Version}),
     libmagic1 (<< ${binary:Version}.1~),

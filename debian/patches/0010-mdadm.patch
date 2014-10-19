@@ -3,10 +3,11 @@ Description: Adding new magics for Linux Software RAID (Closes: #663454).
 
 --- a/magic/Magdir/linux
 +++ b/magic/Magdir/linux
-@@ -413,3 +413,24 @@
- >>>>20		belong		>16
- >>>>>36		belong		x	\b, DT structure block size=%d
- 
+@@ -416,3 +416,25 @@
+ # glibc locale archive as defined in glibc locale/locarchive.h
+ 0		lelong		0xde020109	locale archive
+ >24		lelong		x		%d strings
++
 +# Linux Software RAID (mdadm)
 +# Russell Coker <russell@coker.com.au>
 +4096	lelong	0xa92b4efc	Linux Software RAID

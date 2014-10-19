@@ -10,6 +10,7 @@ libmagic.so.1 libmagic1 #MINVER#
  magic_getpath@Base 5.12
  magic_list@Base 5.12
  magic_load@Base 5.12
+ magic_load_buffers@Base 5.20
  magic_open@Base 5.12
  magic_setflags@Base 5.12
  magic_version@Base 5.13
