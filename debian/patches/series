@@ -9,3 +9,4 @@
 0010-mdadm.patch
 0011-btrfs.patch
 0012-lxt.patch
+CVE-2014-3710.patch

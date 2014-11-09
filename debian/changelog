@@ -1,3 +1,12 @@
+file (1:5.20-2) unstable; urgency=high
+
+  * Fixes a security issue, urgency set to high
+  * Cherry-pick upstream commit FILE5_20-5-g39c7ac1:
+    Fix note bounds reading, Francisco Alonso / Red Hat (CVE-2014-3710).
+    Closes: #768806
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 09 Nov 2014 14:46:05 +0100
+
 file (1:5.20-1) unstable; urgency=low
 
   * New upstream version 5.20. Addresses:
