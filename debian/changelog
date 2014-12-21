@@ -1,3 +1,15 @@
+file (1:5.21+15-1) unstable; urgency=high
+
+  * Fixes a security issue, urgency set to high
+  * New upstream version 5.21
+    - Limit number of elf program and sections processing
+    - Reduce the number of recursion levels
+      Closes: #773148 (CVE-2014-8116, CVE-2014-8117)
+  * Use upstream commit FILE5_21-15-ge7e96a9 to include all recent
+    fixes.
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 21 Dec 2014 23:21:37 +0100
+
 file (1:5.20-2) unstable; urgency=high
 
   * Fixes a security issue, urgency set to high

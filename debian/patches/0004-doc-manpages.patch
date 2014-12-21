@@ -1,10 +1,9 @@
 Author: Michael Piefel <piefel@debian.org>
 Description: FIXME, and #417511.
 
-diff -Naurp file.orig/doc/file.man file/doc/file.man
---- file.orig/doc/file.man
-+++ file/doc/file.man
-@@ -55,7 +55,7 @@ meaning anything else (data is usually
+--- a/doc/file.man
++++ b/doc/file.man
+@@ -56,7 +56,7 @@
  or non-printable).
  Exceptions are well-known file formats (core files, tar archives)
  that are known to contain binary data.
@@ -13,7 +12,7 @@ diff -Naurp file.orig/doc/file.man file/doc/file.man
  .Em "preserve these keywords" .
  Users depend on knowing that all the readable files in a directory
  have the word
-@@ -99,7 +99,8 @@ The concept of a
+@@ -100,7 +100,8 @@
  has been applied by extension to data files.
  Any file with some invariant identifier at a small fixed
  offset into the file can usually be described in this way.
@@ -23,7 +22,7 @@ diff -Naurp file.orig/doc/file.man file/doc/file.man
  magic file
  .Pa __MAGIC__.mgc ,
  or the files in the directory
-@@ -434,12 +435,6 @@ will be distributed periodically.
+@@ -453,12 +454,6 @@
  The order of entries in the magic file is significant.
  Depending on what system you are using, the order that
  they are put together may be incorrect.

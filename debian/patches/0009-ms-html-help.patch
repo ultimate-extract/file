@@ -1,10 +1,9 @@
 Author: Paul Wise <pabs@debian.org>
 Description: Updating MS Windows HtmlHelp Data magics (Closes: #653911).
 
-diff -Naurp file.orig/magic/Magdir/msdos file/magic/Magdir/msdos
---- file.orig/magic/Magdir/msdos
-+++ file/magic/Magdir/msdos
-@@ -712,7 +712,7 @@
+--- a/magic/Magdir/msdos
++++ b/magic/Magdir/msdos
+@@ -772,7 +772,7 @@
  0	ulequad	0x3a000000024e4c	MS Advisor help file
  
  # HtmlHelp files (.chm)

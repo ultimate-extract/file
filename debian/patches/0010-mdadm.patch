@@ -3,11 +3,10 @@ Description: Adding new magics for Linux Software RAID (Closes: #663454).
 
 --- a/magic/Magdir/linux
 +++ b/magic/Magdir/linux
-@@ -416,3 +416,25 @@
- # glibc locale archive as defined in glibc locale/locarchive.h
+@@ -417,6 +417,28 @@
  0		lelong		0xde020109	locale archive
  >24		lelong		x		%d strings
-+
+ 
 +# Linux Software RAID (mdadm)
 +# Russell Coker <russell@coker.com.au>
 +4096	lelong	0xa92b4efc	Linux Software RAID
@@ -29,3 +28,7 @@ Description: Adding new magics for Linux Software RAID (Closes: #663454).
 +>32	string	x		name=%s
 +>72	lelong	x		level=%d
 +>92	lelong	x		disks=%d
++
+ # Summary:     Database file for mlocate
+ # Description: A database file as used by mlocate, a fast implementation
+ #              of locate/updatedb. It uses merging to reuse the existing
