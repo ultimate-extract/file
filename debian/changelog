@@ -1,3 +1,11 @@
+file (1:5.22+2-1) unstable; urgency=medium
+
+  * New upstream version. Closes: #774219
+  * Use upstream commit FILE5_22-2-g9f0601f to include all recent
+    fixes.
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sat, 03 Jan 2015 14:24:57 +0100
+
 file (1:5.21+15-1) unstable; urgency=high
 
   * Fixes a security issue, urgency set to high
