@@ -32,7 +32,7 @@
 #include "file.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: softmagic.c,v 1.206 2015/01/01 17:07:34 christos Exp $")
+FILE_RCSID("@(#)$File: softmagic.c,v 1.209 2015/01/05 20:05:39 christos Exp $")
 #endif	/* lint */
 
 #include "magic.h"
@@ -361,6 +361,7 @@ match(struct magic_set *ms, struct magic *magic, uint32_t nmagic,
 		if ((ms->flags & MAGIC_CONTINUE) == 0 && *printed_something) {
 			return *returnval; /* don't keep searching */
 		}
+		cont_level = 0;
 	}
 	return *returnval;  /* This is hit if -k is set or there is no match */
 }
@@ -518,7 +519,7 @@ mprint(struct magic_set *ms, struct magic *m)
 			t = ms->offset + strlen(str);
 
 			if (*m->value.s == '\0')
-				str[strcspn(str, "\n")] = '\0';
+				str[strcspn(str, "\r\n")] = '\0';
 
 			if (m->str_flags & STRING_TRIM) {
 				char *last;
@@ -589,9 +590,9 @@ mprint(struct magic_set *ms, struct magic *m)
 		t = ms->offset + sizeof(uint64_t);
 		break;
 
-  	case FILE_FLOAT:
-  	case FILE_BEFLOAT:
-  	case FILE_LEFLOAT:
+	case FILE_FLOAT:
+	case FILE_BEFLOAT:
+	case FILE_LEFLOAT:
 		vf = p->f;
 		switch (check_fmt(ms, m)) {
 		case -1:
@@ -609,9 +610,9 @@ mprint(struct magic_set *ms, struct magic *m)
 		t = ms->offset + sizeof(float);
   		break;
 
-  	case FILE_DOUBLE:
-  	case FILE_BEDOUBLE:
-  	case FILE_LEDOUBLE:
+	case FILE_DOUBLE:
+	case FILE_BEDOUBLE:
+	case FILE_LEDOUBLE:
 		vd = p->d;
 		switch (check_fmt(ms, m)) {
 		case -1:
@@ -629,6 +630,7 @@ mprint(struct magic_set *ms, struct magic *m)
 		t = ms->offset + sizeof(double);
   		break;
 
+	case FILE_SEARCH:
 	case FILE_REGEX: {
 		char *cp;
 		int rval;
@@ -651,16 +653,6 @@ mprint(struct magic_set *ms, struct magic *m)
 			t = ms->search.offset + ms->search.rm_len;
 		break;
 	}
-
-	case FILE_SEARCH:
-	  	if (file_printf(ms, F(ms, m, "%s"),
-		    file_printable(sbuf, sizeof(sbuf), m->value.s)) == -1)
-			return -1;
-		if ((m->str_flags & REGEX_OFFSET_START))
-			t = ms->search.offset;
-		else
-			t = ms->search.offset + m->vallen;
-		break;
 
 	case FILE_DEFAULT:
 	case FILE_CLEAR:
@@ -716,7 +708,7 @@ moffset(struct magic_set *ms, struct magic *m)
 			uint32_t t;
 
 			if (*m->value.s == '\0')
-				p->s[strcspn(p->s, "\n")] = '\0';
+				p->s[strcspn(p->s, "\r\n")] = '\0';
 			t = CAST(uint32_t, (ms->offset + strlen(p->s)));
 			if (m->type == FILE_PSTRING)
 				t += (uint32_t)file_pstring_length_size(m);
@@ -1965,6 +1957,7 @@ magiccheck(struct magic_set *ms, struct magic *m)
 			    m->str_flags);
 			if (v == 0) {	/* found match */
 				ms->search.offset += idx;
+				ms->search.rm_len = m->str_range - idx;
 				break;
 			}
 		}

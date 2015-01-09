@@ -1,3 +1,10 @@
+file (1:5.22+15-1) unstable; urgency=high
+
+  * Use upstream commit FILE5_22-11-ge452600 to include yet another
+    security fix (PR/411).
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Fri, 09 Jan 2015 08:01:00 +0100
+
 file (1:5.22+2-1) unstable; urgency=medium
 
   * New upstream version. Closes: #774219
