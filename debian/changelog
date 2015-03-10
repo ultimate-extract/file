@@ -1,3 +1,9 @@
+file (1:5.22+15-2) unstable; urgency=medium
+
+  * Restore detection of some jpeg files. Closes: #780095
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Tue, 10 Mar 2015 20:41:54 +0100
+
 file (1:5.22+15-1) unstable; urgency=high
 
   * Use upstream commit FILE5_22-11-ge452600 to include yet another

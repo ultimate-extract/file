@@ -1,0 +1,17 @@
+Subject: bump jpeg to beat DOS/MBR
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Fri Feb 6 17:08:31 2015 +0000
+Origin: FILE5_22-27-gc5d7f4d
+Last-Update: 2015-03-10
+
+--- a/magic/Magdir/jpeg
++++ b/magic/Magdir/jpeg
+@@ -12,7 +12,7 @@
+ 0	beshort		0xffd8		JPEG image data
+ !:mime	image/jpeg
+ !:apple	8BIMJPEG
+-!:strength +2
++!:strength *3
+ >6	string		JFIF		\b, JFIF standard
+ # The following added by Erik Rossen <rossen@freesurf.ch> 1999-09-06
+ # in a vain attempt to add image size reporting for JFIF.  Note that these
