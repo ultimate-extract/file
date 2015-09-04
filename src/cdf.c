@@ -35,7 +35,7 @@
 #include "file.h"
 
 #ifndef lint
-FILE_RCSID("@(#)$File: cdf.c,v 1.71 2015/01/05 18:00:36 christos Exp $")
+FILE_RCSID("@(#)$File: cdf.c,v 1.76 2015/02/28 00:18:02 christos Exp $")
 #endif
 
 #include <assert.h>
@@ -747,24 +747,33 @@ cdf_read_user_stream(const cdf_info_t *info, const cdf_header_t *h,
     const cdf_sat_t *sat, const cdf_sat_t *ssat, const cdf_stream_t *sst,
     const cdf_dir_t *dir, const char *name, cdf_stream_t *scn)
 {
-	size_t i;
 	const cdf_directory_t *d;
-	size_t name_len = strlen(name) + 1;
+	int i = cdf_find_stream(dir, name, CDF_DIR_TYPE_USER_STREAM);
 
-	for (i = dir->dir_len; i > 0; i--)
-		if (dir->dir_tab[i - 1].d_type == CDF_DIR_TYPE_USER_STREAM &&
-		    cdf_namecmp(name, dir->dir_tab[i - 1].d_name, name_len)
-		    == 0)
-			break;
-
-	if (i == 0) {
-		DPRINTF(("Cannot find user stream `%s'\n", name));
-		errno = ESRCH;
+	if (i <= 0)
 		return -1;
-	}
+
 	d = &dir->dir_tab[i - 1];
 	return cdf_read_sector_chain(info, h, sat, ssat, sst,
 	    d->d_stream_first_sector, d->d_size, scn);
+}
+
+int
+cdf_find_stream(const cdf_dir_t *dir, const char *name, int type)
+{
+	size_t i, name_len = strlen(name) + 1;
+
+	for (i = dir->dir_len; i > 0; i--)
+		if (dir->dir_tab[i - 1].d_type == type &&
+		    cdf_namecmp(name, dir->dir_tab[i - 1].d_name, name_len)
+		    == 0)
+			break;
+	if (i > 0)
+		return i;
+
+	DPRINTF(("Cannot find type %d `%s'\n", type, name));
+	errno = ESRCH;
+	return 0;
 }
 
 int
@@ -1017,31 +1026,33 @@ cdf_unpack_catalog(const cdf_header_t *h, const cdf_stream_t *sst,
 	    CDF_SHORT_SEC_SIZE(h) : CDF_SEC_SIZE(h);
 	const char *b = CAST(const char *, sst->sst_tab);
 	const char *eb = b + ss * sst->sst_len;
-	size_t nr, i, k;
+	size_t nr, i, j, k;
 	cdf_catalog_entry_t *ce;
 	uint16_t reclen;
 	const uint16_t *np;
 
-	for (nr = 0; b < eb; nr++) {
+	for (nr = 0;; nr++) {
 		memcpy(&reclen, b, sizeof(reclen));
 		reclen = CDF_TOLE2(reclen);
 		if (reclen == 0)
 			break;
 		b += reclen;
+		if (b > eb)
+		    break;
 	}
+	nr--;
 	*cat = CAST(cdf_catalog_t *,
 	    malloc(sizeof(cdf_catalog_t) + nr * sizeof(*ce)));
-	(*cat)->cat_num = nr;
 	ce = (*cat)->cat_e;
 	memset(ce, 0, nr * sizeof(*ce));
 	b = CAST(const char *, sst->sst_tab);
-	for (i = 0; i < nr; i++, b += reclen) {
-		cdf_catalog_entry_t *cep = &ce[i];
+	for (j = i = 0; i < nr; b += reclen) {
+		cdf_catalog_entry_t *cep = &ce[j];
 		uint16_t rlen;
 
 		extract_catalog_field(uint16_t, ce_namlen, 0);
-		extract_catalog_field(uint16_t, ce_num, 2);
-		extract_catalog_field(uint64_t, ce_timestamp, 6);
+		extract_catalog_field(uint16_t, ce_num, 4);
+		extract_catalog_field(uint64_t, ce_timestamp, 8);
 		reclen = cep->ce_namlen;
 
 		if (reclen < 14) {
@@ -1063,7 +1074,10 @@ cdf_unpack_catalog(const cdf_header_t *h, const cdf_stream_t *sst,
 		for (k = 0; k < cep->ce_namlen; k++)
 			cep->ce_name[k] = np[k]; /* XXX: CDF_TOLE2? */
 		cep->ce_name[cep->ce_namlen] = 0;
+		j = i;
+		i++;
 	}
+	(*cat)->cat_num = j;
 	return 0;
 }
 
@@ -1213,6 +1227,7 @@ cdf_dump(const void *v, size_t len)
 	size_t i, j;
 	const unsigned char *p = v;
 	char abuf[16];
+
 	(void)fprintf(stderr, "%.4x: ", 0);
 	for (i = 0, j = 0; i < len; i++, p++) {
 		(void)fprintf(stderr, "%.2x ", *p);
@@ -1421,7 +1436,10 @@ main(int argc, char *argv[])
 	cdf_dir_t dir;
 	cdf_info_t info;
 	const cdf_directory_t *root;
-
+#ifdef __linux__
+#define getprogname() __progname
+	extern char *__progname;
+#endif
 	if (argc < 2) {
 		(void)fprintf(stderr, "Usage: %s <filename>\n", getprogname());
 		return -1;
@@ -1473,8 +1491,8 @@ main(int argc, char *argv[])
 		else
 			cdf_dump_summary_info(&h, &scn);
 #endif
-		if (cdf_read_catalog(&info, &h, &sat, &ssat, &sst, &dir,
-		    &scn) == -1)
+		if (cdf_read_user_stream(&info, &h, &sat, &ssat, &sst,
+		    &dir, "Catalog", &scn) == -1)
 			warn("Cannot read catalog");
 #ifdef CDF_DEBUG
 		else

@@ -1,9 +1,11 @@
+Subject: Adding new magics for Commodore raw tape files
 Author: Esa Hyytiä <esa@netlab.tkk.fi>
-Description: Adding new magics for Commodore raw tape files (Closes: #699777).
+Bug-Debian: https://bugs.debian.org/699777
+Forwarded: http://mx.gw.com/pipermail/file/2015/001755.html
+Last-Update: 2015-08-23
 
-diff -Naurp file.orig/magic/Magdir/c64 file/magic/Magdir/c64
---- file.orig/magic/Magdir/c64
-+++ file/magic/Magdir/c64
+--- a/magic/Magdir/c64
++++ b/magic/Magdir/c64
 @@ -41,3 +41,9 @@
  >32	leshort		x		Version:0x%x
  >36	leshort		!0		Entries:%i

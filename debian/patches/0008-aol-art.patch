@@ -1,9 +1,11 @@
+Subject: Adding updated magics for AOL ART images
 Author: Bastien Roucaries <roucaries.bastien@gmail.com>
-Description: Adding updated magics for AOL ART images (Closes: #681304).
+Bug-Debian: https://bugs.debian.org/681304
+Forwarded: http://mx.gw.com/pipermail/file/2015/001755.html
+Last-Update: 2015-08-23
 
-diff -Naurp file.orig/magic/Magdir/netscape file/magic/Magdir/netscape
---- file.orig/magic/Magdir/netscape
-+++ file/magic/Magdir/netscape
+--- a/magic/Magdir/netscape
++++ b/magic/Magdir/netscape
 @@ -22,4 +22,5 @@
  
  #

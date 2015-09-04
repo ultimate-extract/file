@@ -1,9 +1,11 @@
-Authors:
- Michael Piefel <piefel@debian.org>,
- Judit Foglszinger <fgrfgr@freenet.de>
 Description:
  No longer includes Localstuff in /usr/share/misc/magic, local definitions
  should go to /etc/magic.
+Author:
+ Michael Piefel <piefel@debian.org>,
+ Judit Foglszinger <fgrfgr@freenet.de>
+Forwarded: no
+Last-Update: 2015-08-23
 
 --- a/magic/Header
 +++ b/magic/Header
@@ -25,7 +27,7 @@ Description:
 +
 --- a/src/apprentice.c
 +++ b/src/apprentice.c
-@@ -448,7 +448,7 @@
+@@ -450,7 +450,7 @@
  #ifndef COMPILE_ONLY
  	map = apprentice_map(ms, fn);
  	if (map == NULL) {
@@ -47,7 +49,7 @@ Description:
  libmagic_la_SOURCES = magic.c apprentice.c softmagic.c ascmagic.c \
 --- a/src/Makefile.in
 +++ b/src/Makefile.in
-@@ -329,7 +329,7 @@
+@@ -341,7 +341,7 @@
  MAGIC = $(pkgdatadir)/magic
  lib_LTLIBRARIES = libmagic.la
  include_HEADERS = magic.h

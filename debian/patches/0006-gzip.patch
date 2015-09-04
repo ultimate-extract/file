@@ -1,5 +1,6 @@
-Author: Daniel Baumann <mail@daniel-baumann.ch>
 Description: Updating gzip mime (Closes: #688886).
+Author: Daniel Baumann <mail@daniel-baumann.ch>
+Last-Update: 2015-08-23
 
 --- a/magic/Magdir/compress
 +++ b/magic/Magdir/compress

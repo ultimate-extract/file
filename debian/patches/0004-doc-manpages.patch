@@ -1,9 +1,11 @@
+Description: FIXME
 Author: Michael Piefel <piefel@debian.org>
-Description: FIXME, and #417511.
+Bug-Debian: https://bugs.debian.org/417511
+Last-Update: 2015-08-23
 
 --- a/doc/file.man
 +++ b/doc/file.man
-@@ -56,7 +56,7 @@
+@@ -57,7 +57,7 @@
  or non-printable).
  Exceptions are well-known file formats (core files, tar archives)
  that are known to contain binary data.
@@ -12,7 +14,7 @@ Description: FIXME, and #417511.
  .Em "preserve these keywords" .
  Users depend on knowing that all the readable files in a directory
  have the word
-@@ -100,7 +100,8 @@
+@@ -101,7 +101,8 @@
  has been applied by extension to data files.
  Any file with some invariant identifier at a small fixed
  offset into the file can usually be described in this way.
@@ -22,7 +24,7 @@ Description: FIXME, and #417511.
  magic file
  .Pa __MAGIC__.mgc ,
  or the files in the directory
-@@ -453,12 +454,6 @@
+@@ -459,12 +460,6 @@
  The order of entries in the magic file is significant.
  Depending on what system you are using, the order that
  they are put together may be incorrect.

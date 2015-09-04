@@ -1,3 +1,14 @@
+file (1:5.24-1) unstable; urgency=low
+
+  * New upstream version 5.24. Addresses:
+    - mistakes some PDFs, Closes: #520098
+    - '#!' should have a bigger strength, Closes: #698569
+  * Update build dependencies:
+    - dh-python
+    - Recent dpkg-dev version for minimal restriction formula support
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Fri, 04 Sep 2015 18:56:25 +0200
+
 file (1:5.22+15-2) unstable; urgency=medium
 
   * Restore detection of some jpeg files. Closes: #780095

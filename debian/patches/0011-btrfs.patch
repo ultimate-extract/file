@@ -1,9 +1,12 @@
+Subject: Adding updated magics for BTRFS
 Author: Russell Coker <russell@coker.com.au>
-Description: Adding updated magics for BTRFS (Closes: #663454).
+Bug-Debian: https://bugs.debian.org/663454
+Forwarded: http://mx.gw.com/pipermail/file/2015/001755.html
+Last-Update: 2015-08-23
 
 --- a/magic/Magdir/filesystems
 +++ b/magic/Magdir/filesystems
-@@ -2202,12 +2202,21 @@
+@@ -2210,12 +2210,21 @@
  >>0x10060        string          >\0             lockproto %s)
  
  # BTRFS

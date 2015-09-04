@@ -1,5 +1,8 @@
+Subject: Updating MS Windows HtmlHelp Data magics
 Author: Paul Wise <pabs@debian.org>
-Description: Updating MS Windows HtmlHelp Data magics (Closes: #653911).
+Bug-Debian: https://bugs.debian.org/653911
+Forwarded: http://mx.gw.com/pipermail/file/2015/001755.html
+Last-Update: 2015-08-23
 
 --- a/magic/Magdir/msdos
 +++ b/magic/Magdir/msdos

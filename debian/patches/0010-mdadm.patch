@@ -1,5 +1,8 @@
+Subject: Adding new magics for Linux Software RAID
 Author: Russell Coker <russell@coker.com.au>
-Description: Adding new magics for Linux Software RAID (Closes: #663454).
+Bug-Debian: https://bugs.debian.org/663454
+Forwarded: http://mx.gw.com/pipermail/file/2015/001755.html
+Last-Update: 2015-08-23
 
 --- a/magic/Magdir/linux
 +++ b/magic/Magdir/linux

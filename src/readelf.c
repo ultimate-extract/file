@@ -27,7 +27,7 @@
 #include "file.h"
 
 #ifndef lint
-FILE_RCSID("@(#)$File: readelf.c,v 1.117 2014/12/16 23:29:42 christos Exp $")
+FILE_RCSID("@(#)$File: readelf.c,v 1.120 2015/06/16 14:18:07 christos Exp $")
 #endif
 
 #ifdef BUILTIN_ELF
@@ -1048,9 +1048,18 @@ doshn(struct magic_set *ms, int clazz, int swap, int fd, off_t off, int num,
 			break;
 		}
 
+
 		/* Things we can determine when we seek */
 		switch (xsh_type) {
 		case SHT_NOTE:
+			if (xsh_size + xsh_offset > (uintmax_t)fsize)  {
+				if (file_printf(ms,
+				    ", note offset/size 0x%jx+0x%jx exceeds"
+				    " file size 0x%jx", (uintmax_t)xsh_offset,
+				    (uintmax_t)xsh_size, (uintmax_t)fsize) == -1)
+					return -1;
+				return 0; 
+			}
 			if ((nbuf = malloc(xsh_size)) == NULL) {
 				file_error(ms, errno, "Cannot allocate memory"
 				    " for note");
@@ -1353,7 +1362,7 @@ file_tryelf(struct magic_set *ms, int fd, const unsigned char *buf,
 	Elf64_Ehdr elf64hdr;
 	uint16_t type, phnum, shnum, notecount;
 
-	if (ms->flags & (MAGIC_MIME|MAGIC_APPLE))
+	if (ms->flags & (MAGIC_MIME|MAGIC_APPLE|MAGIC_EXTENSION))
 		return 0;
 	/*
 	 * ELF executables have multiple section headers in arbitrary

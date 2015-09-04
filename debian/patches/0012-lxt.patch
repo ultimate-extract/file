@@ -1,9 +1,9 @@
+Subject: Adding new magics for LXT
 Author: chrysn <chrysn@fsfe.org>
-Description: Adding new magics for LXT (Closes: #647412).
+Bug-Debian: https://bugs.debian.org/647412
 
-diff -Naurp file.orig/magic/Magdir/scientific file/magic/Magdir/scientific
---- file.orig/magic/Magdir/scientific
-+++ file/magic/Magdir/scientific
+--- a/magic/Magdir/scientific
++++ b/magic/Magdir/scientific
 @@ -104,3 +104,8 @@
  >>5	byte	x		version %d.0
  >4	byte	>0x00		version %d

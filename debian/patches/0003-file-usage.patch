@@ -1,9 +1,11 @@
+Description: Adding POSIXLY_CORRECT reference in usage message
 Author: Daniel Baumann <mail@daniel-baumann.ch>
-Description: Adding POSIXLY_CORRECT reference in usage message (Closes: #576679).
+Bug-Debian: https://bugs.debian.org/576679
+Last-Update: 2015-08-23
 
 --- a/src/file_opts.h
 +++ b/src/file_opts.h
-@@ -34,8 +34,8 @@
+@@ -36,8 +36,8 @@
  OPT('k', "keep-going", 0, "           don't stop at the first match\n")
  OPT('l', "list", 0, "                 list magic strength\n")
  #ifdef S_IFLNK
