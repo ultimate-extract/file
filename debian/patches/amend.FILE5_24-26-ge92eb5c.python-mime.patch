@@ -1,0 +1,15 @@
+Subject: Fix strength of Python script detection. Closes: #698569, #798796
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Date: Sun Sep 13 12:06:50 2015 +0200
+
+--- a/magic/Magdir/python
++++ b/magic/Magdir/python
+@@ -26,7 +26,7 @@
+ 0	belong		0xee0c0d0a	python 3.4 byte-compiled
+ 
+ 0	search/1/w	#!\ /usr/bin/python	Python script text executable
+-!:strength + 10
++!:strength + 13
+ !:mime text/x-python
+ 0	search/1/w	#!\ /usr/local/bin/python	Python script text executable
+ !:strength + 10
