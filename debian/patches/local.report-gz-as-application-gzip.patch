@@ -1,6 +1,7 @@
-Description: Updating gzip mime (Closes: #688886).
+Description: Report gz as application/gzip
 Author: Daniel Baumann <mail@daniel-baumann.ch>
-Last-Update: 2015-08-23
+Bug-Debian: https://bugs.debian.org/688886
+Last-Update: 2015-09-18
 
 --- a/magic/Magdir/compress
 +++ b/magic/Magdir/compress

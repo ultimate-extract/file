@@ -1,0 +1,28 @@
+Subject: Disable detection of VAX COFF executables
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Date: Wed, 16 Sep 2015 23:59:58 +0200
+Bug-Debian: https://bugs.debian.org/697846
+
+    zlib compress data very often begins with \x78\x01 (deflate, 32k
+    window size). This clashes with VAX COFF where the latter has a
+    bigger strength. Additional havoc is created by the fact the
+    latter is considered an executable.
+
+    Disable "VAX COFF executable" for the time being. It's the lesser
+    evil.
+
+--- a/magic/Magdir/vax
++++ b/magic/Magdir/vax
+@@ -19,9 +19,9 @@
+ # The `versions' were commented out, but have been un-commented out.
+ # (Was the problem just one of endianness?)
+ #
+-0	leshort		0570		VAX COFF executable
+->12	lelong		>0		not stripped
+->22	leshort		>0		- version %d
++#0	leshort		0570		VAX COFF executable
++#>12	lelong		>0		not stripped
++#>22	leshort		>0		- version %d
+ 0	leshort		0575		VAX COFF pure executable
+ >12	lelong		>0		not stripped
+ >22	leshort		>0		- version %d

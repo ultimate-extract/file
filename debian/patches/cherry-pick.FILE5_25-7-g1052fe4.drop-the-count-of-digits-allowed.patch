@@ -1,0 +1,16 @@
+Subject: drop the count of digits allowed
+Origin: FILE5_25-7-g1052fe4
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Wed Sep 16 22:52:54 2015 +0000
+
+--- a/src/apprentice.c
++++ b/src/apprentice.c
+@@ -2344,7 +2344,7 @@
+ #define CHECKLEN() do { \
+ 	for (len = cnt = 0; isdigit((unsigned char)*ptr); ptr++, cnt++) \
+ 		len = len * 10 + (*ptr - '0'); \
+-	if (cnt > 10 || len > 1024) \
++	if (cnt > 5 || len > 1024) \
+ 		goto toolong; \
+ } while (/*CONSTCOND*/0)
+ 

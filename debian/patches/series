@@ -1,15 +1,15 @@
-0001-file-localmagic.patch
-0002-file-make.patch
-0003-file-usage.patch
-0004-doc-manpages.patch
-0006-gzip.patch
-0007-c64-tap.patch
-0008-aol-art.patch
-0009-ms-html-help.patch
-0010-mdadm.patch
-0011-btrfs.patch
-0012-lxt.patch
-cherry-pick.FILE5_24-22-g27b4e34.parameter-1.patch
-cherry-pick.FILE5_24-23-g4ddb783.parameter-2.patch
-cherry-pick.FILE5_24-26-ge92eb5c.python-mime.patch
-amend.FILE5_24-26-ge92eb5c.python-mime.patch
+# cherry-picked commits. Keep in chronlogical order
+cherry-pick.FILE5_25-1-g7e60111.pr-479-check-the-format-length-modifiers.patch
+cherry-pick.FILE5_25-2-gde23336.pr-479-protect-against-0-divide-and-offset-out-of-bounds-reads.patch
+cherry-pick.FILE5_25-4-gc12b1c8.annotations-are-attached-to-the-first-description-entry-print-them-then.patch
+cherry-pick.FILE5_25-5-gba7b688.bump-more.patch
+cherry-pick.FILE5_25-6-gb72c33f.remove-over-zealous-and-fix-test-properly.patch
+cherry-pick.FILE5_25-7-g1052fe4.drop-the-count-of-digits-allowed.patch
+cherry-pick.FILE5_25-9-g9039ec5.make-the-default-case-print-something-sane-for-each-of-the-different-styles.patch
+
+# local modifications
+local.support-local-definitions-in-etc-magic.patch
+local.don-t-include-libs-in-build.patch
+local.mention-posixly-correct-dependent-behaviour-in-usage-message.patch
+local.report-gz-as-application-gzip.patch
+local.disable-detection-of-vax-coff-executables.patch

@@ -1,3 +1,14 @@
+file (1:5.25-1) unstable; urgency=low
+
+  * New upstream version 5.25
+  * Import important commits post 5.25 release:
+    - PR/479: check the format length modifiers, protect against
+      0-divide and offset out of bounds reads
+    - print annotations
+  * Disable detection of VAX COFF executables. Closes: #697846
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Fri, 18 Sep 2015 08:10:45 +0200
+
 file (1:5.24-2) unstable; urgency=medium
 
   * Fix handling of file's --parameter option. Closes: #798410

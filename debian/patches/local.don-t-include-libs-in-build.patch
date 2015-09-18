@@ -1,6 +1,8 @@
-Description: n/a
+Description: Don't include libs in build
 Author: Michael Piefel <piefel@debian.org>
-Last-Update: 2015-08-23
+Last-Update: 2015-09-18
+
+    (Reason for this is not at all clear -CB)
 
 --- a/src/Makefile.in
 +++ b/src/Makefile.in

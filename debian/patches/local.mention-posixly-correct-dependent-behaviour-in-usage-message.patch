@@ -1,7 +1,7 @@
-Description: Adding POSIXLY_CORRECT reference in usage message
+Description: Mention POSIXLY_CORRECT dependent behaviour in usage message
 Author: Daniel Baumann <mail@daniel-baumann.ch>
 Bug-Debian: https://bugs.debian.org/576679
-Last-Update: 2015-08-23
+Last-Update: 2015-09-18
 
 --- a/src/file_opts.h
 +++ b/src/file_opts.h
