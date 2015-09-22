@@ -1,0 +1,21 @@
+Subject: Fix --mime-encoding without --mime-type
+Origin: FILE5_25-12-gc83b058
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Tue Sep 22 15:40:32 2015 +0000
+Bug-Debian: https://bugs.debian.org/799690
+
+    Fix --mime-encoding without --mime-type (Christoph Biedl)
+    printf '\x00\xff' | file --mime-encoding -
+
+--- a/src/funcs.c
++++ b/src/funcs.c
+@@ -294,7 +294,8 @@
+ 	/* give up */
+ 	m = 1;
+ 	if (ms->flags & MAGIC_MIME) {
+-		if (file_printf(ms, "%s", type) == -1)
++		if ((ms->flags & MAGIC_MIME_TYPE) &&
++		    file_printf(ms, "%s", type) == -1)
+ 			rv = -1;
+ 	} else if (ms->flags & MAGIC_APPLE) {
+ 		if (file_printf(ms, "UNKNUNKN") == -1)

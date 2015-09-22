@@ -1,3 +1,9 @@
+file (1:5.25-2) unstable; urgency=medium
+
+  * Fix --mime-encoding. Closes: #799690
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Tue, 22 Sep 2015 19:44:20 +0200
+
 file (1:5.25-1) unstable; urgency=low
 
   * New upstream version 5.25

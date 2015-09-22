@@ -6,6 +6,7 @@ cherry-pick.FILE5_25-5-gba7b688.bump-more.patch
 cherry-pick.FILE5_25-6-gb72c33f.remove-over-zealous-and-fix-test-properly.patch
 cherry-pick.FILE5_25-7-g1052fe4.drop-the-count-of-digits-allowed.patch
 cherry-pick.FILE5_25-9-g9039ec5.make-the-default-case-print-something-sane-for-each-of-the-different-styles.patch
+cherry-pick.FILE5_25-12-gc83b058.fix-mime-encoding-without-mime-type.patch
 
 # local modifications
 local.support-local-definitions-in-etc-magic.patch
