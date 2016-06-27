@@ -1,3 +1,9 @@
+file (1:5.28-1) unstable; urgency=medium
+
+  * New upstream version 5.28
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Mon, 27 Jun 2016 16:10:45 +0200
+
 file (1:5.25-2) unstable; urgency=medium
 
   * Fix --mime-encoding. Closes: #799690

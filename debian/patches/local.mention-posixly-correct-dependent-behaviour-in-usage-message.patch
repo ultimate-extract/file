@@ -1,18 +1,18 @@
 Description: Mention POSIXLY_CORRECT dependent behaviour in usage message
 Author: Daniel Baumann <mail@daniel-baumann.ch>
 Bug-Debian: https://bugs.debian.org/576679
-Last-Update: 2015-09-18
+Last-Update: 2016-06-27
 
 --- a/src/file_opts.h
 +++ b/src/file_opts.h
 @@ -36,8 +36,8 @@
- OPT('k', "keep-going", 0, "           don't stop at the first match\n")
- OPT('l', "list", 0, "                 list magic strength\n")
+ OPT('k', "keep-going", 0, 0, "           don't stop at the first match\n")
+ OPT('l', "list", 0, 0, "                 list magic strength\n")
  #ifdef S_IFLNK
--OPT('L', "dereference", 0, "          follow symlinks (default)\n")
--OPT('h', "no-dereference", 0, "       don't follow symlinks\n")
-+OPT('L', "dereference", 0, "          follow symlinks (default if POSIXLY_CORRECT is set)\n")
-+OPT('h', "no-dereference", 0, "       don't follow symlinks (default if POSIXLY_CORRECT is not set)\n")
+-OPT('L', "dereference", 0, 1, "          follow symlinks")
+-OPT('h', "no-dereference", 0, 2, "       don't follow symlinks")
++OPT('L', "dereference", 0, 1, "          follow symlinks (default if POSIXLY_CORRECT is set)")
++OPT('h', "no-dereference", 0, 2, "       don't follow symlinks (default if POSIXLY_CORRECT is not set)")
  #endif
- OPT('n', "no-buffer", 0, "            do not buffer output\n")
- OPT('N', "no-pad", 0, "               do not pad output\n")
+ OPT('n', "no-buffer", 0, 0, "            do not buffer output\n")
+ OPT('N', "no-pad", 0, 0, "               do not pad output\n")

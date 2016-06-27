@@ -1,0 +1,16 @@
+Subject: Avoid "can't break line" warnings from lintian
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Date: Mon, 27 Jun 2016 16:07:29 +0200
+Forwarded: http://mx.gw.com/pipermail/file/2016/002024.html
+
+--- a/doc/file.man
++++ b/doc/file.man
+@@ -313,7 +313,7 @@
+ never read them.
+ .It Fl P , Fl Fl parameter Ar name=value
+ Set various parameter limits.
+-.Bl -column "elf_phnum" "Default" "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" -offset indent
++.Bl -column "elf_phnum" "Default" "XXXXXXXXXXXXXXXXXXXXXXXXXXX" -offset indent
+ .It Sy "Name" Ta Sy "Default" Ta Sy "Explanation"
+ .It Li indir Ta 15 Ta recursion limit for indirect magic
+ .It Li name Ta 30 Ta use count limit for name/use magic

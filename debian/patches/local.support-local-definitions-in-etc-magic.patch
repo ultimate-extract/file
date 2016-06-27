@@ -3,7 +3,7 @@ Author:
  Michael Piefel <piefel@debian.org>,
  Judit Foglszinger <fgrfgr@freenet.de>
 Forwarded: no
-Last-Update: 2015-09-18
+Last-Update: 2016-06-27
 
 --- a/magic/Header
 +++ b/magic/Header
@@ -25,7 +25,7 @@ Last-Update: 2015-09-18
 +
 --- a/src/apprentice.c
 +++ b/src/apprentice.c
-@@ -450,7 +450,7 @@
+@@ -452,7 +452,7 @@
  #ifndef COMPILE_ONLY
  	map = apprentice_map(ms, fn);
  	if (map == NULL) {
@@ -47,10 +47,10 @@ Last-Update: 2015-09-18
  libmagic_la_SOURCES = magic.c apprentice.c softmagic.c ascmagic.c \
 --- a/src/Makefile.in
 +++ b/src/Makefile.in
-@@ -341,7 +341,7 @@
+@@ -340,7 +340,7 @@
  MAGIC = $(pkgdatadir)/magic
  lib_LTLIBRARIES = libmagic.la
- include_HEADERS = magic.h
+ nodist_include_HEADERS = magic.h
 -AM_CPPFLAGS = -DMAGIC='"$(MAGIC)"'
 +AM_CPPFLAGS = -DMAGIC='"/etc/magic:$(MAGIC)"'
  AM_CFLAGS = $(CFLAG_VISIBILITY) @WARNINGS@
@@ -77,7 +77,7 @@ Last-Update: 2015-09-18
  magic file
  .Pa __MAGIC__.mgc ,
  or the files in the directory
-@@ -460,12 +461,6 @@
+@@ -469,12 +470,6 @@
  The order of entries in the magic file is significant.
  Depending on what system you are using, the order that
  they are put together may be incorrect.
