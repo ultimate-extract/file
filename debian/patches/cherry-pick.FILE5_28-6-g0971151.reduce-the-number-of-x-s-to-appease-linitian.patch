@@ -1,11 +1,11 @@
-Subject: Avoid "can't break line" warnings from lintian
-Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
-Date: Mon, 27 Jun 2016 16:07:29 +0200
-Forwarded: http://mx.gw.com/pipermail/file/2016/002024.html
+Subject: Reduce the number of X's to appease linitian (Christoph Biedl)
+Origin: FILE5_28-6-g0971151
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Mon Jun 27 19:07:20 2016 +0000
 
 --- a/doc/file.man
 +++ b/doc/file.man
-@@ -313,7 +313,7 @@
+@@ -312,7 +312,7 @@
  never read them.
  .It Fl P , Fl Fl parameter Ar name=value
  Set various parameter limits.

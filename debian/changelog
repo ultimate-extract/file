@@ -1,3 +1,13 @@
+file (1:5.28-2) unstable; urgency=high
+
+  * Enable full hardening build
+  * Cherry-pick commits since 5.28 release:
+    - Avoid "can't break line" warnings from lintian
+    - Don't copy NULL
+    - Avoid double encoding with python3. Closes: #828833
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Thu, 30 Jun 2016 01:39:07 +0200
+
 file (1:5.28-1) unstable; urgency=medium
 
   * New upstream version 5.28

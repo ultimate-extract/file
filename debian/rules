@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
 SHELL := sh -e
 
 ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))

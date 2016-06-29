@@ -1,0 +1,36 @@
+Subject: PR/562: Reiner Herrmann: Avoid double encoding with python3
+Origin: FILE5_28-10-g73e043d
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Tue Jun 28 17:10:22 2016 +0000
+Bug: http://bugs.gw.com/view.php?id=562
+Bug-Debian: https://bugs.debian.org/828833
+
+--- a/python/magic.py
++++ b/python/magic.py
+@@ -134,7 +134,7 @@
+         if isinstance(r, str):
+             return r
+         else:
+-            return str(r).encode('utf-8')
++            return str(r, 'utf-8')
+ 
+     def descriptor(self, fd):
+         """
+@@ -152,7 +152,7 @@
+         if isinstance(r, str):
+             return r
+         else:
+-            return str(r).encode('utf-8')
++            return str(r, 'utf-8')
+ 
+     def error(self):
+         """
+@@ -163,7 +163,7 @@
+         if isinstance(e, str):
+             return e
+         else:
+-            return str(e).encode('utf-8')
++            return str(e, 'utf-8')
+ 
+     def setflags(self, flags):
+         """
