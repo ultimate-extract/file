@@ -82,37 +82,23 @@ ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))
 	done
 endif
 
-	# Installing additional headers
+	# Install additional headers
 	mkdir -p debian/libmagic-dev/usr/include/file
 	cp src/file.h debian/libmagic-dev/usr/include/file
 
-	# Removing useless files
+	# Remove useless files
 	rm -f debian/tmp/usr/lib/*/*.la
-
-override_dh_builddeb:
-	dh_builddeb -- -Zxz
 
 override_dh_install:
 	dh_install --fail-missing
 
 override_dh_shlibdeps:
 ifeq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
-	# use just built file in dh_shlibdeps
+	# use the just built file in dh_shlibdeps
 	PATH=$(CURDIR)/debian/file/usr/bin:$$PATH \
 		LD_LIBRARY_PATH=$(CURDIR)/debian/libmagic1/usr/lib/$(DEB_HOST_MULTIARCH)$${LD_LIBRARY_PATH+:$${LD_LIBRARY_PATH}} \
 		MAGIC=$(CURDIR)/debian/libmagic1/usr/share/file/magic.mgc \
 		dh_shlibdeps -Llibmagic1 -ldebian/libmagic1/usr/lib
 else
 	dh_shlibdeps -Llibmagic1 -ldebian/libmagic1/usr/lib
-endif
-
-override_dh_strip:
-ifeq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
-	# use just built file in dh_strip
-	PATH=$(CURDIR)/debian/file/usr/bin:$$PATH \
-		LD_LIBRARY_PATH=$(CURDIR)/debian/libmagic1/usr/lib/$(DEB_HOST_MULTIARCH)$${LD_LIBRARY_PATH+:$${LD_LIBRARY_PATH}} \
-		MAGIC=$(CURDIR)/debian/libmagic1/usr/share/file/magic.mgc \
-		dh_strip --dbg-package=file-dbg
-else
-	dh_strip --dbg-package=file-dbg
 endif

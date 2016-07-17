@@ -1,3 +1,13 @@
+file (1:5.28-3) unstable; urgency=low
+
+  * Packaging cleanup, no code changes
+    - No longer ship file-dbg, use -dbgsym instead
+    - Remove cruft: lintian override, obsolete substvars, explicit
+      usage of xz
+    - Re-word package descriptions
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 17 Jul 2016 14:03:33 +0200
+
 file (1:5.28-2) unstable; urgency=high
 
   * Enable full hardening build
