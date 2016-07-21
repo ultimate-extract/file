@@ -1,7 +1,7 @@
 Source: file
 Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
 Homepage: http://www.darwinsys.com/file/
-Standards-Version: 3.9.5
+Standards-Version: 3.9.8
 Build-Depends: debhelper (>= 9.20141010~),
     dh-autoreconf,
     dh-python,
@@ -30,6 +30,7 @@ Architecture: any
 Pre-Depends:
     ${misc:Pre-Depends},
 Depends: ${misc:Depends}, ${shlibs:Depends},
+    libmagic-mgc (= ${binary:Version}),
 Suggests:
     file,
 Section: libs
@@ -37,6 +38,21 @@ Multi-Arch: same
 Description: Recognize the type of data in a file using "magic" numbers - library
  This library can be used to classify files according to magic number
  tests. It implements the core functionality of the file command.
+
+Package: libmagic-mgc
+Architecture: any
+Depends: ${misc:Depends},
+Breaks:
+    libmagic1 (<< 1:5.28-4~),
+Replaces:
+    libmagic1 (<< 1:5.28-4~),
+Section: libs
+Multi-Arch: foreign
+Description: File type determination library using "magic" numbers (compiled magic file)
+ This package provides the compiled magic file "magic.mgc". It has
+ been separated from libmagic1 in order to meet the multiarch
+ requirements without breaking applications that expect this file
+ at its absolute path.
 
 Package: libmagic-dev
 Architecture: any

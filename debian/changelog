@@ -1,3 +1,12 @@
+file (1:5.28-4) unstable; urgency=low
+
+  * Ship the compiled magic file in a separate package so libmagic1 is
+    finally multi-arch compliant. Thanks Jakub Wilk for the final
+    impetus and suggestions. Closes: #670006 (take two)
+  * Declare compliance with Debian policy 3.9.8
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Thu, 21 Jul 2016 21:42:43 +0200
+
 file (1:5.28-3) unstable; urgency=low
 
   * Packaging cleanup, no code changes

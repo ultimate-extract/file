@@ -97,7 +97,7 @@ ifeq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
 	# use the just built file in dh_shlibdeps
 	PATH=$(CURDIR)/debian/file/usr/bin:$$PATH \
 		LD_LIBRARY_PATH=$(CURDIR)/debian/libmagic1/usr/lib/$(DEB_HOST_MULTIARCH)$${LD_LIBRARY_PATH+:$${LD_LIBRARY_PATH}} \
-		MAGIC=$(CURDIR)/debian/libmagic1/usr/share/file/magic.mgc \
+		MAGIC=$(CURDIR)/debian/libmagic-mgc/usr/share/file/magic.mgc \
 		dh_shlibdeps -Llibmagic1 -ldebian/libmagic1/usr/lib
 else
 	dh_shlibdeps -Llibmagic1 -ldebian/libmagic1/usr/lib
