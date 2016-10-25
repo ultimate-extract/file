@@ -1,7 +1,4 @@
 # cherry-picked commits. Keep in chronlogical order
-cherry-pick.FILE5_28-6-g0971151.reduce-the-number-of-x-s-to-appease-linitian.patch
-cherry-pick.FILE5_28-9-g1222ebc.dont-copy-null-igor-gnatenko.patch
-cherry-pick.FILE5_28-10-g73e043d.avoid-double-encoding-with-python3.patch
 
 # local modifications
 local.support-local-definitions-in-etc-magic.patch

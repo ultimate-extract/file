@@ -4,10 +4,6 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
 SHELL := sh -e
 
-ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))
--include /usr/share/python/python.mk
-endif
-
 DEB_HOST_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
 DEB_BUILD_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 DEB_HOST_MULTIARCH	?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
@@ -21,17 +17,11 @@ endif
 # HOWMANY is the number of bytes looked at by file
 CFLAGS += -DHOWMANY=0x18000
 
-ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))
-PYTHON_VERSIONS=$(shell pyversions -r debian/control)
-PYTHON3_VERSIONS=$(shell py3versions -r debian/control)
-endif
-
 %:
-ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))
-	dh ${@} --with autoreconf,python2,python3
-else
-	dh ${@} --with autoreconf
-endif
+	dh $@ $(DH_ADDONS)
+binary-arch build-arch install-arch: DH_ADDONS=--with autoreconf
+binary-indep build-indep install-indep: DH_ADDONS=--with python2,python3
+binary build install: DH_ADDONS=--with autoreconf,python2,python3
 
 override_dh_auto_clean:
 	dh_auto_clean
@@ -40,47 +30,24 @@ override_dh_auto_clean:
 	rm -rf python/__pycache__
 	rm -f python/*.pyc
 
-override_dh_auto_build:
-	dh_auto_build
+override_dh_auto_configure-indep:
+	dh_auto_configure --buildsystem=pybuild --sourcedirectory=python
+override_dh_auto_build-indep:
+	dh_auto_build --buildsystem=pybuild --sourcedirectory=python
+override_dh_auto_test-indep:
+override_dh_auto_install-indep:
+	dh_auto_install --buildsystem=pybuild --sourcedirectory=python
 
-ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))
-	for python in $(PYTHON_VERSIONS); \
-	do \
-		(cd python && $$python setup.py build_ext \
-			-L$(CURDIR)/src/.libs); \
-	done
-
-	for python in $(PYTHON3_VERSIONS); \
-	do \
-		(cd python && $$python setup.py build_ext \
-			-L$(CURDIR)/src/.libs); \
-	done
-endif
-
-override_dh_auto_configure:
+override_dh_auto_configure-arch:
 	dh_auto_configure -- $(CROSS) --prefix=/usr --datadir=\$${prefix}/share --libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) --mandir=\$${prefix}/share/man --enable-fsect-man5 --enable-static --disable-silent-rules CFLAGS="$(CFLAGS)"
 
-override_dh_auto_install:
+override_dh_auto_install-arch:
 	dh_auto_install
 
 	mv debian/tmp/usr/share/misc debian/tmp/usr/share/file
 
 	install -D -m 0644 magic/magic.local debian/tmp/etc/magic
 	install -D -m 0644 magic/magic.local debian/tmp/etc/magic.mime
-
-ifeq (,$(filter stage1,$(DEB_BUILD_PROFILES)))
-	for python in $(PYTHON_VERSIONS); \
-	do \
-		(cd python && $$python setup.py install --no-compile \
-			--root=$(CURDIR)/debian/python-magic $(py_setup_install_args)); \
-	done
-
-	for python in $(PYTHON3_VERSIONS); \
-	do \
-		(cd python && $$python setup.py install --no-compile \
-			--root=$(CURDIR)/debian/python3-magic $(py_setup_install_args)); \
-	done
-endif
 
 	# Install additional headers
 	mkdir -p debian/libmagic-dev/usr/include/file

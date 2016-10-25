@@ -1,3 +1,23 @@
+file (1:5.29-1) unstable; urgency=medium
+
+  * New upstream version 5.28. Addresses (in order of appearance):
+    - "no read permission" if read from empty pipe. Closes: #508963
+    - Mistakes hungarian text as dos executables. Closes: #641012
+    - Does not recognize some GPG key public rings. Closes: #729286
+    - Show more information for MySQL files. Closes: #751826
+    - Linux kernel version string truncated. Closes: #756949
+    - Document file's '-d' option. Closes: #764462
+    - Detect JPEG-XR. Closes: #771303
+    - Detect Material exchange container format (mxf). Closes: #782744
+    - Strengthen detection of Embedded OpenType (EOT). Closes: #784572
+    - Mistakes some text as bitmap. Closes: #799352
+    - Dectect swp files from nano, vim, and kate. Closes: #803219
+    - Mistakes some SVG files as HTML. Closes: #829199
+  * Fix FTCBFS: Remove stage1 profile in favour of a proper arch/indep
+    split. Thanks Helmut Grohne. Closes: #841030
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Tue, 25 Oct 2016 21:09:24 +0200
+
 file (1:5.28-4) unstable; urgency=low
 
   * Ship the compiled magic file in a separate package so libmagic1 is
