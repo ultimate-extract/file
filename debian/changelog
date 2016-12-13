@@ -1,6 +1,15 @@
+file (1:5.29-2) unstable; urgency=medium
+
+  * Include all upstream commits since the 5.29 release. Addresses:
+    - Detect compiled YARA rules. Closes: #833872
+    - Detect old Word for Mac documents. Closes: #842117
+  * Disable detection of Algol68 files, way too many false positives
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Tue, 13 Dec 2016 16:06:43 +0100
+
 file (1:5.29-1) unstable; urgency=medium
 
-  * New upstream version 5.28. Addresses (in order of appearance):
+  * New upstream version 5.29. Addresses (in order of appearance):
     - "no read permission" if read from empty pipe. Closes: #508963
     - Mistakes hungarian text as dos executables. Closes: #641012
     - Does not recognize some GPG key public rings. Closes: #729286
