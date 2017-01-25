@@ -1,3 +1,12 @@
+file (1:5.29-3) unstable; urgency=medium
+
+  * Restore full local.support-local-definitions-in-etc-magic patch.
+    Closes: #852476
+  * Include all upstream commits since the 5.29 release
+  * Improve detection of Flash data. Closes: #838860
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Thu, 26 Jan 2017 00:29:24 +0100
+
 file (1:5.29-2) unstable; urgency=medium
 
   * Include all upstream commits since the 5.29 release. Addresses:

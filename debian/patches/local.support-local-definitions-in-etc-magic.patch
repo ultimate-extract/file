@@ -34,6 +34,28 @@ Last-Update: 2016-06-27
  			file_magwarn(ms, "using regular magic file `%s'", fn);
  		map = apprentice_load(ms, fn, action);
  		if (map == NULL)
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -4,7 +4,7 @@
+ 
+ bin_PROGRAMS = file
+ 
+-AM_CPPFLAGS = -DMAGIC='"$(MAGIC)"'
++AM_CPPFLAGS = -DMAGIC='"/etc/magic:$(MAGIC)"'
+ AM_CFLAGS = $(CFLAG_VISIBILITY) @WARNINGS@
+ 
+ libmagic_la_SOURCES = magic.c apprentice.c softmagic.c ascmagic.c \
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -340,7 +340,7 @@
+ MAGIC = $(pkgdatadir)/magic
+ lib_LTLIBRARIES = libmagic.la
+ nodist_include_HEADERS = magic.h
+-AM_CPPFLAGS = -DMAGIC='"$(MAGIC)"'
++AM_CPPFLAGS = -DMAGIC='"/etc/magic:$(MAGIC)"'
+ AM_CFLAGS = $(CFLAG_VISIBILITY) @WARNINGS@
+ libmagic_la_SOURCES = magic.c apprentice.c softmagic.c ascmagic.c \
+ 	encoding.c compress.c is_tar.c readelf.c print.c fsmagic.c \
 --- a/doc/file.man
 +++ b/doc/file.man
 @@ -57,7 +57,7 @@
