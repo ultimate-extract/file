@@ -1,0 +1,27 @@
+Subject: Don't copy the string past its length (oss-fuzz)
+Origin: FILE5_30-43-g19ccebaf
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sat Apr 8 20:58:03 2017 +0000
+
+--- a/src/readcdf.c
++++ b/src/readcdf.c
+@@ -152,7 +152,7 @@
+         struct timespec ts;
+         char buf[64];
+         const char *str = NULL;
+-        const char *s;
++        const char *s, *e;
+         int len;
+ 
+         if (!NOTMIME(ms) && root_storage)
+@@ -199,7 +199,9 @@
+                                 if (info[i].pi_type == CDF_LENGTH32_WSTRING)
+                                     k++;
+                                 s = info[i].pi_str.s_buf;
+-                                for (j = 0; j < sizeof(vbuf) && len--; s += k) {
++				e = info[i].pi_str.s_buf + len;
++                                for (j = 0; s < e && j < sizeof(vbuf)
++				    && len--; s += k) {
+                                         if (*s == '\0')
+                                                 break;
+                                         if (isprint((unsigned char)*s))

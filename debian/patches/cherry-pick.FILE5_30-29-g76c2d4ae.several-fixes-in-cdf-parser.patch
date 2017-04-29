@@ -1,0 +1,65 @@
+Subject: [ Several fixes in the cdf parser ]
+Origin: FILE5_30-29-g76c2d4ae
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Mon Mar 27 21:34:32 2017 +0000
+
+    - Check the stream offset for sh.sh_len to fit within the stream
+    - Fix wrong test (use o4 instead of slen for offset).
+    - Use left variable to keep track of how many bytes are left.
+
+--- a/src/cdf.c
++++ b/src/cdf.c
+@@ -891,7 +891,7 @@
+ 	int64_t s64;
+ 	uint64_t u64;
+ 	cdf_timestamp_t tp;
+-	size_t i, o4, nelements, j, slen;
++	size_t i, o4, nelements, j, slen, left;
+ 	cdf_property_info_t *inp;
+ 
+ 	if (offs > UINT32_MAX / 4) {
+@@ -907,6 +907,10 @@
+ 		errno = EFTYPE;
+ 		goto out;
+ 	}
++
++	if (cdf_check_stream_offset(sst, h, shp, sh.sh_len, __LINE__) == -1)
++		goto out;
++
+ 	sh.sh_properties = CDF_TOLE4(shp->sh_properties);
+ 	if (sh.sh_properties > CDF_PROP_LIMIT)
+ 		goto out;
+@@ -940,6 +944,7 @@
+ 			nelements = 1;
+ 			slen = 1;
+ 		}
++		left = CAST(size_t, e - q);
+ 		o4 = slen * sizeof(uint32_t);
+ 		if (inp[i].pi_type & (CDF_ARRAY|CDF_BYREF|CDF_RESERVED))
+ 			goto unknown;
+@@ -1008,12 +1013,12 @@
+ 			{
+ 				uint32_t l;
+ 
+-				if (q + slen + sizeof(uint32_t) >= e)
++				if (o4 + sizeof(uint32_t) > left)
+ 					goto out;
+ 
+ 				l = CDF_GETUINT32(q, slen);
+ 				o4 += sizeof(uint32_t);
+-				if (o4 + l > CAST(size_t, e - q))
++				if (o4 + l > left)
+ 					goto out;
+ 
+ 				inp[i].pi_str.s_len = l;
+@@ -1021,8 +1026,8 @@
+ 				    CAST(const void *, &q[o4]));
+ 
+ 				DPRINTF(("o=%zu l=%d(%" SIZE_T_FORMAT
+-				    "u), t=%td s=%s\n", o4, l,
+-				    CDF_ROUND(l, sizeof(l)), e - q,
++				    "u), t=%zu s=%s\n", o4, l,
++				    CDF_ROUND(l, sizeof(l)), left,
+ 				    inp[i].pi_str.s_buf));
+ 
+ 				if (l & 1)

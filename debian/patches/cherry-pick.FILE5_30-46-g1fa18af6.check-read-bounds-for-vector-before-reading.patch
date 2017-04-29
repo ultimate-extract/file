@@ -1,0 +1,28 @@
+Subject: Check read bounds for vector before reading. Found by oss-fuzz
+Origin: FILE5_30-46-g1fa18af6
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Wed Apr 12 14:57:22 2017 +0000
+
+--- a/src/cdf.c
++++ b/src/cdf.c
+@@ -959,7 +959,12 @@
+ 		inp[i].pi_type = CDF_GETUINT32(q, 0);
+ 		DPRINTF(("%" SIZE_T_FORMAT "u) id=%x type=%x offs=0x%tx,0x%x\n",
+ 		    i, inp[i].pi_id, inp[i].pi_type, q - p, offs));
++		left = CAST(size_t, e - q);
+ 		if (inp[i].pi_type & CDF_VECTOR) {
++			if (left < sizeof(uint32_t)) {
++				DPRINTF(("missing CDF_VECTOR length\n"));
++				goto out;
++			}
+ 			nelements = CDF_GETUINT32(q, 1);
+ 			if (nelements == 0) {
+ 				DPRINTF(("CDF_VECTOR with nelements == 0\n"));
+@@ -970,7 +975,6 @@
+ 			nelements = 1;
+ 			slen = 1;
+ 		}
+-		left = CAST(size_t, e - q);
+ 		o4 = slen * sizeof(uint32_t);
+ 		if (inp[i].pi_type & (CDF_ARRAY|CDF_BYREF|CDF_RESERVED))
+ 			goto unknown;

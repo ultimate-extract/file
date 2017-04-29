@@ -1,0 +1,44 @@
+Subject: Prevent reading beyond our buffer when compacting whitespace (oss-fuzz)
+Origin: FILE5_30-12-g77a7041f
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Wed Mar 8 20:45:35 2017 +0000
+
+--- a/src/softmagic.c
++++ b/src/softmagic.c
+@@ -1632,6 +1632,7 @@
+ 	 */
+ 	const unsigned char *a = (const unsigned char *)s1;
+ 	const unsigned char *b = (const unsigned char *)s2;
++	const unsigned char *eb = b + len;
+ 	uint64_t v;
+ 
+ 	/*
+@@ -1646,6 +1647,10 @@
+ 	}
+ 	else { /* combine the others */
+ 		while (len-- > 0) {
++			if (b >= eb) {
++				v = 1;
++				break;
++			}
+ 			if ((flags & STRING_IGNORE_LOWERCASE) &&
+ 			    islower(*a)) {
+ 				if ((v = tolower(*b++) - *a++) != '\0')
+@@ -1661,7 +1666,7 @@
+ 				a++;
+ 				if (isspace(*b++)) {
+ 					if (!isspace(*a))
+-						while (isspace(*b))
++						while (b < eb && isspace(*b))
+ 							b++;
+ 				}
+ 				else {
+@@ -1672,7 +1677,7 @@
+ 			else if ((flags & STRING_COMPACT_OPTIONAL_WHITESPACE) &&
+ 			    isspace(*a)) {
+ 				a++;
+-				while (isspace(*b))
++				while (b < eb && isspace(*b))
+ 					b++;
+ 			}
+ 			else {

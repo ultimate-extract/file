@@ -1,6 +1,6 @@
 
 #------------------------------------------------------------------------------
-# $File: images,v 1.117 2016/07/05 19:12:21 christos Exp $
+# $File: images,v 1.121 2016/12/01 16:20:13 christos Exp $
 # images:  file(1) magic for image formats (see also "iff", and "c-lang" for
 # XPM bitmaps)
 #
@@ -41,7 +41,11 @@
 >>>>>>3	uleshort		0	
 >>>>>>>0	use		tga-image
 # Color Map
->>>>>1	ubyte			>0	
+>>>>>1	belong&0xfff7ffff	0x01010000
+>>>>>>0		use		tga-image
+>>>>>1	belong&0xfff7ffff	0x00020000
+>>>>>>0		use		tga-image
+>>>>>1	belong&0xfff7ffff	0x00030000
 >>>>>>0		use		tga-image
 #	display tga bitmap image information
 0	name				tga-image
@@ -418,6 +422,7 @@
 #
 0	string		\x89PNG\x0d\x0a\x1a\x0a		PNG image data
 !:mime	image/png
+!:strength +10
 >16	belong		x		\b, %d x
 >20	belong		x		%d,
 >24	byte		x		%d-bit
@@ -1451,3 +1456,12 @@
 >0x10	string	GVRT	Sega GVR image:
 >>0x10	use	sega-gvr-image-header
 >>0x08	belong	x	\b, global index = %u
+
+# Light Field Picture
+# Documentation: http://optics.miloush.net/lytro/TheFileFormat.aspx
+# Typical file extensions: .lfp .lfr .lfx
+
+0	belong	0x894C4650
+>4	belong	0x0D0A1A0A
+>12	belong	0x00000000	Lytro Light Field Picture
+>8	belong	x		\b, version %d

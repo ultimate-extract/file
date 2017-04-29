@@ -1,0 +1,27 @@
+Subject: [ Fix continuation level handling ]
+Origin: FILE5_30-47-gdc067431
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Fri Apr 21 16:54:57 2017 +0000
+
+    - if we failed to get the offset at the current continuation level, reduce it
+    - reset continuation level on flush
+    Found by oss-fuzz
+
+--- a/src/softmagic.c
++++ b/src/softmagic.c
+@@ -192,6 +192,7 @@
+ 			while (magindex < nmagic - 1 &&
+ 			    magic[magindex + 1].cont_level != 0)
+ 				magindex++;
++			cont_level = 0;
+ 			continue; /* Skip to next top-level test*/
+ 		}
+ 
+@@ -370,6 +371,7 @@
+ 				case -1:
+ 				case 0:
+ 					flush = 1;
++					cont_level--;
+ 					break;
+ 				default:
+ 					break;

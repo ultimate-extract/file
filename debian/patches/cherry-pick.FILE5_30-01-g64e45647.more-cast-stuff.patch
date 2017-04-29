@@ -1,0 +1,160 @@
+Subject: More cast stuff
+Origin: FILE5_30-1-g64e45647
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Fri Feb 10 18:14:01 2017 +0000
+
+--- a/src/apprentice.c
++++ b/src/apprentice.c
+@@ -549,8 +549,10 @@
+ 		break;
+ 	case MAP_TYPE_MALLOC:
+ 		for (i = 0; i < MAGIC_SETS; i++) {
+-			if ((char *)map->magic[i] >= (char *)map->p &&
+-			    (char *)map->magic[i] <= (char *)map->p + map->len)
++			void *b = map->magic[i];
++			void *p = map->p;
++			if (CAST(char *, b) >= CAST(char *, p) &&
++			    CAST(char *, b) <= CAST(char *, p) + map->len)
+ 				continue;
+ 			free(map->magic[i]);
+ 		}
+--- a/src/cdf.c
++++ b/src/cdf.c
+@@ -811,7 +811,7 @@
+ 		    == 0)
+ 			break;
+ 	if (i > 0)
+-		return i;
++		return CAST(int, i);
+ 
+ 	DPRINTF(("Cannot find type %d `%s'\n", type, name));
+ 	errno = ESRCH;
+@@ -1068,7 +1068,7 @@
+ {
+ 	size_t ss = cdf_check_stream(sst, h);
+ 	const char *b = CAST(const char *, sst->sst_tab);
+-	const char *eb = b + ss * sst->sst_len;
++	const char *nb, *eb = b + ss * sst->sst_len;
+ 	size_t nr, i, j, k;
+ 	cdf_catalog_entry_t *ce;
+ 	uint16_t reclen;
+@@ -1113,7 +1113,9 @@
+ 			cep->ce_namlen = rlen;
+ 
+ 		np = CAST(const uint16_t *, CAST(const void *, (b + 16)));
+-		if (RCAST(const char *, np + cep->ce_namlen) > eb) {
++		nb = CAST(const char *, CAST(const void *,
++		    (np + cep->ce_namlen)));
++		if (nb > eb) {
+ 			cep->ce_namlen = 0;
+ 			break;
+ 		}
+--- a/src/compress.c
++++ b/src/compress.c
+@@ -94,7 +94,7 @@
+ zlibcmp(const unsigned char *buf)
+ {
+ 	unsigned short x = 1;
+-	unsigned char *s = (unsigned char *)&x;
++	unsigned char *s = CCAST(unsigned char *, &x);
+ 
+ 	if ((buf[0] & 0xf) != 8 || (buf[0] & 0x80) != 0)
+ 		return 0;
+@@ -498,7 +498,7 @@
+ 	z.next_in = CCAST(Bytef *, old);
+ 	z.avail_in = CAST(uint32_t, *n);
+ 	z.next_out = *newch;
+-	z.avail_out = bytes_max;
++	z.avail_out = CAST(unsigned int, bytes_max);
+ 	z.zalloc = Z_NULL;
+ 	z.zfree = Z_NULL;
+ 	z.opaque = Z_NULL;
+@@ -633,7 +633,7 @@
+ 		while (isspace((unsigned char)*p))
+ 			p++;
+ 		n = strlen(p);
+-		memmove(ubuf, p, n + 1);
++		memmove(ubuf, p, CAST(size_t, n + 1));
+ 	}
+ 	DPRINTF("Filter error after[[[%s]]]\n", (char *)ubuf);
+ 	if (islower(*ubuf))
+@@ -689,7 +689,7 @@
+ 		}
+ 		
+ 		for (i = 0; i < __arraycount(fdp); i++)
+-			copydesc(i, fdp[i]);
++			copydesc(CAST(int, i), fdp[i]);
+ 
+ 		(void)execvp(compr[method].argv[0],
+ 		    (char *const *)(intptr_t)compr[method].argv);
+--- a/src/der.c
++++ b/src/der.c
+@@ -201,7 +201,7 @@
+ 
+ 	if (*p + len >= l)
+ 		return DER_BAD;
+-	return len;
++	return CAST(uint32_t, len);
+ }
+ 
+ static const char *
+@@ -260,12 +260,12 @@
+ #endif
+ 	if (m->cont_level != 0) {
+ 		if (offs + tlen > nbytes)
+-			return DER_BAD;
+-		ms->c.li[m->cont_level - 1].off = offs + tlen;
++			return -1;
++		ms->c.li[m->cont_level - 1].off = CAST(int, offs + tlen);
+ 		DPRINTF(("cont_level[%u] = %u\n", m->cont_level - 1,
+ 		    ms->c.li[m->cont_level - 1].off));
+ 	}
+-	return offs;
++	return CAST(int32_t, offs);
+ }
+ 
+ int
+--- a/src/print.c
++++ b/src/print.c
+@@ -238,7 +238,7 @@
+ 
+ 	if (flags & FILE_T_WINDOWS) {
+ 		struct timespec ts;
+-		cdf_timestamp_to_timespec(&ts, v);
++		cdf_timestamp_to_timespec(&ts, CAST(cdf_timestamp_t, v));
+ 		t = ts.tv_sec;
+ 	} else {
+ 		// XXX: perhaps detect and print something if overflow
+--- a/src/readelf.c
++++ b/src/readelf.c
+@@ -890,7 +890,7 @@
+ 
+ 	offset = get_offset_from_virtaddr(ms, swap, clazz, fd, ph_off, ph_num,
+ 	    fsize, virtaddr);
+-	if ((buflen = pread(fd, buf, buflen, offset)) <= 0) {
++	if ((buflen = pread(fd, buf, CAST(size_t, buflen), offset)) <= 0) {
+ 		file_badread(ms);
+ 		return 0;
+ 	}
+--- a/src/softmagic.c
++++ b/src/softmagic.c
+@@ -1017,9 +1017,8 @@
+ mconvert(struct magic_set *ms, struct magic *m, int flip)
+ {
+ 	union VALUETYPE *p = &ms->ms_value;
+-	uint8_t type;
+ 
+-	switch (type = cvt_flip(m->type, flip)) {
++	switch (cvt_flip(m->type, flip)) {
+ 	case FILE_BYTE:
+ 		if (cvt_8(p, m) == -1)
+ 			goto out;
+@@ -1184,7 +1183,7 @@
+ 		case FILE_DER:
+ 		case FILE_SEARCH:
+ 			if (offset > nbytes)
+-				offset = nbytes;
++				offset = CAST(uint32_t, nbytes);
+ 			ms->search.s = RCAST(const char *, s) + offset;
+ 			ms->search.s_len = nbytes - offset;
+ 			ms->search.offset = offset;

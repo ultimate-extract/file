@@ -1,0 +1,16 @@
+Subject: Fix out of bounds read; found by oss-fuzz
+Origin: FILE5_30-48-gaee11eef
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sat Apr 22 20:02:34 2017 +0000
+
+--- a/src/cdf.c
++++ b/src/cdf.c
+@@ -961,7 +961,7 @@
+ 		    i, inp[i].pi_id, inp[i].pi_type, q - p, offs));
+ 		left = CAST(size_t, e - q);
+ 		if (inp[i].pi_type & CDF_VECTOR) {
+-			if (left < sizeof(uint32_t)) {
++			if (left < sizeof(uint32_t) * 2) {
+ 				DPRINTF(("missing CDF_VECTOR length\n"));
+ 				goto out;
+ 			}

@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# $File: filesystems,v 1.114 2016/09/05 08:34:25 christos Exp $
+# $File: filesystems,v 1.116 2017/01/03 11:25:37 christos Exp $
 # filesystems:  file(1) magic for different filesystems
 #
 0	name	partid  
@@ -1949,7 +1949,19 @@
 >0	use cdrom
 
 # .cso files
-0    string    CISO	Compressed ISO CD image
+# Reference: http://pismotec.com/ciso/ciso.h
+# NOTE: There are two other formats with the same magic but
+# completely incompatible specifications:
+# - GameCube/Wii CISO: https://github.com/dolphin-emu/dolphin/blob/master/Source/Core/DiscIO/CISOBlob.h
+# - PSP CISO: https://github.com/jamie/ciso/blob/master/ciso.h
+0    string    CISO
+# Other fields are used to determine what type of CISO this is:
+# - 0x04 == 0x00200000: GameCube/Wii CISO (block_size)
+# - 0x10 == 0x00000800: PSP CISO (ISO-9660 sector size)
+# - None of the above: Compact ISO.
+>4	lelong	!0
+>>4	lelong	!0x200000
+>>>0x10	lelong	!0x800		Compressed ISO CD image
 
 # cramfs filesystem - russell@coker.com.au
 0       lelong    0x28cd3d45      Linux Compressed ROM File System data, little endian
@@ -2041,6 +2053,13 @@
 >29	byte	16		\bBlackfin,
 >29	byte	17		\bAVR32,
 >29	byte	18		\bSTMicroelectronics ST200,
+>29	byte	19		\bSandbox architecture,
+>29	byte	20		\bANDES Technology NDS32,
+>29	byte	21		\bOpenRISC 1000,
+>29	byte	22		\bARM 64-bit,
+>29	byte	23		\bDesignWare ARC,
+>29	byte	24		\bx86_64,
+>29	byte	25		\bXtensa,
 >30	byte	0		Invalid Image
 >30	byte	1		Standalone Program
 >30	byte	2		OS Kernel Image

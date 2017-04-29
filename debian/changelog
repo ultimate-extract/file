@@ -1,3 +1,11 @@
+file (1:5.30-1) unstable; urgency=high
+
+  * New upstream version 5.30
+  * Cherry-pick commits that fix issues found by oss-fuzz
+  * Revert new features introduced since 1:5.29-3
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sat, 29 Apr 2017 10:57:11 +0200
+
 file (1:5.29-3) unstable; urgency=medium
 
   * Restore full local.support-local-definitions-in-etc-magic patch.

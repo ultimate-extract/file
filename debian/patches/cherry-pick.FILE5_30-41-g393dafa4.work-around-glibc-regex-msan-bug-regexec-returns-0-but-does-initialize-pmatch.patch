@@ -1,0 +1,18 @@
+Subject: Work around glibc/regex/msan bug regexec returns 0 but does initialize pmatch
+Origin: FILE5_30-41-g393dafa4
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Fri Apr 7 20:10:24 2017 +0000
+
+    Found by oss-fuzz.
+
+--- a/src/funcs.c
++++ b/src/funcs.c
+@@ -509,6 +509,8 @@
+     regmatch_t* pmatch, int eflags)
+ {
+ 	assert(rx->rc == 0);
++	/* XXX: force initialization because glibc does not always do this */
++	memset(pmatch, 0, nmatch * sizeof(*pmatch));
+ 	return regexec(&rx->rx, str, nmatch, pmatch, eflags);
+ }
+ 

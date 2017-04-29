@@ -32,7 +32,7 @@
 #include "file.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: softmagic.c,v 1.238 2016/10/24 18:02:17 christos Exp $")
+FILE_RCSID("@(#)$File: softmagic.c,v 1.243 2017/02/07 23:27:32 christos Exp $")
 #endif	/* lint */
 
 #include "magic.h"
@@ -1260,7 +1260,8 @@ mcopy(struct magic_set *ms, union VALUETYPE *p, int type, int indir,
 				if (*dst == '\0') {
 					if (type == FILE_BESTRING16 ?
 					    *(src - 1) != '\0' :
-					    *(src + 1) != '\0')
+					    ((src + 1 < esrc) &&
+					    *(src + 1) != '\0'))
 						*dst = ' ';
 				}
 			}
@@ -1842,14 +1843,14 @@ magiccheck(struct magic_set *ms, struct magic *m)
 		v = 0;
 
 		for (idx = 0; m->str_range == 0 || idx < m->str_range; idx++) {
-			if (slen + idx > ms->search.s_len)
-				break;
+			if (slen + idx >= ms->search.s_len)
+				return 0;
 
 			v = file_strncmp(m->value.s, ms->search.s + idx, slen,
 			    m->str_flags);
 			if (v == 0) {	/* found match */
 				ms->search.offset += idx;
-				ms->search.rm_len = m->str_range - idx;
+				ms->search.rm_len = ms->search.s_len - idx;
 				break;
 			}
 		}
@@ -1887,7 +1888,7 @@ magiccheck(struct magic_set *ms, struct magic *m)
 			    copy[--slen] = '\0';
 			    search = copy;
 			} else {
-			    search = ms->search.s;
+			    search = CCAST(char *, "");
 			    copy = NULL;
 			}
 			rc = file_regexec(&rx, (const char *)search,

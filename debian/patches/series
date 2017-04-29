@@ -1,5 +1,29 @@
+# reverted commits
+revert.FILE5_29-39-g0e78a704.pr-591-print-if-the-file-has-debug-info.patch
+revert.FILE5_29-46-g53b8d4b0.add-ips-magic.patch
+
 # cherry-picked commits. Keep in upstream's chronological order
-cherry-pick.FILE5_29-38-gafec4e7c.combined.patch
+cherry-pick.FILE5_30-01-g64e45647.more-cast-stuff.patch
+cherry-pick.FILE5_30-11-gb1b4efea.pr-598-off-by-one.patch
+cherry-pick.FILE5_30-12-g77a7041f.prevent-reading-beyond-our-buffer-when-compacting-whitespace-oss-fuzz.patch
+cherry-pick.FILE5_30-14-ga0b25417.use-the-correct-buffer-size-found-by-oss-fuzz.patch
+cherry-pick.FILE5_30-18-g4e4e7609.pr-599-out-of-bounds-read-in-cdf-files.patch
+cherry-pick.FILE5_30-19-g7605984c.although-i-can-t-reproduce-it-oss-fuzz-complains-about-is-tar.patch
+cherry-pick.FILE5_30-22-ged0542b8.better-fix-for-previous.patch
+cherry-pick.FILE5_30-28-g393555f2.try-to-clean-this-up-the-vector-code-is-still-fishy.patch
+cherry-pick.FILE5_30-29-g76c2d4ae.several-fixes-in-cdf-parser.patch
+cherry-pick.FILE5_30-30-gc703aa9f.free-memory-on-error.patch
+cherry-pick.FILE5_30-34-g22067c96.simplify-the-property-info-copy-function-and-check-for-bounds.patch
+cherry-pick.FILE5_30-38-gfd42e119.if-we-could-not-read-a-field-set-it-to-0-found-by-oss-fuzz.patch
+cherry-pick.FILE5_30-39-geb973428.limit-memory-usage-more-to-satisfy-oss-fuzz.patch
+cherry-pick.FILE5_30-41-g393dafa4.work-around-glibc-regex-msan-bug-regexec-returns-0-but-does-initialize-pmatch.patch
+cherry-pick.FILE5_30-42-gf0bcdd07.dont-try-to-read-past-the-end-of-the-properties-found-by-oss-fuzz.patch
+cherry-pick.FILE5_30-43-g19ccebaf.dont-copy-the-string-past-its-length-oss-fuzz.patch
+cherry-pick.FILE5_30-46-g1fa18af6.check-read-bounds-for-vector-before-reading.patch
+cherry-pick.FILE5_30-47-gdc067431.fix-continuation-level-handling.patch
+cherry-pick.FILE5_30-48-gaee11eef.fix-out-of-bounds-read-found-by-oss-fuzz.patch
+cherry-pick.FILE5_30-49-gbf90083a.fix-memory-handling.patch
+cherry-pick.FILE5_30-52-gd8233d09.check-one-more-read-found-by-oss-fuzz.patch
 
 # local modifications
 local.support-local-definitions-in-etc-magic.patch
@@ -8,4 +32,3 @@ local.mention-posixly-correct-dependent-behaviour-in-usage-message.patch
 local.report-gz-as-application-gzip.patch
 local.disable-detection-of-vax-coff-executables.patch
 local.disable-algol68-detection.patch
-local.improve-flash.patch

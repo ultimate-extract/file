@@ -35,7 +35,7 @@
 #include "file.h"
 
 #ifndef lint
-FILE_RCSID("@(#)$File: cdf.c,v 1.85 2016/10/24 18:02:17 christos Exp $")
+FILE_RCSID("@(#)$File: cdf.c,v 1.88 2017/02/07 23:21:29 christos Exp $")
 #endif
 
 #include <assert.h>
@@ -527,8 +527,11 @@ cdf_read_long_sector_chain(const cdf_info_t *info, const cdf_header_t *h,
 	ssize_t nr;
 	scn->sst_tab = NULL;
 	scn->sst_len = cdf_count_chain(sat, sid, ss);
-	scn->sst_dirlen = len;
+	scn->sst_dirlen = MAX(h->h_min_size_standard_stream, len);
 	scn->sst_ss = ss;
+
+	if (sid == CDF_SECID_END_OF_CHAIN || len == 0)
+		return cdf_zero_stream(scn);
 
 	if (scn->sst_len == (size_t)-1)
 		goto out;
@@ -888,8 +891,8 @@ cdf_read_property_info(const cdf_stream_t *sst, const cdf_header_t *h,
 			DPRINTF(("Wrapped around %p < %p\n", q, p));
 			goto out;
 		}
-		if (q > e) {
-			DPRINTF(("Ran of the end %p > %p\n", q, e));
+		if (q >= e) {
+			DPRINTF(("Ran of the end %p >= %p\n", q, e));
 			goto out;
 		}
 		inp[i].pi_id = CDF_GETUINT32(p, i << 1);

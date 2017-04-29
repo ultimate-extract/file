@@ -1,0 +1,26 @@
+Subject: Better fix for previous
+Origin: FILE5_30-22-ged0542b8
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Fri Mar 17 23:56:16 2017 +0000
+
+    [ refers to FILE5_30-19-g7605984c -CB ]
+
+--- a/src/cdf.c
++++ b/src/cdf.c
+@@ -984,11 +984,14 @@
+ 			{
+ 				uint32_t l;
+ 
+-				o4 += sizeof(uint32_t);
+-				if (q + o >= e || q + o4 >= e)
++				if (q + o + sizeof(uint32_t) >= e)
+ 					goto out;
+ 
+ 				l = CDF_GETUINT32(q, o);
++				o4 += sizeof(uint32_t);
++				if (q + o4 + l >= e)
++					goto out;
++
+ 				inp[i].pi_str.s_len = l;
+ 				inp[i].pi_str.s_buf = CAST(const char *,
+ 				    CAST(const void *, &q[o4]));

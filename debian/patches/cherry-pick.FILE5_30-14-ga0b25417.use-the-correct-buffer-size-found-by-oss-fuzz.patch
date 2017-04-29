@@ -1,0 +1,16 @@
+Subject: Use the correct buffer size; found by oss-fuzz
+Origin: FILE5_30-14-ga0b25417
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Thu Mar 9 16:57:53 2017 +0000
+
+--- a/src/readcdf.c
++++ b/src/readcdf.c
+@@ -603,7 +603,7 @@
+ 	if ((i = cdf_read_user_stream(&info, &h, &sat, &ssat, &sst, &dir,
+ 	    "FileHeader", &scn)) != -1) {
+ #define HWP5_SIGNATURE "HWP Document File"
+-		if (scn.sst_dirlen >= sizeof(HWP5_SIGNATURE) - 1
++		if (scn.sst_len * scn.sst_ss >= sizeof(HWP5_SIGNATURE) - 1
+ 		    && memcmp(scn.sst_tab, HWP5_SIGNATURE,
+ 		    sizeof(HWP5_SIGNATURE) - 1) == 0) {
+ 		    if (NOTMIME(ms)) {
