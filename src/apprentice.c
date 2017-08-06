@@ -32,7 +32,7 @@
 #include "file.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: apprentice.c,v 1.257 2017/02/04 16:46:16 christos Exp $")
+FILE_RCSID("@(#)$File: apprentice.c,v 1.260 2017/04/28 16:27:58 christos Exp $")
 #endif	/* lint */
 
 #include "magic.h"
@@ -549,8 +549,10 @@ apprentice_unmap(struct magic_map *map)
 		break;
 	case MAP_TYPE_MALLOC:
 		for (i = 0; i < MAGIC_SETS; i++) {
-			if ((char *)map->magic[i] >= (char *)map->p &&
-			    (char *)map->magic[i] <= (char *)map->p + map->len)
+			void *b = map->magic[i];
+			void *p = map->p;
+			if (CAST(char *, b) >= CAST(char *, p) &&
+			    CAST(char *, b) <= CAST(char *, p) + map->len)
 				continue;
 			free(map->magic[i]);
 		}
@@ -1314,6 +1316,8 @@ apprentice_load(struct magic_set *ms, const char *fn, int action)
 			goto out;
 		}
 		while ((d = readdir(dir)) != NULL) {
+			if (d->d_name[0] == '.')
+				continue;
 			if (asprintf(&mfn, "%s/%s", fn, d->d_name) < 0) {
 				file_oomem(ms,
 				    strlen(fn) + strlen(d->d_name) + 2);
@@ -2351,6 +2355,8 @@ check_format_type(const char *ptr, int type, const char **estr)
 		if (*ptr == '-')
 			ptr++;
 		if (*ptr == '.')
+			ptr++;
+		if (*ptr == '#')
 			ptr++;
 #define CHECKLEN() do { \
 	for (len = cnt = 0; isdigit((unsigned char)*ptr); ptr++, cnt++) \

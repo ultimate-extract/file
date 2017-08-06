@@ -27,7 +27,7 @@
  */
 /*
  * file.h - definitions for file(1) program
- * @(#)$File: file.h,v 1.180 2016/07/20 11:27:08 christos Exp $
+ * @(#)$File: file.h,v 1.182 2017/04/07 19:46:44 christos Exp $
  */
 
 #ifndef __file_h__
@@ -35,6 +35,10 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
+#ifdef HAVE_STDINT_H
+#ifndef __STDC_LIMIT_MACROS
+#define __STDC_LIMIT_MACROS
 #endif
 
 #ifdef WIN32
@@ -50,16 +54,12 @@
   #define INT64_T_FORMAT "ll"
   #define INTMAX_T_FORMAT "j"
 #endif
+#include <stdint.h>
+#endif
 
 #include <stdio.h>	/* Include that here, to make sure __P gets defined */
 #include <errno.h>
 #include <fcntl.h>	/* For open and flags */
-#ifdef HAVE_STDINT_H
-#ifndef __STDC_LIMIT_MACROS
-#define __STDC_LIMIT_MACROS
-#endif
-#include <stdint.h>
-#endif
 #ifdef HAVE_INTTYPES_H
 #include <inttypes.h>
 #endif
