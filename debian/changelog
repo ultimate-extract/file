@@ -1,3 +1,9 @@
+file (1:5.32-1) unstable; urgency=high
+
+  * New upstream version 5.32
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Mon, 04 Sep 2017 18:20:35 +0200
+
 file (1:5.31-1) unstable; urgency=medium
 
   * New upstream version 5.31
