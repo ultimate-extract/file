@@ -2,46 +2,23 @@
 
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 
-SHELL := sh -e
-
-DEB_HOST_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
-DEB_BUILD_GNU_TYPE	?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
-DEB_HOST_MULTIARCH	?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
-
-ifneq ($(DEB_HOST_GNU_TYPE),$(DEB_BUILD_GNU_TYPE))
-	CROSS= --build=$(DEB_BUILD_GNU_TYPE) --host=$(DEB_HOST_GNU_TYPE) CC=$(DEB_HOST_GNU_TYPE)-gcc LD=$(DEB_HOST_GNU_TYPE)-ld
-else
-	CROSS= --build=$(DEB_BUILD_GNU_TYPE)
-endif
-
 # HOWMANY is the number of bytes looked at by file
 CFLAGS += -DHOWMANY=0x18000
 
 %:
-	dh $@ $(DH_ADDONS)
-binary-arch build-arch install-arch: DH_ADDONS=--with autoreconf
-binary-indep build-indep install-indep: DH_ADDONS=--with python2,python3
-binary build install: DH_ADDONS=--with autoreconf,python2,python3
+	dh $@
 
-override_dh_auto_clean:
-	dh_auto_clean
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		--prefix=/usr \
+		--datadir=\$${prefix}/share \
+		--libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
+		--mandir=\$${prefix}/share/man \
+		--enable-fsect-man5 \
+		--enable-static \
+		--disable-silent-rules CFLAGS="$(CFLAGS)"
 
-	rm -rf python/build
-	rm -rf python/__pycache__
-	rm -f python/*.pyc
-
-override_dh_auto_configure-indep:
-	dh_auto_configure --buildsystem=pybuild --sourcedirectory=python
-override_dh_auto_build-indep:
-	dh_auto_build --buildsystem=pybuild --sourcedirectory=python
-override_dh_auto_test-indep:
-override_dh_auto_install-indep:
-	dh_auto_install --buildsystem=pybuild --sourcedirectory=python
-
-override_dh_auto_configure-arch:
-	dh_auto_configure -- $(CROSS) --prefix=/usr --datadir=\$${prefix}/share --libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) --mandir=\$${prefix}/share/man --enable-fsect-man5 --enable-static --disable-silent-rules CFLAGS="$(CFLAGS)"
-
-override_dh_auto_install-arch:
+override_dh_auto_install:
 	dh_auto_install
 
 	mv debian/tmp/usr/share/misc debian/tmp/usr/share/file
@@ -56,16 +33,8 @@ override_dh_auto_install-arch:
 	# Remove useless files
 	rm -f debian/tmp/usr/lib/*/*.la
 
-override_dh_install:
-	dh_install --fail-missing
+override_dh_missing:
+	dh_missing --fail-missing
 
 override_dh_shlibdeps:
-ifeq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
-	# use the just built file in dh_shlibdeps
-	PATH=$(CURDIR)/debian/file/usr/bin:$$PATH \
-		LD_LIBRARY_PATH=$(CURDIR)/debian/libmagic1/usr/lib/$(DEB_HOST_MULTIARCH)$${LD_LIBRARY_PATH+:$${LD_LIBRARY_PATH}} \
-		MAGIC=$(CURDIR)/debian/libmagic-mgc/usr/share/file/magic.mgc \
-		dh_shlibdeps -Llibmagic1 -ldebian/libmagic1/usr/lib
-else
 	dh_shlibdeps -Llibmagic1 -ldebian/libmagic1/usr/lib
-endif

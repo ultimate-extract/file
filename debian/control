@@ -2,17 +2,8 @@ Source: file
 Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
 Homepage: http://www.darwinsys.com/file/
 Standards-Version: 4.0.1
-Build-Depends: debhelper (>= 9.20141010~),
-    dpkg-dev (>= 1.17.14~),
-Build-Depends-Arch:
-    dh-autoreconf,
+Build-Depends: debhelper (>= 10~),
     zlib1g-dev,
-Build-Depends-Indep:
-    dh-python,
-    python-all,
-    python-setuptools,
-    python3-all,
-    python3-setuptools,
 Priority: standard
 Section: utils
 
@@ -36,6 +27,7 @@ Depends: ${misc:Depends}, ${shlibs:Depends},
 Suggests:
     file,
 Section: libs
+Priority: optional
 Multi-Arch: same
 Description: Recognize the type of data in a file using "magic" numbers - library
  This library can be used to classify files according to magic number
@@ -49,6 +41,7 @@ Breaks:
 Replaces:
     libmagic1 (<< 1:5.28-4~),
 Section: libs
+Priority: optional
 Multi-Arch: foreign
 Description: File type determination library using "magic" numbers (compiled magic file)
  This package provides the compiled magic file "magic.mgc". It has
@@ -70,28 +63,3 @@ Description: Recognize the type of data in a file using "magic" numbers - develo
  tests.
  .
  This package contains the development files.
-
-Package: python-magic
-Architecture: all
-Depends: ${misc:Depends},
-    ${python:Depends},
-    libmagic1 (>= ${binary:Version}),
-    libmagic1 (<< ${binary:Version}.1~),
-Provides:
-    ${python:Provides},
-Section: python
-Priority: optional
-Description: Recognize the type of data in a file using "magic" numbers - Python bindings
- This package contains the Python bindings for the libmagic file type
- detection library.
-
-Package: python3-magic
-Architecture: all
-Depends: ${misc:Depends}, ${python3:Depends},
-    libmagic1 (>= ${binary:Version}),
-    libmagic1 (<< ${binary:Version}.1~),
-Section: python
-Priority: optional
-Description: Recognize the type of data in a file using "magic" numbers - Python 3 bindings
- This package contains the Python 3 bindings for the libmagic file type
- detection library.

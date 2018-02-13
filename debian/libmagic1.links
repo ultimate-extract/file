@@ -2,4 +2,4 @@
 # upstream and many applications expect the magic in /usr/share/misc/,
 # other in /usr/share/file/.
 # Provide symlinks in the hope everybody gets satisfied.
-/usr/share/file/magic       /usr/share/misc/magic
+usr/share/file/magic    usr/share/misc/magic

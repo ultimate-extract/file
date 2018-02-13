@@ -3,5 +3,5 @@
 # other in /usr/share/file/. The compiled magic however is
 # arch-dependent and must therefore be in /usr/lib/
 # Provide symlinks in the hope everybody gets satisfied.
-/usr/lib/file/magic.mgc     /usr/share/file/magic.mgc
-/usr/lib/file/magic.mgc     /usr/share/misc/magic.mgc
+usr/lib/file/magic.mgc  usr/share/file/magic.mgc
+usr/lib/file/magic.mgc  usr/share/misc/magic.mgc
