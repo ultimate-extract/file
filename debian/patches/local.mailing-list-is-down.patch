@@ -1,0 +1,21 @@
+Description: Mark currently offline addresses as such
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Forwarded: no
+Last-Update: 2018-04-22
+
+--- a/doc/file.man
++++ b/doc/file.man
+@@ -624,10 +624,13 @@
+ .Sh BUGS
+ Please report bugs and send patches to the bug tracker at
+ .Pa http://bugs.gw.com/
++[currently down]
+ or the mailing list at
+ .Aq file@mx.gw.com
++[currently down]
+ (visit
+ .Pa http://mx.gw.com/mailman/listinfo/file
++[currently down]
+ first to subscribe).
+ .Sh TODO
+ Fix output so that tests for MIME and APPLE flags are not needed all

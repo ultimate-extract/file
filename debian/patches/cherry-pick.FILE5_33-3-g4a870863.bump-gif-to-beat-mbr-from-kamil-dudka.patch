@@ -1,0 +1,17 @@
+Subject: Bump gif to beat mbr (from Kamil Dudka)
+Origin: FILE5_33-3-g4a870863
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Tue Apr 17 12:09:20 2018 +0000
+
+--- a/magic/Magdir/images
++++ b/magic/Magdir/images
+@@ -464,7 +464,9 @@
+ !:mime	image/x-unknown
+ 
+ # GIF
++# Strength set up to beat 0x55AA DOS/MBR signature word lookups (+65)
+ 0	string		GIF8		GIF image data
++!:strength +80
+ !:mime	image/gif
+ !:apple	8BIMGIFf
+ >4	string		7a		\b, version 8%s,

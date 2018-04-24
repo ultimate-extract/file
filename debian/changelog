@@ -1,3 +1,9 @@
+file (1:5.33-1) unstable; urgency=low
+
+  * New upstream version 5.33
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Tue, 24 Apr 2018 07:39:10 +0200
+
 file (1:5.32-2) unstable; urgency=medium
 
   * No longer ship python-magic libraries, they are now provided

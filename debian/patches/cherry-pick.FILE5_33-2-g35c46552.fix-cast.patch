@@ -1,0 +1,16 @@
+Subject: Fix cast
+Origin: FILE5_33-2-g35c46552
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sun Apr 15 19:57:59 2018 +0000
+
+--- a/src/apprentice.c
++++ b/src/apprentice.c
+@@ -3335,7 +3335,7 @@
+ bs1(struct magic *m)
+ {
+ 	m->cont_level = swap2(m->cont_level);
+-	m->offset = swap4((int32_t)m->offset);
++	m->offset = swap4((uint32_t)m->offset);
+ 	m->in_offset = swap4((uint32_t)m->in_offset);
+ 	m->lineno = swap4((uint32_t)m->lineno);
+ 	if (IS_STRING(m->type)) {
