@@ -1,0 +1,20 @@
+Subject: Disable erroneous DBPF detection that breaks SQLite and some more
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Date: 2018-04-29
+Bug-Debian: https://bugs.debian.org/897153
+Forwarded: no, how?
+
+--- a/magic/Magdir/dbpf
++++ b/magic/Magdir/dbpf
+@@ -11,7 +11,7 @@
+ >>>36	ulelong	x       \b, files: %u
+ !:ext	dbpf/package/dat/sc4
+ !:mime	application/x-maxis-dbpf
+-4	ulelong	1
+->8	ulelong	!1
+->>24	ledate	!0	\b, created: %s
+->>>28	ledate	!0	\b, modified: %s
++#4	ulelong	1
++#>8	ulelong	!1
++#>>24	ledate	!0	\b, created: %s
++#>>>28	ledate	!0	\b, modified: %s

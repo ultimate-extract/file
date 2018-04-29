@@ -2,6 +2,10 @@
 cherry-pick.FILE5_33-2-g35c46552.fix-cast.patch
 cherry-pick.FILE5_33-3-g4a870863.bump-gif-to-beat-mbr-from-kamil-dudka.patch
 
+# patches that should go upstream
+upstream.coff-amd64.patch
+upstream.disable-erroneous-dbpf.patch
+
 # local modifications
 local.support-local-definitions-in-etc-magic.patch
 local.don-t-include-libs-in-build.patch

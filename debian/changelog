@@ -1,3 +1,11 @@
+file (1:5.33-2) unstable; urgency=medium
+
+  * Recognize ia64 and amd64 COFF files. Closes: #877643
+  * Disable erroneous DBPF detection that breaks SQLite and some
+    more. Closes: 897153
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 29 Apr 2018 12:13:32 +0200
+
 file (1:5.33-1) unstable; urgency=low
 
   * New upstream version 5.33

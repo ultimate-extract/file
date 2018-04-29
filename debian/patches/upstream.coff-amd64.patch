@@ -1,0 +1,32 @@
+Subject: Recognize ia64 and amd64 COFF files
+Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Date: 2017-10-06
+Bug-Debian: https://bugs.debian.org/697846
+Forwarded: no, how?
+
+--- a/magic/Magdir/coff
++++ b/magic/Magdir/coff
+@@ -26,6 +26,10 @@
+ >>0	uleshort	0x0550		Hitachi SH little-endian
+ # executable (RISC System/6000 V3.1) or obj module (./ibm6000)
+ #>>0	uleshort	0x01DF
++# MS Windows COFF Intel Itanium, AMD64
++# https://msdn.microsoft.com/en-us/library/windows/desktop/ms680313(v=vs.85).aspx
++>>0	uleshort	0x0200		Intel ia64
++>>0	uleshort	0x8664		Intel amd64
+ # TODO for other COFFs
+ #>>0	uleshort	0xABCD		COFF_TEMPLATE
+ >>0	default		x
+--- a/magic/Magdir/intel
++++ b/magic/Magdir/intel
+@@ -42,6 +42,10 @@
+ #>12	lelong		>0		not stripped
+ # no hint found, that at offset 22 is version
+ #>22	leshort		>0		- version %d
++0	leshort		0x0200
++>0	use				display-coff
++0	leshort		0x8664
++>0	use				display-coff
+ 
+ # rom: file(1) magic for BIOS ROM Extensions found in intel machines
+ #      mapped into memory between 0xC0000 and 0xFFFFF
