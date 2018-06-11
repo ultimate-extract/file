@@ -1,3 +1,10 @@
+file (1:5.33-3) unstable; urgency=high
+
+  * Avoid reading past the end of buffer. Closes: #901351
+    [CVE-2018-10360]
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Mon, 11 Jun 2018 22:52:24 +0200
+
 file (1:5.33-2) unstable; urgency=medium
 
   * Recognize ia64 and amd64 COFF files. Closes: #877643
