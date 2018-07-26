@@ -2,7 +2,7 @@ Subject: Recognize ia64 and amd64 COFF files
 Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
 Date: 2017-10-06
 Bug-Debian: https://bugs.debian.org/697846
-Forwarded: no, how?
+Forwarded: https://bugs.astron.com/view_all_bug_page.php
 
 --- a/magic/Magdir/coff
 +++ b/magic/Magdir/coff

@@ -1,11 +1,7 @@
 # cherry-picked commits. Keep in upstream's chronological order
-cherry-pick.FILE5_33-2-g35c46552.fix-cast.patch
-cherry-pick.FILE5_33-3-g4a870863.bump-gif-to-beat-mbr-from-kamil-dudka.patch
-cherry-pick.FILE5_33-31-ga642587a.avoid-reading-past-the-end-of-buffer.patch
 
 # patches that should go upstream
 upstream.coff-amd64.patch
-upstream.disable-erroneous-dbpf.patch
 
 # local modifications
 local.support-local-definitions-in-etc-magic.patch
@@ -14,4 +10,4 @@ local.mention-posixly-correct-dependent-behaviour-in-usage-message.patch
 local.report-gz-as-application-gzip.patch
 local.disable-detection-of-vax-coff-executables.patch
 local.disable-algol68-detection.patch
-local.mailing-list-is-down.patch
+local.extra-magic.patch

@@ -47,7 +47,7 @@ Last-Update: 2016-06-27
  libmagic_la_SOURCES = buffer.c magic.c apprentice.c softmagic.c ascmagic.c \
 --- a/src/Makefile.in
 +++ b/src/Makefile.in
-@@ -299,7 +299,7 @@
+@@ -340,7 +340,7 @@
  MAGIC = $(pkgdatadir)/magic
  lib_LTLIBRARIES = libmagic.la
  nodist_include_HEADERS = magic.h
