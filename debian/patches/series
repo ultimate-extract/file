@@ -1,7 +1,11 @@
 # cherry-picked commits. Keep in upstream's chronological order
+cherry-pick.FILE5_34-2-gedb7f0d6.pr-9-christoph-bield-handle-files-without-program-headers-gracefully.patch
+cherry-pick.FILE5_34-26-gc673ce51.pr-19-recognize-ia64-and-amd64-coff-files.patch
+cherry-pick.FILE5_34-27-gc2926e0d.pr-16-add-autocad-dxf-magic.patch
+cherry-pick.FILE5_34-29-g4efd402b.pr-10-add-sketchup.patch
+cherry-pick.FILE5_34-30-g9b8cfc02.new-edid-magic.patch
 
 # patches that should go upstream
-upstream.coff-amd64.patch
 
 # local modifications
 local.support-local-definitions-in-etc-magic.patch

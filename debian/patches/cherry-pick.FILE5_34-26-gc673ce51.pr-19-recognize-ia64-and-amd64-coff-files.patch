@@ -1,8 +1,8 @@
-Subject: Recognize ia64 and amd64 COFF files
-Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
-Date: 2017-10-06
+Subject: PR/19: Recognize ia64 and amd64 COFF files
+Origin: FILE5_34-26-gc673ce51 <https://github.com/file/file/commit/FILE5_34-26-gc673ce51>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Wed Aug 1 10:34:03 2018 +0000
 Bug-Debian: https://bugs.debian.org/697846
-Forwarded: https://bugs.astron.com/view_all_bug_page.php
 
 --- a/magic/Magdir/coff
 +++ b/magic/Magdir/coff
@@ -19,6 +19,14 @@ Forwarded: https://bugs.astron.com/view_all_bug_page.php
  >>0	default		x
 --- a/magic/Magdir/intel
 +++ b/magic/Magdir/intel
+@@ -1,6 +1,6 @@
+ 
+ #------------------------------------------------------------------------------
+-# $File: intel,v 1.16 2017/11/14 15:48:36 christos Exp $
++# $File: intel,v 1.17 2018/08/01 10:34:03 christos Exp $
+ # intel:  file(1) magic for x86 Unix
+ #
+ # Various flavors of x86 UNIX executable/object (other than Xenix, which
 @@ -42,6 +42,10 @@
  #>12	lelong		>0		not stripped
  # no hint found, that at offset 22 is version

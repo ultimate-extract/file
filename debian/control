@@ -1,6 +1,6 @@
 Source: file
 Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
-Homepage: http://www.darwinsys.com/file/
+Homepage: https://www.darwinsys.com/file/
 Standards-Version: 4.1.5
 Vcs-Browser: https://git.in-ulm.de/cbiedl/file
 Vcs-Git: https://git.in-ulm.de/cbiedl/file.git

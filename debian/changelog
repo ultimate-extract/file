@@ -1,3 +1,10 @@
+file (1:5.34-2) unstable; urgency=medium
+
+  * Cherry-pick from upstream: Handle [elf] files without program
+    headers gracefully. Closes: #882310
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 05 Aug 2018 19:53:19 +0200
+
 file (1:5.34-1) experimental; urgency=medium
 
   * New upstream version 5.34, upload to experimental

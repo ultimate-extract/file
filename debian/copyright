@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: file
-Upstream-Contact: http://mx.gw.com/mailman/listinfo/file
+Upstream-Contact: https://bugs.astron.com/my_view_page.php
 Source: ftp://ftp.astron.com/pub/file/
 
 Files: *
