@@ -40,7 +40,7 @@
 #include "file.h"
 
 #ifndef lint
-FILE_RCSID("@(#)$File: is_tar.c,v 1.41 2017/11/02 20:25:39 christos Exp $")
+FILE_RCSID("@(#)$File: is_tar.c,v 1.43 2018/10/15 16:29:16 christos Exp $")
 #endif
 
 #include "magic.h"
@@ -62,7 +62,7 @@ static const char tartype[][32] = {	/* should be equal to messages */
 protected int
 file_is_tar(struct magic_set *ms, const struct buffer *b)
 {
-	const unsigned char *buf = b->fbuf;
+	const unsigned char *buf = CAST(const unsigned char *, b->fbuf);
 	size_t nbytes = b->flen;
 	/*
 	 * Do the tar test first, because if the first file in the tar
@@ -78,9 +78,13 @@ file_is_tar(struct magic_set *ms, const struct buffer *b)
 	if (tar < 1 || tar > 3)
 		return 0;
 
+	if (mime == MAGIC_MIME_ENCODING)
+		return 1;
+
 	if (file_printf(ms, "%s", mime ? "application/x-tar" :
 	    tartype[tar - 1]) == -1)
 		return -1;
+
 	return 1;
 }
 

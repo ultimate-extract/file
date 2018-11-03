@@ -32,7 +32,7 @@
 #include "file.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: file.c,v 1.175 2018/03/02 16:11:37 christos Exp $")
+FILE_RCSID("@(#)$File: file.c,v 1.178 2018/10/01 18:50:31 christos Exp $")
 #endif	/* lint */
 
 #include "magic.h"
@@ -128,6 +128,7 @@ private const struct {
 	{ "encoding",	MAGIC_NO_CHECK_ENCODING },
 	{ "soft",	MAGIC_NO_CHECK_SOFT },
 	{ "tar",	MAGIC_NO_CHECK_TAR },
+	{ "json",	MAGIC_NO_CHECK_JSON },
 	{ "text",	MAGIC_NO_CHECK_TEXT },	/* synonym for ascii */
 	{ "tokens",	MAGIC_NO_CHECK_TOKENS }, /* OBSOLETE: ignored for backwards compatibility */
 };
@@ -136,14 +137,15 @@ private struct {
 	const char *name;
 	int tag;
 	size_t value;
+	int set;
 } pm[] = {
-	{ "indir",	MAGIC_PARAM_INDIR_MAX, 0 },
-	{ "name",	MAGIC_PARAM_NAME_MAX, 0 },
-	{ "elf_phnum",	MAGIC_PARAM_ELF_PHNUM_MAX, 0 },
-	{ "elf_shnum",	MAGIC_PARAM_ELF_SHNUM_MAX, 0 },
-	{ "elf_notes",	MAGIC_PARAM_ELF_NOTES_MAX, 0 },
-	{ "regex",	MAGIC_PARAM_REGEX_MAX, 0 },
-	{ "bytes",	MAGIC_PARAM_BYTES_MAX, 0 },
+	{ "indir",	MAGIC_PARAM_INDIR_MAX, 0, 0 },
+	{ "name",	MAGIC_PARAM_NAME_MAX, 0, 0 },
+	{ "elf_phnum",	MAGIC_PARAM_ELF_PHNUM_MAX, 0, 0 },
+	{ "elf_shnum",	MAGIC_PARAM_ELF_SHNUM_MAX, 0, 0 },
+	{ "elf_notes",	MAGIC_PARAM_ELF_NOTES_MAX, 0, 0 },
+	{ "regex",	MAGIC_PARAM_REGEX_MAX, 0, 0 },
+	{ "bytes",	MAGIC_PARAM_BYTES_MAX, 0, 0 },
 };
 
 private int posixly;
@@ -426,7 +428,7 @@ applyparam(magic_t magic)
 	size_t i;
 
 	for (i = 0; i < __arraycount(pm); i++) {
-		if (pm[i].value == 0)
+		if (!pm[i].set)
 			continue;
 		if (magic_setparam(magic, pm[i].tag, &pm[i].value) == -1)
 			file_err(EXIT_FAILURE, "Can't set %s", pm[i].name);
@@ -446,6 +448,7 @@ setparam(const char *p)
 		if (strncmp(p, pm[i].name, s - p) != 0)
 			continue;
 		pm[i].value = atoi(s + 1);
+		pm[i].set = 1;
 		return;
 	}
 badparm:
@@ -628,7 +631,7 @@ docprint(const char *opts, int def)
 	comma = 0;
 	for (i = 0; i < __arraycount(nv); i++) {
 		fprintf(stdout, "%s%s", comma++ ? ", " : "", nv[i].name);
-		if (i && i % 5 == 0) {
+		if (i && i % 5 == 0 && i != __arraycount(nv) - 1) {
 			fprintf(stdout, ",\n%*s", (int)(p - sp - 1), "");
 			comma = 0;
 		}
@@ -653,7 +656,7 @@ help(void)
 #include "file_opts.h"
 #undef OPT
 #undef OPT_LONGONLY
-	fprintf(stdout, "\nReport bugs to http://bugs.gw.com/\n");
+	fprintf(stdout, "\nReport bugs to https://bugs.astron.com/\n");
 	exit(EXIT_SUCCESS);
 }
 

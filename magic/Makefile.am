@@ -1,5 +1,5 @@
 #
-# $File: Makefile.am,v 1.133 2018/06/06 01:16:40 christos Exp $
+# $File: Makefile.am,v 1.138 2018/10/16 12:07:08 christos Exp $
 #
 MAGIC_FRAGMENT_BASE = Magdir
 MAGIC_DIR = $(top_srcdir)/magic
@@ -38,6 +38,7 @@ $(MAGIC_FRAGMENT_DIR)/beetle \
 $(MAGIC_FRAGMENT_DIR)/bflt \
 $(MAGIC_FRAGMENT_DIR)/bhl \
 $(MAGIC_FRAGMENT_DIR)/bioinformatics \
+$(MAGIC_FRAGMENT_DIR)/biosig \
 $(MAGIC_FRAGMENT_DIR)/blackberry \
 $(MAGIC_FRAGMENT_DIR)/blcr \
 $(MAGIC_FRAGMENT_DIR)/blender \
@@ -105,6 +106,7 @@ $(MAGIC_FRAGMENT_DIR)/gcc \
 $(MAGIC_FRAGMENT_DIR)/gconv \
 $(MAGIC_FRAGMENT_DIR)/geo \
 $(MAGIC_FRAGMENT_DIR)/geos \
+$(MAGIC_FRAGMENT_DIR)/glibc \
 $(MAGIC_FRAGMENT_DIR)/gimp \
 $(MAGIC_FRAGMENT_DIR)/gnome \
 $(MAGIC_FRAGMENT_DIR)/gnu \
@@ -115,6 +117,7 @@ $(MAGIC_FRAGMENT_DIR)/grace \
 $(MAGIC_FRAGMENT_DIR)/graphviz \
 $(MAGIC_FRAGMENT_DIR)/gringotts \
 $(MAGIC_FRAGMENT_DIR)/guile \
+$(MAGIC_FRAGMENT_DIR)/hardware \
 $(MAGIC_FRAGMENT_DIR)/hitachi-sh \
 $(MAGIC_FRAGMENT_DIR)/hp \
 $(MAGIC_FRAGMENT_DIR)/human68k \
@@ -136,6 +139,7 @@ $(MAGIC_FRAGMENT_DIR)/karma \
 $(MAGIC_FRAGMENT_DIR)/kde \
 $(MAGIC_FRAGMENT_DIR)/keepass \
 $(MAGIC_FRAGMENT_DIR)/kerberos \
+$(MAGIC_FRAGMENT_DIR)/kicad \
 $(MAGIC_FRAGMENT_DIR)/kml \
 $(MAGIC_FRAGMENT_DIR)/lecter \
 $(MAGIC_FRAGMENT_DIR)/lex \
@@ -300,7 +304,7 @@ $(MAGIC_FRAGMENT_DIR)/yara \
 $(MAGIC_FRAGMENT_DIR)/zfs \
 $(MAGIC_FRAGMENT_DIR)/zilog \
 $(MAGIC_FRAGMENT_DIR)/zip \
-$(MAGIC_FRAGMENT_DIR)/zyxel 
+$(MAGIC_FRAGMENT_DIR)/zyxel
 
 MAGIC = magic.mgc
 CLEANFILES = ${MAGIC} $(MAGIC_FRAGMENT_DIR)/Localstuff

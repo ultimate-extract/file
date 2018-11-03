@@ -1,7 +1,7 @@
 /*
  * Copyright (c) Christos Zoulas 2003.
  * All Rights Reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -11,7 +11,7 @@
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- *  
+ *
  * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -27,7 +27,7 @@
 #include "file.h"
 
 #ifndef lint
-FILE_RCSID("@(#)$File: readelf.c,v 1.144 2018/07/08 23:37:33 christos Exp $")
+FILE_RCSID("@(#)$File: readelf.c,v 1.154 2018/10/15 16:29:16 christos Exp $")
 #endif
 
 #ifdef BUILTIN_ELF
@@ -69,7 +69,7 @@ toomany(struct magic_set *ms, const char *name, uint16_t num)
 {
 	if (file_printf(ms, ", too many %s (%u)", name, num) == -1)
 		return -1;
-	return 0;
+	return 1;
 }
 
 private uint16_t
@@ -85,7 +85,7 @@ getu16(int swap, uint16_t value)
 
 		retval.c[0] = tmpval.c[1];
 		retval.c[1] = tmpval.c[0];
-		
+
 		return retval.ui;
 	} else
 		return value;
@@ -106,7 +106,7 @@ getu32(int swap, uint32_t value)
 		retval.c[1] = tmpval.c[2];
 		retval.c[2] = tmpval.c[1];
 		retval.c[3] = tmpval.c[0];
-		
+
 		return retval.ui;
 	} else
 		return value;
@@ -131,7 +131,7 @@ getu64(int swap, uint64_t value)
 		retval.c[5] = tmpval.c[2];
 		retval.c[6] = tmpval.c[1];
 		retval.c[7] = tmpval.c[0];
-		
+
 		return retval.ui;
 	} else
 		return value;
@@ -352,6 +352,11 @@ dophn_core(struct magic_set *ms, int clazz, int swap, int fd, off_t off,
 	off_t ph_off = off;
 	int ph_num = num;
 
+	if (num == 0) {
+		if (file_printf(ms, ", no program header") == -1)
+			return -1;
+		return 0;
+	}
 	if (size != xph_sizeof) {
 		if (file_printf(ms, ", corrupted program header size") == -1)
 			return -1;
@@ -461,25 +466,25 @@ do_note_freebsd_version(struct magic_set *ms, int swap, void *v)
 	 * Contents is __FreeBSD_version, whose relation to OS
 	 * versions is defined by a huge table in the Porter's
 	 * Handbook.  This is the general scheme:
-	 * 
+	 *
 	 * Releases:
 	 * 	Mmp000 (before 4.10)
 	 * 	Mmi0p0 (before 5.0)
 	 * 	Mmm0p0
-	 * 
+	 *
 	 * Development branches:
 	 * 	Mmpxxx (before 4.6)
 	 * 	Mmp1xx (before 4.10)
 	 * 	Mmi1xx (before 5.0)
 	 * 	M000xx (pre-M.0)
 	 * 	Mmm1xx
-	 * 
+	 *
 	 * M = major version
 	 * m = minor version
 	 * i = minor version increment (491000 -> 4.10)
 	 * p = patchlevel
 	 * x = revision
-	 * 
+	 *
 	 * The first release of FreeBSD to use ELF by default
 	 * was version 3.0.
 	 */
@@ -560,7 +565,7 @@ do_bid_note(struct magic_set *ms, unsigned char *nbuf, uint32_t type,
 	    type == NT_GO_BUILD_ID && descsz < 128) {
 		if (file_printf(ms, ", Go BuildID=%s",
 		    (char *)&nbuf[doff]) == -1)
-			return 1;
+			return -1;
 		return 1;
 	}
 	return 0;
@@ -572,9 +577,11 @@ do_os_note(struct magic_set *ms, unsigned char *nbuf, uint32_t type,
     size_t noff, size_t doff, int *flags)
 {
 	if (namesz == 5 && strcmp((char *)&nbuf[noff], "SuSE") == 0 &&
-	    type == NT_GNU_VERSION && descsz == 2) {
-	    *flags |= FLAGS_DID_OS_NOTE;
-	    file_printf(ms, ", for SuSE %d.%d", nbuf[doff], nbuf[doff + 1]);
+		type == NT_GNU_VERSION && descsz == 2) {
+		*flags |= FLAGS_DID_OS_NOTE;
+		if (file_printf(ms, ", for SuSE %d.%d", nbuf[doff],
+		    nbuf[doff + 1]) == -1)
+		    return -1;
 	    return 1;
 	}
 
@@ -609,7 +616,7 @@ do_os_note(struct magic_set *ms, unsigned char *nbuf, uint32_t type,
 			break;
 		default:
 			if (file_printf(ms, "<unknown>") == -1)
-				return 1; 
+				return 1;
 		}
 		if (file_printf(ms, " %d.%d.%d", elf_getu32(swap, desc[1]),
 		    elf_getu32(swap, desc[2]), elf_getu32(swap, desc[3])) == -1)
@@ -720,7 +727,7 @@ do_core_note(struct magic_set *ms, unsigned char *nbuf, uint32_t type,
 	if ((namesz == 4 && strncmp((char *)&nbuf[noff], "CORE", 4) == 0) ||
 	    (namesz == 5 && strcmp((char *)&nbuf[noff], "CORE") == 0)) {
 		os_style = OS_STYLE_SVR4;
-	} 
+	}
 
 	if ((namesz == 8 && strcmp((char *)&nbuf[noff], "FreeBSD") == 0)) {
 		os_style = OS_STYLE_FREEBSD;
@@ -750,7 +757,7 @@ do_core_note(struct magic_set *ms, unsigned char *nbuf, uint32_t type,
 			if (file_printf(ms, ", from '%.31s', pid=%u, uid=%u, "
 			    "gid=%u, nlwps=%u, lwp=%u (signal %u/code %u)",
 			    file_printable(sbuf, sizeof(sbuf),
-			    CAST(char *, pi.cpi_name)),
+			    RCAST(char *, pi.cpi_name)),
 			    elf_getu32(swap, (uint32_t)pi.cpi_pid),
 			    elf_getu32(swap, pi.cpi_euid),
 			    elf_getu32(swap, pi.cpi_egid),
@@ -763,6 +770,28 @@ do_core_note(struct magic_set *ms, unsigned char *nbuf, uint32_t type,
 			*flags |= FLAGS_DID_CORE;
 			return 1;
 		}
+		break;
+
+	case OS_STYLE_FREEBSD:
+		if (type == NT_PRPSINFO && *flags & FLAGS_IS_CORE) {
+			size_t argoff, pidoff;
+
+			if (clazz == ELFCLASS32)
+				argoff = 4 + 4 + 17;
+			else
+				argoff = 4 + 4 + 8 + 17;
+			if (file_printf(ms, ", from '%.80s'", nbuf + doff +
+			    argoff) == -1)
+				return 1;
+			pidoff = argoff + 81 + 2;
+			if (doff + pidoff + 4 <= size) {
+				if (file_printf(ms, ", pid=%u",
+				    elf_getu32(swap, *(uint32_t *)(nbuf +
+				    doff + pidoff))) == -1)
+					return 1;
+			}
+			*flags |= FLAGS_DID_CORE;
+		}			    
 		break;
 
 	default:
@@ -916,7 +945,8 @@ get_string_on_virtaddr(struct magic_set *ms,
 
 	offset = get_offset_from_virtaddr(ms, swap, clazz, fd, ph_off, ph_num,
 	    fsize, virtaddr);
-	if ((buflen = pread(fd, buf, CAST(size_t, buflen), offset)) <= 0) {
+	if (offset < 0 ||
+	    (buflen = pread(fd, buf, CAST(size_t, buflen), offset)) <= 0) {
 		file_badread(ms);
 		return 0;
 	}
@@ -1027,7 +1057,7 @@ do_auxv_note(struct magic_set *ms, unsigned char *nbuf, uint32_t type,
 
 			if (buflen == 0)
 				continue;
-			
+
 			if (file_printf(ms, ", %s: '%s'", tag, buf) == -1)
 				return 0;
 		} else {
@@ -1110,14 +1140,16 @@ donote(struct magic_set *ms, void *vbuf, size_t offset, size_t size,
 	}
 
 	if (namesz & 0x80000000) {
-	    file_printf(ms, ", bad note name size %#lx",
-		CAST(unsigned long, namesz));
+		if (file_printf(ms, ", bad note name size %#lx",
+		    CAST(unsigned long, namesz)) == -1)
+			return -1;
 	    return 0;
 	}
 
 	if (descsz & 0x80000000) {
-	    file_printf(ms, ", bad note description size %#lx",
-		CAST(unsigned long, descsz));
+		if (file_printf(ms, ", bad note description size %#lx",
+		    CAST(unsigned long, descsz)) == -1)
+		    	return -1;
 	    return 0;
 	}
 
@@ -1151,7 +1183,7 @@ donote(struct magic_set *ms, void *vbuf, size_t offset, size_t size,
 		    namesz, descsz, noff, doff, flags))
 			return offset;
 	}
-		
+
 	if ((*flags & FLAGS_DID_NETBSD_PAX) == 0) {
 		if (do_pax_note(ms, nbuf, xnh_type, swap,
 		    namesz, descsz, noff, doff, flags))
@@ -1171,7 +1203,7 @@ donote(struct magic_set *ms, void *vbuf, size_t offset, size_t size,
 			return offset;
 	}
 
-	if (namesz == 7 && strcmp(CAST(char *, &nbuf[noff]), "NetBSD") == 0) {
+	if (namesz == 7 && strcmp(RCAST(char *, &nbuf[noff]), "NetBSD") == 0) {
 		int descw, flag;
 		const char *str, *tag;
 		if (descsz > 100)
@@ -1202,7 +1234,7 @@ donote(struct magic_set *ms, void *vbuf, size_t offset, size_t size,
 
 		if (*flags & flag)
 			return offset;
-		str = CAST(const char *, &nbuf[doff]);
+		str = RCAST(const char *, &nbuf[doff]);
 		descw = CAST(int, descsz);
 		*flags |= flag;
 		file_printf(ms, ", %s: %.*s", tag, descw, str);
@@ -1278,6 +1310,11 @@ doshn(struct magic_set *ms, int clazz, int swap, int fd, off_t off, int num,
 	char name[50];
 	ssize_t namesize;
 
+	if (num == 0) {
+		if (file_printf(ms, ", no section header") == -1)
+			return -1;
+		return 0;
+	}
 	if (size != xsh_sizeof) {
 		if (file_printf(ms, ", corrupted section header size") == -1)
 			return -1;
@@ -1343,7 +1380,7 @@ doshn(struct magic_set *ms, int clazz, int swap, int fd, off_t off, int num,
 				    CAST(uintmax_t, xsh_size),
 				    CAST(uintmax_t, fsize)) == -1)
 					return -1;
-				return 0; 
+				return 0;
 			}
 			if ((nbuf = malloc(xsh_size)) == NULL) {
 				file_error(ms, errno, "Cannot allocate memory"
@@ -1428,7 +1465,7 @@ doshn(struct magic_set *ms, int clazz, int swap, int fd, off_t off, int num,
 						return -1;
 					    break;
 					}
-					// gnu attributes 
+					// gnu attributes
 #endif
 					break;
 				}
@@ -1548,7 +1585,12 @@ dophn_exec(struct magic_set *ms, int clazz, int swap, int fd, off_t off,
 	char interp[BUFSIZ];
 	ssize_t bufsize;
 	size_t offset, align, len;
-	
+
+	if (num == 0) {
+		if (file_printf(ms, ", no program header") == -1)
+			return -1;
+		return 0;
+	}
 	if (size != xph_sizeof) {
 		if (file_printf(ms, ", corrupted program header size") == -1)
 			return -1;
@@ -1558,7 +1600,7 @@ dophn_exec(struct magic_set *ms, int clazz, int swap, int fd, off_t off,
 	interp[0] = '\0';
   	for ( ; num; num--) {
 		int doread;
-		if (pread(fd, xph_addr, xph_sizeof, off) < 
+		if (pread(fd, xph_addr, xph_sizeof, off) <
 		    CAST(ssize_t, xph_sizeof)) {
 			file_badread(ms);
 			return -1;
@@ -1579,7 +1621,7 @@ dophn_exec(struct magic_set *ms, int clazz, int swap, int fd, off_t off,
 				continue;
 			if (((align = xph_align) & 0x80000000UL) != 0 ||
 			    align < 4) {
-				if (file_printf(ms, 
+				if (file_printf(ms,
 				    ", invalid note alignment %#lx",
 				    CAST(unsigned long, align)) == -1)
 					return -1;
@@ -1665,7 +1707,7 @@ protected int
 file_tryelf(struct magic_set *ms, const struct buffer *b)
 {
 	int fd = b->fd;
-	const unsigned char *buf = b->fbuf;
+	const unsigned char *buf = CAST(const unsigned char *, b->fbuf);
 	size_t nbytes = b->flen;
 	union {
 		int32_t l;
@@ -1687,7 +1729,8 @@ file_tryelf(struct magic_set *ms, const struct buffer *b)
 	 * file locations and thus file(1) cannot determine it from easily.
 	 * Instead we traverse thru all section headers until a symbol table
 	 * one is found or else the binary is stripped.
-	 * Return immediately if it's not ELF (so we avoid pipe2file unless needed).
+	 * Return immediately if it's not ELF (so we avoid pipe2file unless
+	 * needed).
 	 */
 	if (buf[EI_MAG0] != ELFMAG0
 	    || (buf[EI_MAG1] != ELFMAG1 && buf[EI_MAG1] != OLFMAG1)
@@ -1701,7 +1744,7 @@ file_tryelf(struct magic_set *ms, const struct buffer *b)
 	    && (errno == ESPIPE))
 		fd = file_pipe2file(ms, fd, buf, nbytes);
 
-	if (fstat(fd, &st) == -1) {
+	if (fd == -1 || fstat(fd, &st) == -1) {
   		file_badread(ms);
 		return -1;
 	}

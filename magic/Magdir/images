@@ -1,6 +1,6 @@
 
 #------------------------------------------------------------------------------
-# $File: images,v 1.146 2018/07/03 20:55:37 christos Exp $
+# $File: images,v 1.152 2018/10/01 19:10:56 christos Exp $
 # images:  file(1) magic for image formats (see also "iff", and "c-lang" for
 # XPM bitmaps)
 #
@@ -174,42 +174,42 @@
 0	search/1	P1
 >0	regex/4		P1[\040\t\f\r\n]
 >>0	use		netpbm
->>>0	string		x	\b, bitmap
+>>0	string		x	\b, bitmap
 !:strength + 45
 !:mime	image/x-portable-bitmap
 
 0	search/1	P2
 >0	regex/4		P2[\040\t\f\r\n]
 >>0	use		netpbm
->>>0	string		x	\b, greymap
+>>0	string		x	\b, greymap
 !:strength + 45
 !:mime	image/x-portable-greymap
 
 0	search/1	P3
 >0	regex/4		P3[\040\t\f\r\n]
 >>0	use		netpbm
->>>0	string		x	\b, pixmap
+>>0	string		x	\b, pixmap
 !:strength + 45
 !:mime	image/x-portable-pixmap
 
 0	string		P4
 >0	regex/4		P4[\040\t\f\r\n]
 >>0	use		netpbm
->>>0	string		x	\b, rawbits, bitmap
+>>0	string		x	\b, rawbits, bitmap
 !:strength + 45
 !:mime	image/x-portable-bitmap
 
 0	string		P5
 >0	regex/4		P5[\040\t\f\r\n]
 >>0	use		netpbm
->>>0	string		x	\b, rawbits, greymap
+>>0	string		x	\b, rawbits, greymap
 !:strength + 45
 !:mime	image/x-portable-greymap
 
 0	string		P6
 >0	regex/4		P6[\040\t\f\r\n]
 >>0	use		netpbm
->>>0	string		x	\b, rawbits, pixmap
+>>0	string		x	\b, rawbits, pixmap
 !:strength + 45
 !:mime	image/x-portable-pixmap
 
@@ -248,6 +248,7 @@
 # URL: http://libopenraw.freedesktop.org/wiki/Canon_CR2
 0	string		II\x2a\0\x10\0\0\0CR	Canon CR2 raw image data
 !:mime	image/x-canon-cr2
+!:strength +80
 >10	byte		x	\b, version %d.
 >11	byte		x	\b%d
 
@@ -437,6 +438,7 @@
 # Standard PNG image.
 0	string		\x89PNG\x0d\x0a\x1a\x0a\x00\x00\x00\x0DIHDR	PNG image data
 !:mime	image/png
+!:ext   png
 !:strength +10
 >16	use		png-ihdr
 
@@ -444,6 +446,7 @@
 0	string		\x89PNG\x0d\x0a\x1a\x0a\x00\x00\x00\x04CgBI
 >24	string  	\x00\x00\x00\x0DIHDR	PNG image data (CgBI)
 !:mime	image/png
+!:ext   png
 !:strength +10
 >>32	use		png-ihdr
 
@@ -1793,3 +1796,16 @@
 0	string	LinS 	Microsoft Paint image data (version 2.0)
 >4	leshort	x	(%d
 >>6	leshort	x	x %d)
+
+# reMarkable tablet internal file format (https://www.remarkable.com/)
+# https://github.com/ax3l/lines-are-beautiful
+# https://plasma.ninja/blog/devices/remarkable/binary/format/2017/12/26/\
+#	reMarkable-lines-file-format.html#what-to-do-next
+# from Axel Huebl
+0		string	reMarkable
+>11		string	lines
+>>17		string	with
+>>>22		string	selections
+>>>>33		string	and
+>>>>>37		string	layers
+>>>>>>43	lelong	x	reMarkable tablet notebook lines, 1404 x 1872, %x page(s)

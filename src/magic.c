@@ -33,7 +33,7 @@
 #include "file.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: magic.c,v 1.102 2017/08/28 13:39:18 christos Exp $")
+FILE_RCSID("@(#)$File: magic.c,v 1.106 2018/10/01 18:45:39 christos Exp $")
 #endif	/* lint */
 
 #include "magic.h"
@@ -44,9 +44,7 @@ FILE_RCSID("@(#)$File: magic.c,v 1.102 2017/08/28 13:39:18 christos Exp $")
 #ifdef QUICK
 #include <sys/mman.h>
 #endif
-#ifdef HAVE_LIMITS_H
 #include <limits.h>	/* for PIPE_BUF */
-#endif
 
 #if defined(HAVE_UTIMES)
 # include <sys/time.h>
@@ -435,25 +433,13 @@ file_or_fd(struct magic_set *ms, const char *inname, int fd)
 	if (fd == STDIN_FILENO)
 		_setmode(STDIN_FILENO, O_BINARY);
 #endif
-
-	if (inname == NULL) {
-		if (fstat(fd, &sb) == 0 && S_ISFIFO(sb.st_mode))
-			ispipe = 1;
-		else
-			pos = lseek(fd, (off_t)0, SEEK_CUR);
-	} else {
-		int flags = O_RDONLY|O_BINARY;
-		int okstat = stat(inname, &sb) == 0;
-
-		if (okstat && S_ISFIFO(sb.st_mode)) {
-#ifdef O_NONBLOCK
-			flags |= O_NONBLOCK;
-#endif
-			ispipe = 1;
-		}
-
+	if (inname != NULL) {
+		int flags = O_RDONLY|O_BINARY|O_NONBLOCK;
 		errno = 0;
 		if ((fd = open(inname, flags)) < 0) {
+			int okstat = stat(inname, &sb) == 0;
+			if (okstat && S_ISFIFO(sb.st_mode))
+				ispipe = 1;
 #ifdef WIN32
 			/*
 			 * Can't stat, can't open.  It may have been opened in
@@ -472,12 +458,13 @@ file_or_fd(struct magic_set *ms, const char *inname, int fd)
 			rv = 0;
 			goto done;
 		}
-#ifdef O_NONBLOCK
-		if ((flags = fcntl(fd, F_GETFL)) != -1) {
-			flags &= ~O_NONBLOCK;
-			(void)fcntl(fd, F_SETFL, flags);
-		}
-#endif
+	}
+
+	if (fd != -1) {
+		if (fstat(fd, &sb) == 0 && S_ISFIFO(sb.st_mode))
+			ispipe = 1;
+		if (inname == NULL)
+			pos = lseek(fd, (off_t)0, SEEK_CUR);
 	}
 
 	/*
@@ -598,6 +585,8 @@ magic_version(void)
 public int
 magic_setparam(struct magic_set *ms, int param, const void *val)
 {
+	if (ms == NULL)
+		return -1;
 	switch (param) {
 	case MAGIC_PARAM_INDIR_MAX:
 		ms->indir_max = (uint16_t)*(const size_t *)val;
@@ -629,6 +618,8 @@ magic_setparam(struct magic_set *ms, int param, const void *val)
 public int
 magic_getparam(struct magic_set *ms, int param, void *val)
 {
+	if (ms == NULL)
+		return -1;
 	switch (param) {
 	case MAGIC_PARAM_INDIR_MAX:
 		*(size_t *)val = ms->indir_max;

@@ -35,7 +35,7 @@
 #include "file.h"
 
 #ifndef lint
-FILE_RCSID("@(#)$File: cdf.c,v 1.110 2017/12/19 00:21:21 christos Exp $")
+FILE_RCSID("@(#)$File: cdf.c,v 1.113 2018/10/15 16:29:16 christos Exp $")
 #endif
 
 #include <assert.h>
@@ -47,9 +47,7 @@ FILE_RCSID("@(#)$File: cdf.c,v 1.110 2017/12/19 00:21:21 christos Exp $")
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
-#ifdef HAVE_LIMITS_H
 #include <limits.h>
-#endif
 
 #ifndef EFTYPE
 #define EFTYPE EINVAL
@@ -90,7 +88,8 @@ static void *
 cdf_malloc(const char *file __attribute__((__unused__)),
     size_t line __attribute__((__unused__)), size_t n)
 {
-	DPRINTF(("%s,%zu: %s %zu\n", file, line, __func__, n));
+	DPRINTF(("%s,%" SIZE_T_FORMAT "u: %s %" SIZE_T_FORMAT "u\n",
+	    file, line, __func__, n));
 	return malloc(n);
 }
 
@@ -99,7 +98,8 @@ static void *
 cdf_realloc(const char *file __attribute__((__unused__)),
     size_t line __attribute__((__unused__)), void *p, size_t n)
 {
-	DPRINTF(("%s,%zu: %s %zu\n", file, line, __func__, n));
+	DPRINTF(("%s,%" SIZE_T_FORMAT "u: %s %" SIZE_T_FORMAT "u\n",
+	    file, line, __func__, n));
 	return realloc(p, n);
 }
 
@@ -108,7 +108,8 @@ static void *
 cdf_calloc(const char *file __attribute__((__unused__)),
     size_t line __attribute__((__unused__)), size_t n, size_t u)
 {
-	DPRINTF(("%s,%zu: %s %zu %zu\n", file, line, __func__, n, u));
+	DPRINTF(("%s,%" SIZE_T_FORMAT "u: %s %" SIZE_T_FORMAT "u %"
+	    SIZE_T_FORMAT "u\n", file, line, __func__, n, u));
 	return calloc(n, u);
 }
 
@@ -486,8 +487,9 @@ cdf_read_sat(const cdf_info_t *info, cdf_header_t *h, cdf_sat_t *sat)
 			if (sec < 0)
 				goto out;
 			if (i >= sat->sat_len) {
-			    DPRINTF(("Out of bounds reading MSA %" SIZE_T_FORMAT
-				"u >= %" SIZE_T_FORMAT "u", i, sat->sat_len));
+			    DPRINTF(("Out of bounds reading MSA %"
+				SIZE_T_FORMAT "u >= %" SIZE_T_FORMAT "u",
+				i, sat->sat_len));
 			    goto out3;
 			}
 			if (cdf_read_sector(info, sat->sat_tab, ss * i, ss, h,
@@ -859,7 +861,7 @@ cdf_offset(const void *p, size_t l)
 }
 
 static const uint8_t *
-cdf_get_property_info_pos(const cdf_stream_t *sst, const cdf_header_t *h, 
+cdf_get_property_info_pos(const cdf_stream_t *sst, const cdf_header_t *h,
     const uint8_t *p, const uint8_t *e, size_t i)
 {
 	size_t tail = (i << 1) + 1;
@@ -874,7 +876,7 @@ cdf_get_property_info_pos(const cdf_stream_t *sst, const cdf_header_t *h,
 	    __LINE__) == -1)
 		return NULL;
 	ofs = CDF_GETUINT32(p, tail);
-	q = CAST(const uint8_t *, cdf_offset(CAST(const void *, p), 
+	q = CAST(const uint8_t *, cdf_offset(CAST(const void *, p),
 	    ofs - 2 * sizeof(uint32_t)));
 
 	if (q < p) {
@@ -896,8 +898,8 @@ cdf_grow_info(cdf_property_info_t **info, size_t *maxcount, size_t incr)
 	size_t newcount = *maxcount + incr;
 
 	if (newcount > CDF_PROP_LIMIT) {
-		DPRINTF(("exceeded property limit %zu > %zu\n", 
-		    newcount, CDF_PROP_LIMIT));
+		DPRINTF(("exceeded property limit %" SIZE_T_FORMAT "u > %"
+		    SIZE_T_FORMAT "u\n", newcount, CDF_PROP_LIMIT));
 		goto out;
 	}
 	inp = CAST(cdf_property_info_t *,
@@ -1065,10 +1067,10 @@ cdf_read_property_info(const cdf_stream_t *sst, const cdf_header_t *h,
 				inp[i].pi_str.s_buf = CAST(const char *,
 				    CAST(const void *, &q[o4]));
 
-				DPRINTF(("o=%zu l=%d(%" SIZE_T_FORMAT
-				    "u), t=%zu s=%s\n", o4, l,
-				    CDF_ROUND(l, sizeof(l)), left,
-				    inp[i].pi_str.s_buf));
+				DPRINTF(("o=%" SIZE_T_FORMAT "u l=%d(%"
+				    SIZE_T_FORMAT "u), t=%" SIZE_T_FORMAT
+				    "u s=%s\n", o4, l, CDF_ROUND(l, sizeof(l)),
+				    left, inp[i].pi_str.s_buf));
 
 				if (l & 1)
 					l++;

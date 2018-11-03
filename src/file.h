@@ -27,7 +27,7 @@
  */
 /*
  * file.h - definitions for file(1) program
- * @(#)$File: file.h,v 1.193 2018/05/24 18:09:17 christos Exp $
+ * @(#)$File: file.h,v 1.199 2018/10/15 16:29:16 christos Exp $
  */
 
 #ifndef __file_h__
@@ -39,6 +39,9 @@
 #ifdef HAVE_STDINT_H
 #ifndef __STDC_LIMIT_MACROS
 #define __STDC_LIMIT_MACROS
+#endif
+#ifndef __STDC_FORMAT_MACROS
+#define __STDC_FORMAT_MACROS
 #endif
 
 #ifdef WIN32
@@ -450,6 +453,7 @@ struct stat;
 protected const char *file_fmttime(uint64_t, int, char *);
 protected struct magic_set *file_ms_alloc(int);
 protected void file_ms_free(struct magic_set *);
+protected int file_default(struct magic_set *, size_t);
 protected int file_buffer(struct magic_set *, int, const char *, const void *,
     size_t);
 protected int file_fsmagic(struct magic_set *, const char *, struct stat *);
@@ -473,6 +477,7 @@ protected int file_ascmagic_with_encoding(struct magic_set *,
     const struct buffer *, unichar *, size_t, const char *, const char *, int);
 protected int file_encoding(struct magic_set *, const struct buffer *,
     unichar **, size_t *, const char **, const char **, const char **);
+protected int file_is_json(struct magic_set *, const struct buffer *);
 protected int file_is_tar(struct magic_set *, const struct buffer *);
 protected int file_softmagic(struct magic_set *, const struct buffer *,
     uint16_t *, uint16_t *, int, int);
@@ -511,9 +516,7 @@ protected void buffer_init(struct buffer *, int, const void *, size_t);
 protected void buffer_fini(struct buffer *);
 protected int buffer_fill(const struct buffer *);
 
-#if defined(HAVE_LOCALE_H)
 #include <locale.h>
-#endif
 #if defined(HAVE_XLOCALE_H)
 #include <xlocale.h>
 #endif
@@ -600,17 +603,17 @@ struct tm *gmtime_r(const time_t *, struct tm *);
 struct tm *localtime_r(const time_t *, struct tm *);
 #endif
 #ifndef HAVE_FMTCHECK
-const char *fmtcheck(const char *, const char *) 
+const char *fmtcheck(const char *, const char *)
      __attribute__((__format_arg__(2)));
 #endif
 
 #ifdef HAVE_LIBSECCOMP
-// basic filter 
+// basic filter
 // this mode should not interfere with normal operations
 // only some dangerous syscalls are blacklisted
 int enable_sandbox_basic(void);
 
-// enhanced filter 
+// enhanced filter
 // this mode allows only the necessary syscalls used during normal operation
 // extensive testing required !!!
 int enable_sandbox_full(void);
@@ -633,6 +636,9 @@ protected void file_warnx(const char *, ...)
 
 #ifndef O_BINARY
 #define O_BINARY	0
+#endif
+#ifndef O_NONBLOCK
+#define O_NONBLOCK	0
 #endif
 
 #ifndef __cplusplus

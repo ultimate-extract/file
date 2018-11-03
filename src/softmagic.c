@@ -32,7 +32,7 @@
 #include "file.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: softmagic.c,v 1.262 2018/06/22 20:39:50 christos Exp $")
+FILE_RCSID("@(#)$File: softmagic.c,v 1.271 2018/10/15 16:29:16 christos Exp $")
 #endif	/* lint */
 
 #include "magic.h"
@@ -47,7 +47,7 @@ private int match(struct magic_set *, struct magic *, uint32_t,
     const struct buffer *, size_t, int, int, int, uint16_t *,
     uint16_t *, int *, int *, int *);
 private int mget(struct magic_set *, struct magic *, const struct buffer *,
-    const unsigned char *, size_t, 
+    const unsigned char *, size_t,
     size_t, unsigned int, int, int, int, uint16_t *,
     uint16_t *, int *, int *, int *);
 private int msetoffset(struct magic_set *, struct magic *, struct buffer *,
@@ -206,7 +206,8 @@ flush:
 		ms->line = m->lineno;
 
 		/* if main entry matches, print it... */
-		switch (mget(ms, m, b, bb.fbuf, bb.flen, offset, cont_level,
+		switch (mget(ms, m, b, CAST(const unsigned char *, bb.fbuf),
+		    bb.flen, offset, cont_level,
 		    mode, text, flip, indir_count, name_count,
 		    printed_something, need_separator, returnval)) {
 		case -1:
@@ -238,7 +239,8 @@ flush:
 			goto flush;
 		}
 
-		if ((e = handle_annotation(ms, m, firstline)) != 0) {
+		if ((e = handle_annotation(ms, m, firstline)) != 0)
+		{
 			*need_separator = 1;
 			*printed_something = 1;
 			*returnval = 1;
@@ -249,15 +251,14 @@ flush:
 		 * If we are going to print something, we'll need to print
 		 * a blank before we print something else.
 		 */
-		if (*m->desc) {
+		if (print && *m->desc) {
 			*need_separator = 1;
 			*printed_something = 1;
 			if (print_sep(ms, firstline) == -1)
 				return -1;
+			if (mprint(ms, m) == -1)
+				return -1;
 		}
-
-		if (print && mprint(ms, m) == -1)
-			return -1;
 
 		switch (moffset(ms, m, &bb, &ms->c.li[cont_level].off)) {
 		case -1:
@@ -299,7 +300,8 @@ flush:
 					continue;
 			}
 #endif
-			switch (mget(ms, m, b, bb.fbuf, bb.flen, offset,
+			switch (mget(ms, m, b, CAST(const unsigned char *,
+			    bb.fbuf), bb.flen, offset,
 			    cont_level, mode, text, flip, indir_count,
 			    name_count, printed_something, need_separator,
 			    returnval)) {
@@ -344,35 +346,35 @@ flush:
 					*returnval = 1;
 					return e;
 				}
-				/*
-				 * If we are going to print something,
-				 * make sure that we have a separator first.
-				 */
-				if (*m->desc) {
+				if (print && *m->desc) {
+					/*
+					 * This continuation matched.  Print
+					 * its message, with a blank before it
+					 * if the previous item printed and
+					 * this item isn't empty.
+					 */
+					/*
+					 * If we are going to print something,
+					 * make sure that we have a separator
+					 * first.
+					 */
 					if (!*printed_something) {
 						*printed_something = 1;
 						if (print_sep(ms, firstline)
 						    == -1)
 							return -1;
 					}
-				}
-				/*
-				 * This continuation matched.  Print
-				 * its message, with a blank before it
-				 * if the previous item printed and
-				 * this item isn't empty.
-				 */
-				/* space if previous printed */
-				if (*need_separator
-				    && ((m->flag & NOSPACE) == 0)
-				    && *m->desc) {
-					if (print &&
-					    file_printf(ms, " ") == -1)
-						return -1;
+					/* space if previous printed */
+					if (*need_separator
+					    && (m->flag & NOSPACE) == 0) {
+						if (file_printf(ms, " ") == -1)
+							return -1;
+					}
 					*need_separator = 0;
+					if (mprint(ms, m) == -1)
+						return -1;
+					*need_separator = 1;
 				}
-				if (print && mprint(ms, m) == -1)
-					return -1;
 
 				switch (moffset(ms, m, &bb,
 				    &ms->c.li[cont_level].off)) {
@@ -384,9 +386,6 @@ flush:
 				default:
 					break;
 				}
-
-				if (*m->desc)
-					*need_separator = 1;
 
 				/*
 				 * If we see any continuations
@@ -400,8 +399,7 @@ flush:
 		}
 		if (*printed_something) {
 			firstline = 0;
-			if (print)
-				*returnval = 1;
+			*returnval = 1;
 		}
 		if ((ms->flags & MAGIC_CONTINUE) == 0 && *printed_something) {
 			return *returnval; /* don't keep searching */
@@ -615,7 +613,7 @@ mprint(struct magic_set *ms, struct magic *m)
   	case FILE_BESTRING16:
   	case FILE_LESTRING16:
 		if (m->reln == '=' || m->reln == '!') {
-			if (file_printf(ms, F(ms, desc, "%s"), 
+			if (file_printf(ms, F(ms, desc, "%s"),
 			    file_printable(sbuf, sizeof(sbuf), m->value.s))
 			    == -1)
 				return -1;
@@ -776,7 +774,7 @@ mprint(struct magic_set *ms, struct magic *m)
 		t = ms->offset;
 		break;
 	case FILE_DER:
-		if (file_printf(ms, F(ms, desc, "%s"), 
+		if (file_printf(ms, F(ms, desc, "%s"),
 		    file_printable(sbuf, sizeof(sbuf), ms->ms_value.s)) == -1)
 			return -1;
 		t = ms->offset;
@@ -901,8 +899,8 @@ moffset(struct magic_set *ms, struct magic *m, const struct buffer *b,
 			if (o == -1 || (size_t)o > nbytes) {
 				if ((ms->flags & MAGIC_DEBUG) != 0) {
 					(void)fprintf(stderr,
-					    "Bad DER offset %d nbytes=%zu",
-					    o, nbytes);
+					    "Bad DER offset %d nbytes=%"
+					    SIZE_T_FORMAT "u", o, nbytes);
 				}
 				*op = 0;
 				return 0;
@@ -917,8 +915,8 @@ moffset(struct magic_set *ms, struct magic *m, const struct buffer *b,
 
 	if ((size_t)o > nbytes) {
 #if 0
-		file_error(ms, 0, "Offset out of range %zu > %zu",
-		    (size_t)o, nbytes);
+		file_error(ms, 0, "Offset out of range %" SIZE_T_FORMAT
+		    "u > %" SIZE_T_FORMAT "u", (size_t)o, nbytes);
 #endif
 		return -1;
 	}
@@ -1136,7 +1134,7 @@ mconvert(struct magic_set *ms, struct magic *m, int flip)
 			 * string by p->s, so we need to deduct sz.
 			 * Because we can use one of the bytes of the length
 			 * after we shifted as NUL termination.
-			 */ 
+			 */
 			len = sz;
 		}
 		while (len--)
@@ -1210,7 +1208,7 @@ mconvert(struct magic_set *ms, struct magic *m, int flip)
 			goto out;
 		return 1;
 	case FILE_BEDOUBLE:
-		p->q = BE64(p); 
+		p->q = BE64(p);
 		if (cvt_double(p, m) == -1)
 			goto out;
 		return 1;
@@ -1301,9 +1299,11 @@ mcopy(struct magic_set *ms, union VALUETYPE *p, int type, int indir,
 			     || (b = CAST(const char *,
 				 memchr(c, '\r', CAST(size_t, (end - c))))));
 			     lines--, b++) {
-				last = b;
 				if (b < end - 1 && b[0] == '\r' && b[1] == '\n')
 					b++;
+				if (b < end - 1 && b[0] == '\n')
+					b++;
+				last = b;
 			}
 			if (lines)
 				last = end;
@@ -1428,8 +1428,8 @@ msetoffset(struct magic_set *ms, struct magic *m, struct buffer *bb,
 			return -1;
 		if (o != 0) {
 			// Not yet!
-			file_magerror(ms, "non zero offset %zu at"
-			    " level %u", o, cont_level);
+			file_magerror(ms, "non zero offset %" SIZE_T_FORMAT
+			    "u at level %u", o, cont_level);
 			return -1;
 		}
 		if ((size_t)-m->offset > b->elen)
@@ -1448,7 +1448,8 @@ normal:
 		}
 	}
 	if ((ms->flags & MAGIC_DEBUG) != 0) {
-		fprintf(stderr, "bb=[%p,%zu], %d [b=%p,%zu], [o=%#x, c=%d]\n",
+		fprintf(stderr, "bb=[%p,%" SIZE_T_FORMAT "u], %d [b=%p,%"
+		    SIZE_T_FORMAT "u], [o=%#x, c=%d]\n",
 		    bb->fbuf, bb->flen, ms->offset, b->fbuf, b->flen,
 		    m->offset, cont_level);
 	}
@@ -1714,7 +1715,8 @@ mget(struct magic_set *ms, struct magic *m, const struct buffer *b,
 
 		if (rv == 1) {
 			if ((ms->flags & MAGIC_NODESC) == 0 &&
-			    file_printf(ms, F(ms, m->desc, "%u"), offset) == -1) {
+			    file_printf(ms, F(ms, m->desc, "%u"), offset) == -1)
+			{
 				free(rbuf);
 				return -1;
 			}
@@ -1745,6 +1747,7 @@ mget(struct magic_set *ms, struct magic *m, const struct buffer *b,
 		rv = match(ms, ml.magic, ml.nmagic, b, offset + o,
 		    mode, text, flip, indir_count, name_count,
 		    printed_something, need_separator, returnval);
+		(*name_count)--;
 		if (rv != 1)
 		    *need_separator = oneed_separator;
 		return rv;
@@ -2181,14 +2184,14 @@ private int
 handle_annotation(struct magic_set *ms, struct magic *m, int firstline)
 {
 	if ((ms->flags & MAGIC_APPLE) && m->apple[0]) {
-		if (!firstline && file_printf(ms, "\n- ") == -1)
+		if (print_sep(ms, firstline) == -1)
 			return -1;
 		if (file_printf(ms, "%.8s", m->apple) == -1)
 			return -1;
 		return 1;
 	}
 	if ((ms->flags & MAGIC_EXTENSION) && m->ext[0]) {
-		if (!firstline && file_printf(ms, "\n- ") == -1)
+		if (print_sep(ms, firstline) == -1)
 			return -1;
 		if (file_printf(ms, "%s", m->ext) == -1)
 			return -1;
@@ -2197,7 +2200,7 @@ handle_annotation(struct magic_set *ms, struct magic *m, int firstline)
 	if ((ms->flags & MAGIC_MIME_TYPE) && m->mimetype[0]) {
 		char buf[1024];
 		const char *p;
-		if (!firstline && file_printf(ms, "\n- ") == -1)
+		if (print_sep(ms, firstline) == -1)
 			return -1;
 		if (varexpand(ms, buf, sizeof(buf), m->mimetype) == -1)
 			p = m->mimetype;
