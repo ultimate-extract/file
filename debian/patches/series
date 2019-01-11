@@ -10,3 +10,4 @@ local.report-gz-as-application-gzip.patch
 local.disable-detection-of-vax-coff-executables.patch
 local.disable-algol68-detection.patch
 local.extra-magic.patch
+local.manpage-seccomp-is-disabled.patch
