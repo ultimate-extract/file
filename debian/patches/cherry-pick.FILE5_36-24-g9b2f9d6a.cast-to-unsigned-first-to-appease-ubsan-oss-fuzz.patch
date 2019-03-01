@@ -1,0 +1,21 @@
+Subject: Cast to unsigned first to appease ubsan (oss-fuzz)
+Origin: FILE5_36-24-g9b2f9d6a <https://github.com/file/file/commit/FILE5_36-24-g9b2f9d6a>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sat Feb 23 21:54:05 2019 +0000
+
+--- a/src/encoding.c
++++ b/src/encoding.c
+@@ -481,11 +481,11 @@
+ 		if (bigend)
+ 			ubf[(*ulen)++] = bf[i + 3] | (bf[i + 2] << 8)
+ 			    | (bf[i + 1] << 16)
+-			    | CAST(unichar, bf[i] << 24);
++			    | (CAST(unichar, bf[i]) << 24);
+ 		else
+ 			ubf[(*ulen)++] = bf[i] | (bf[i + 1] << 8) 
+ 			    | (bf[i + 2] << 16)
+-			    | CAST(unichar, bf[i + 3] << 24);
++			    | (CAST(unichar, bf[i + 3]) << 24);
+ 
+ 		if (ubf[*ulen - 1] == 0xfffe)
+ 			return 0;

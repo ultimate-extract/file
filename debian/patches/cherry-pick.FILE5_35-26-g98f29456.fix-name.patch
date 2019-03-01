@@ -1,0 +1,16 @@
+Subject: Fix name
+Origin: FILE5_35-26-g98f29456 <https://github.com/file/file/commit/FILE5_35-26-g98f29456>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Tue Dec 11 21:10:33 2018 +0000
+
+--- a/src/magic.c
++++ b/src/magic.c
+@@ -604,7 +604,7 @@
+ 		ms->elf_notes_max = (uint16_t)*(const size_t *)val;
+ 		return 0;
+ 	case MAGIC_PARAM_REGEX_MAX:
+-		ms->elf_regex_max = (uint16_t)*(const size_t *)val;
++		ms->regex_max = (uint16_t)*(const size_t *)val;
+ 		return 0;
+ 	case MAGIC_PARAM_BYTES_MAX:
+ 		ms->bytes_max = *(const size_t *)val;

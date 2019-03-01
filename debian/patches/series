@@ -1,4 +1,22 @@
 # cherry-picked commits. Keep in upstream's chronological order
+cherry-pick.FILE5_35-1-g338cc788.-c-cast.patch
+cherry-pick.FILE5_35-2-g8d68fb4f.lint-fixes.patch
+cherry-pick.FILE5_35-3-gc7d910ee.more-lint-fixes.patch
+cherry-pick.FILE5_35-6-g2b6f3fbc.if-we-are-asked-to-print-annotations-and-there-are-no-annotations-in.patch
+cherry-pick.FILE5_35-8-g42d9a8a3.need-to-pass-found-match-from-match-mget-match-so-that-the-use-case.patch
+cherry-pick.FILE5_35-16-g6d90cbff.avoid-over-trimming-ucs16-text-and-ending-up-losing-the-last-character.patch
+cherry-pick.FILE5_35-25-g48052fcf.fix-cut-n-pasto-for-regex-max-vsevolod-stakhov.patch
+cherry-pick.FILE5_35-26-g98f29456.fix-name.patch
+cherry-pick.FILE5_35-31-g2858eaf9.avoid-oob-read-found-by-asan-reported-by-f.patch
+cherry-pick.FILE5_35-42-ge6bf546d.fix-documentation-to-match-the-source.patch
+cherry-pick.FILE5_35-49-g3a6f62e2.fix-indirect-offset-overflow-calculation-b.patch
+cherry-pick.FILE5_35-52-g94b7501f.pr-62-spinpx-avoid-non-nul-terminated-string-read.patch
+cherry-pick.FILE5_35-53-gd6578152.pr-62-spinpx-limit-size-of-file-printable.patch
+cherry-pick.FILE5_35-55-g642f269e.mention-that-the-apple-filetype-creator-is-only-available-for-entries-that.patch
+cherry-pick.FILE5_35-56-gf0a26da7.pr-61-tmc-add-ucs-32-built-in-detection.patch
+cherry-pick.FILE5_35-59-g8305d1cc.use-c-casts-everywhere.patch
+cherry-pick.FILE5_36-1-gecca6e54.fix-casts-and-bounds-check-found-by-oss-fuzz.patch
+cherry-pick.FILE5_36-24-g9b2f9d6a.cast-to-unsigned-first-to-appease-ubsan-oss-fuzz.patch
 
 # patches that should go upstream
 
