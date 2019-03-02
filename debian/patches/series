@@ -21,6 +21,7 @@ cherry-pick.FILE5_36-24-g9b2f9d6a.cast-to-unsigned-first-to-appease-ubsan-oss-fu
 # patches that should go upstream
 
 # local modifications
+cherry-pick.FILE5_36-32-g479e0995.pr-69-only-consider-arrays-1-element-when-quickly-figuring-out-if-a.patch
 local.support-local-definitions-in-etc-magic.patch
 local.don-t-include-libs-in-build.patch
 local.mention-posixly-correct-dependent-behaviour-in-usage-message.patch

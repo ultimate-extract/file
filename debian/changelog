@@ -1,3 +1,9 @@
+file (1:5.35-4) unstable; urgency=medium
+
+  * Cherry-pick fix for JSON detection. Closes: 922874
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sat, 02 Mar 2019 08:05:54 +0100
+
 file (1:5.35-3) unstable; urgency=medium
 
   * Cherry-pick many commits since 5.35 release that seem wise to
