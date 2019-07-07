@@ -1,5 +1,8 @@
 file for Debian
----------------
+===============
+
+additional magic files
+----------------------
 
 How users can inject their own magics for fun:
 
@@ -23,4 +26,11 @@ How package maintainers can inject their own magics for profit:
 
   4. profit.
 
- -- Daniel Baumann <mail@daniel-baumann.ch>  Sat, 27 Mar 2010 11:22:58 +0100
+
+seccomp support
+---------------
+
+Starting with version 1:5.37-1, file is built using libseccomp. This
+will introduce a regression if applications call the program with the
+--uncompress option, and file(1) needs the help of external programs
+for uncompression.

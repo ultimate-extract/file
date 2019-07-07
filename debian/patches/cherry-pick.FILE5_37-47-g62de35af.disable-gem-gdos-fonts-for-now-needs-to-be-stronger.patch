@@ -1,0 +1,34 @@
+Subject: Disable GEM GDOS fonts for now, needs to be stronger
+Origin: FILE5_37-47-g62de35af <https://github.com/file/file/commit/FILE5_37-47-g62de35af>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sat Jul 6 19:31:36 2019 +0000
+
+--- a/magic/Magdir/fonts
++++ b/magic/Magdir/fonts
+@@ -133,19 +133,19 @@
+ # Reference: http://cd.textfiles.com/ataricompendium/BOOK/HTML/APPENDC.HTM#cnt
+ #
+ # usual case with lightening mask and skewing mask 5555h~UU
+-62	ulelong		0x55555555
+->0	use		gdos-font
++#62	ulelong		0x55555555
++#>0	use		gdos-font
+ # BOX18.GFT COWBOY30.GFT ROYALK30.GFT
+-62	ulelong		0
++#62	ulelong		0
+ # skip ISO 9660 CD-ROM ./filesystem by looking for low positive face size
+->2	uleshort	>2
++#>2	uleshort	>2
+ # skip DOS 2.0 backup id file ./msdos by looking for face size lower/equal 48
+->>2	uleshort	<49
++#>>2	uleshort	<49
+ # skip MS Windows ICO ./msdos by looking for valid face name
+->>>4	ubeshort	>0x1F00
++#>>>4	ubeshort	>0x1F00
+ # skip DOS executable BACKM212.COM by looking for horizontal offset table after header
+ #>>>>68	ulelong		>87		OFFSET_OK
+->>>>0	use		gdos-font
++#>>>>0	use		gdos-font
+ 0	name		gdos-font
+ >0	uleshort	x		GEM GDOS font
+ !:mime	application/x-font-gdos

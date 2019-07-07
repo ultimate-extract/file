@@ -1,3 +1,10 @@
+file (1:5.37-1) experimental; urgency=medium
+
+  * New upstream version 5.37, upload to experimental
+  * Enable seccomp support. Closes: #917930
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 07 Jul 2019 18:24:43 +0200
+
 file (1:5.35-4) unstable; urgency=medium
 
   * Cherry-pick fix for JSON detection. Closes: 922874

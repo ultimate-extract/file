@@ -1,4 +1,5 @@
 libmagic.so.1 libmagic1 #MINVER#
+* Build-Depends-Package: libmagic-dev
  magic_buffer@Base 5.12
  magic_check@Base 5.12
  magic_close@Base 5.12
