@@ -1,3 +1,12 @@
+file (1:5.37-2) unstable; urgency=medium
+
+  * New upstream version 5.37, upload to unstable
+  * Refine seccomp support. Closes: #931985
+  * Cherry-pick "Add lzma decompression support"
+  * Cherry-pick "Add lzma and bzip built-in decompression support"
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Fri, 19 Jul 2019 16:18:13 +0200
+
 file (1:5.37-1) experimental; urgency=medium
 
   * New upstream version 5.37, upload to experimental
