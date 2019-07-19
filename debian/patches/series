@@ -1,6 +1,7 @@
 # cherry-picked commits. Keep in upstream's chronological order
-cherry-pick.FILE5_37-47-g62de35af.disable-gem-gdos-fonts-for-now-needs-to-be-stronger.patch
 cherry-pick.FILE5_37-46-g103c6ec2.dont-print-the-string-entry-unless-the-zip-entry-matched-christoph-biedl.patch
+cherry-pick.FILE5_37-47-g62de35af.disable-gem-gdos-fonts-for-now-needs-to-be-stronger.patch
+cherry-pick.FILE5_37-50-g2a1bb655.always-support-the-no-sandbox-option.patch
 cherry-pick.FILE5_37-54-g119cc185.add-lzma-decompression-support.patch
 cherry-pick.FILE5_37-55-gb259a07e.add-lzma-and-bzip-built-in-decompression-support.patch
 

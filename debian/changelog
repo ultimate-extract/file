@@ -1,3 +1,9 @@
+file (1:5.37-3) unstable; urgency=medium
+
+  * Cherry-pick "Always support the --no-sandbox option"
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Fri, 19 Jul 2019 23:33:03 +0200
+
 file (1:5.37-2) unstable; urgency=medium
 
   * New upstream version 5.37, upload to unstable

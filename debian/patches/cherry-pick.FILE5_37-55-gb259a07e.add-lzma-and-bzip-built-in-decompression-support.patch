@@ -91,7 +91,7 @@ Date: Thu Jul 18 20:32:06 2019 +0000
  #ifdef DEBUG
  int tty = -1;
  #define DPRINTF(...)	do { \
-@@ -190,7 +195,11 @@
+@@ -201,7 +206,11 @@
  #endif
  #ifdef BUILTIN_BZLIB
  private int uncompressbzlib(const unsigned char *, unsigned char **, size_t,
@@ -104,7 +104,7 @@ Date: Thu Jul 18 20:32:06 2019 +0000
  #endif
  
  static int makeerror(unsigned char **, size_t *, const char *, ...)
-@@ -570,6 +579,90 @@
+@@ -581,6 +590,90 @@
  }
  #endif
  
@@ -195,7 +195,7 @@ Date: Thu Jul 18 20:32:06 2019 +0000
  static int
  makeerror(unsigned char **buf, size_t *len, const char *fmt, ...)
  {
-@@ -702,6 +795,15 @@
+@@ -713,6 +806,15 @@
  	if (compr[method].maglen == 0)
  		return uncompresszlib(old, newch, bytes_max, n, 1);
  #endif

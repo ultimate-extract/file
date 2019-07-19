@@ -5,7 +5,7 @@ Date: Thu Jul 18 15:43:54 2019 +0000
 
 --- a/src/compress.c
 +++ b/src/compress.c
-@@ -118,6 +118,16 @@
+@@ -113,6 +113,16 @@
  }
  #endif
  
@@ -22,7 +22,7 @@ Date: Thu Jul 18 15:43:54 2019 +0000
  #define gzip_flags "-cd"
  #define lrzip_flags "-do"
  #define lzip_flags gzip_flags
-@@ -152,29 +162,30 @@
+@@ -147,29 +157,30 @@
  
  private const struct {
  	const void *magic;
@@ -68,7 +68,7 @@ Date: Thu Jul 18 15:43:54 2019 +0000
  #endif
  };
  
-@@ -243,15 +254,15 @@
+@@ -234,15 +245,15 @@
  
  	for (i = 0; i < ncompr; i++) {
  		int zm;

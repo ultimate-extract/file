@@ -1,0 +1,31 @@
+Subject: Always support the --no-sandbox option
+Origin: FILE5_37-50-g2a1bb655 <https://github.com/file/file/commit/FILE5_37-50-g2a1bb655>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sat Jul 13 16:23:58 2019 +0000
+
+--- a/src/file.c
++++ b/src/file.c
+@@ -297,11 +297,11 @@
+ 		case 's':
+ 			flags |= MAGIC_DEVICES;
+ 			break;
+-#ifdef HAVE_LIBSECCOMP
+ 		case 'S':
++#ifdef HAVE_LIBSECCOMP
+ 			sandbox = 0;
+-			break;
+ #endif
++			break;
+ 		case 'v':
+ 			if (magicfile == NULL)
+ 				magicfile = magic_getpath(magicfile, action);
+@@ -309,6 +309,9 @@
+ 			    VERSION);
+ 			(void)fprintf(stdout, "magic file from %s\n",
+ 			    magicfile);
++#ifdef HAVE_LIBSECCOMP
++			(void)fprintf(stdout, "seccomp support included\n");
++#endif
+ 			return 0;
+ 		case 'z':
+ 			flags |= MAGIC_COMPRESS;
