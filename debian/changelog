@@ -1,3 +1,10 @@
+file (1:5.37-4) unstable; urgency=medium
+
+  * Cherry-pick two commits that fine-tune seccomp handling
+  * Allow syscalls make by libfakeroot. Closes: #932762
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Tue, 23 Jul 2019 01:34:12 +0200
+
 file (1:5.37-3) unstable; urgency=medium
 
   * Cherry-pick "Always support the --no-sandbox option"

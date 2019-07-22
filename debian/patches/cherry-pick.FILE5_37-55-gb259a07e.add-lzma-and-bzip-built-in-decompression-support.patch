@@ -213,7 +213,7 @@ Date: Thu Jul 18 20:32:06 2019 +0000
  
 --- a/src/seccomp.c
 +++ b/src/seccomp.c
-@@ -167,6 +167,9 @@
+@@ -174,6 +174,9 @@
   	ALLOW_RULE(fcntl64);
  	ALLOW_RULE(fstat);
   	ALLOW_RULE(fstat64);
