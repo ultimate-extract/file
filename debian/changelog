@@ -1,3 +1,10 @@
+file (1:5.37-5) unstable; urgency=medium
+
+  * Re-disable seccomp support, not feasible. Closes: #932480,
+    #932481, #932762, #932947
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Fri, 26 Jul 2019 16:20:28 +0200
+
 file (1:5.37-4) unstable; urgency=medium
 
   * Cherry-pick two commits that fine-tune seccomp handling

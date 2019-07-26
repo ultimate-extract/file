@@ -16,4 +16,4 @@ local.mention-posixly-correct-dependent-behaviour-in-usage-message.patch
 local.disable-detection-of-vax-coff-executables.patch
 local.disable-algol68-detection.patch
 local.extra-magic.patch
-local.allow-syscalls-by-fakeroot.patch
+local.manpage-seccomp-is-disabled.patch
