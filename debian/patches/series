@@ -6,6 +6,7 @@ cherry-pick.FILE5_37-47-g62de35af.disable-gem-gdos-fonts-for-now-needs-to-be-str
 cherry-pick.FILE5_37-50-g2a1bb655.always-support-the-no-sandbox-option.patch
 cherry-pick.FILE5_37-54-g119cc185.add-lzma-decompression-support.patch
 cherry-pick.FILE5_37-55-gb259a07e.add-lzma-and-bzip-built-in-decompression-support.patch
+cherry-pick.FILE5_37-67-g46a8443f.limit-the-number-of-elements-in-a-vector-found-by-oss-fuzz.patch
 
 # patches that should go upstream
 

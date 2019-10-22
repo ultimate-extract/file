@@ -1,7 +1,14 @@
+file (1:5.37-6) unstable; urgency=high
+
+  * Cherry-pick commit to restrict the number of CDF_VECTOR elements.
+    Closes: #942830 [CVE-2019-18218]
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Tue, 22 Oct 2019 21:05:34 +0200
+
 file (1:5.37-5) unstable; urgency=medium
 
-  * Re-disable seccomp support, not feasible. Closes: #932480,
-    #932481, #932762, #932947
+  * Re-disable seccomp support, not feasible yet.
+    Closes: #932480, #932481, #932762, #932947
 
  -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Fri, 26 Jul 2019 16:20:28 +0200
 
