@@ -5,7 +5,7 @@ Last-Update: 2016-06-27
 
 --- a/src/file_opts.h
 +++ b/src/file_opts.h
-@@ -36,8 +36,8 @@
+@@ -39,8 +39,8 @@
  OPT('k', "keep-going", 0, 0, "           don't stop at the first match\n")
  OPT('l', "list", 0, 0, "                 list magic strength\n")
  #ifdef S_IFLNK

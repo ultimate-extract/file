@@ -1,3 +1,11 @@
+file (1:5.38-1) experimental; urgency=medium
+
+  * New upstream version 5.38, upload to experimental
+    Closes: #939818
+  * Disable WE32K executables. Closes: #913867
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Thu, 19 Dec 2019 20:19:12 +0100
+
 file (1:5.37-6) unstable; urgency=high
 
   * Cherry-pick commit to restrict the number of CDF_VECTOR elements.

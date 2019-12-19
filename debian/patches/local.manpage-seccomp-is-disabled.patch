@@ -5,10 +5,10 @@ Bug-Debian: https://bugs.debian.org/917930
 
 --- a/doc/file.man
 +++ b/doc/file.man
-@@ -368,6 +368,10 @@
- i.e. when the
+@@ -371,6 +371,10 @@
  .Fl z
  flag is specified and the built-in decompressors are not available.
+ On systems where sandboxing is not available, this option has no effect.
 +.Pp
 +.Em Note:
 +This Debian version of file was built without seccomp support, so this option
