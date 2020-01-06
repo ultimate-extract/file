@@ -1,3 +1,16 @@
+file (1:5.38-3) unstable; urgency=medium
+
+  * Revert upstream commit "... count as dynamically linked only the
+    binaries that have an interpreter". Closes: #948269
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Mon, 06 Jan 2020 12:22:22 +0100
+
+file (1:5.38-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 05 Jan 2020 21:25:41 +0100
+
 file (1:5.38-1) experimental; urgency=medium
 
   * New upstream version 5.38, upload to experimental

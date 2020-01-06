@@ -1,0 +1,28 @@
+Subject: Revert "PR/93: iaeiaeiaeiae: Do as the comment says, and count as dynamically linked (...)"
+Origin: FILE5_37-59-g24c9c086 <https://github.com/file/file/commit/FILE5_37-59-g24c9c086>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Tue Jul 23 21:33:45 2019 +0000
+Bug-Debian: https://bugs.debian.org/948269
+
+    PR/93: iaeiaeiaeiae: Do as the comment says, and count as dynamically linked
+    only the binaries that have an interpreter, not the ones that contain a
+    dynamic section. Fixes issue with -static-pie from gcc-9.x
+
+--- a/src/readelf.c
++++ b/src/readelf.c
+@@ -1638,6 +1638,7 @@
+ 		/* Things we can determine before we seek */
+ 		switch (xph_type) {
+ 		case PT_DYNAMIC:
++			linking_style = "dynamically";
+ 			doread = 1;
+ 			break;
+ 		case PT_NOTE:
+@@ -1653,7 +1654,6 @@
+ 			}
+ 			/*FALLTHROUGH*/
+ 		case PT_INTERP:
+-			linking_style = "dynamically";
+ 			doread = 1;
+ 			break;
+ 		default:

@@ -1,14 +1,15 @@
 Source: file
 Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
 Homepage: https://www.darwinsys.com/file/
-Standards-Version: 4.4.0
+Standards-Version: 4.4.1
 Vcs-Browser: https://git.in-ulm.de/cbiedl/file
 Vcs-Git: https://git.in-ulm.de/cbiedl/file.git
-Build-Depends: debhelper-compat (= 11),
+Build-Depends: debhelper-compat (= 12),
     libbz2-dev,
     liblzma-dev,
     zlib1g-dev,
 Priority: standard
+Rules-Requires-Root: no
 Section: utils
 
 Package: file
