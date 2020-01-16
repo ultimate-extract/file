@@ -10,6 +10,7 @@ Debian policy and debhelper compat level, addressing lintian warnigs ...
   NB: The test scripts are not public yet, the thesaurus will never be,
       for legal reasons.
 * Run a full regression test on the Debian version as above.
+* Check for regressions in the libmagic1 install dependencies.
 * Test-rebuild diffoscope using the new version.
 * First upload is to *experimental*.
 * Wait for ACCEPTED, then send a message to
@@ -34,3 +35,7 @@ My plan is to upload to unstable in a week from now.
 
 * Brace for impact.
 * Watch upstream git for the first round of bugfix commits.
+
+Before uploading to unstable
+
+* Check https://release.debian.org/britney/pseudo-excuses-experimental.html#file

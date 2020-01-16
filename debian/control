@@ -4,6 +4,7 @@ Homepage: https://www.darwinsys.com/file/
 Standards-Version: 4.4.1
 Vcs-Browser: https://git.in-ulm.de/cbiedl/file
 Vcs-Git: https://git.in-ulm.de/cbiedl/file.git
+Testsuite: autopkgtest
 Build-Depends: debhelper-compat (= 12),
     libbz2-dev,
     liblzma-dev,

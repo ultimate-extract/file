@@ -5,6 +5,11 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 # HOWMANY is the number of bytes looked at by file
 CFLAGS += -DHOWMANY=0x18000
 
+ifeq ($(DEB_BUILD_ARCH),$(DEB_HOST_ARCH))
+	export PATH := $(CURDIR)/debian/run-file:$(PATH)
+	export CURDIR
+endif
+
 %:
 	dh $@
 
@@ -16,6 +21,7 @@ override_dh_auto_configure:
 		--mandir=\$${prefix}/share/man \
 		--enable-fsect-man5 \
 		--enable-static \
+		--disable-libseccomp \
 		--disable-silent-rules CFLAGS="$(CFLAGS)"
 
 override_dh_auto_install:

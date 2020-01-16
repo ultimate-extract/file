@@ -1,3 +1,11 @@
+file (1:5.38-4) unstable; urgency=medium
+
+  * Use the just-built file executable when running several debhelper
+    programs. Closes: #948619
+  * Explicitly disable seccomp support. Closes: #948522
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Thu, 16 Jan 2020 21:39:11 +0100
+
 file (1:5.38-3) unstable; urgency=medium
 
   * Revert upstream commit "... count as dynamically linked only the
