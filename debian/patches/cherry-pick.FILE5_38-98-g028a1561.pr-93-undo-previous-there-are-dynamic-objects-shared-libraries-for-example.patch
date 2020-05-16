@@ -1,0 +1,28 @@
+Subject: PR/93: Undo previous: There are dynamic objects (shared libraries for example) (...)
+Origin: FILE5_38-98-g028a1561 <https://github.com/file/file/commit/FILE5_38-98-g028a1561>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sun Apr 26 17:43:13 2020 +0000
+Bug-Debian: https://bugs.debian.org/948269
+
+    PR/93: Undo previous: There are dynamic objects (shared libraries for example)
+    that don't have interpeters and should not be counted as static. We
+    need to figure out what to do with static-pie and gcc-9 separately.
+
+--- a/src/readelf.c
++++ b/src/readelf.c
+@@ -1639,6 +1639,7 @@
+ 		switch (xph_type) {
+ 		case PT_DYNAMIC:
+ 			doread = 1;
++			linking_style = "dynamically";
+ 			break;
+ 		case PT_NOTE:
+ 			if (sh_num)	/* Did this through section headers */
+@@ -1653,7 +1654,6 @@
+ 			}
+ 			/*FALLTHROUGH*/
+ 		case PT_INTERP:
+-			linking_style = "dynamically";
+ 			doread = 1;
+ 			break;
+ 		default:
