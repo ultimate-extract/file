@@ -25,9 +25,9 @@ Last-Update: 2016-06-27
 +
 --- a/src/apprentice.c
 +++ b/src/apprentice.c
-@@ -454,7 +454,7 @@
- 	if (map == RCAST(struct magic_map *, -1))
- 		return -1;
+@@ -460,7 +460,7 @@
+ #ifndef COMPILE_ONLY
+ 	map = apprentice_map(ms, fn);
  	if (map == NULL) {
 -		if (ms->flags & MAGIC_CHECK)
 +		if (ms->flags & MAGIC_CHECK && strcmp("/etc/magic", fn) != 0)
@@ -58,7 +58,7 @@ Last-Update: 2016-06-27
  	encoding.c compress.c is_csv.c is_json.c is_tar.c readelf.c print.c \
 --- a/doc/file.man
 +++ b/doc/file.man
-@@ -57,7 +57,7 @@
+@@ -58,7 +58,7 @@
  or non-printable).
  Exceptions are well-known file formats (core files, tar archives)
  that are known to contain binary data.
@@ -67,7 +67,7 @@ Last-Update: 2016-06-27
  .Em "preserve these keywords" .
  Users depend on knowing that all the readable files in a directory
  have the word
-@@ -101,7 +101,8 @@
+@@ -102,7 +102,8 @@
  has been applied by extension to data files.
  Any file with some invariant identifier at a small fixed
  offset into the file can usually be described in this way.
@@ -77,7 +77,7 @@ Last-Update: 2016-06-27
  magic file
  .Pa __MAGIC__.mgc ,
  or the files in the directory
-@@ -556,12 +557,6 @@
+@@ -565,12 +566,6 @@
  The order of entries in the magic file is significant.
  Depending on what system you are using, the order that
  they are put together may be incorrect.

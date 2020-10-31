@@ -1,3 +1,9 @@
+file (1:5.39-1) experimental; urgency=medium
+
+  * New upstream version 5.39, upload to experimental
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sat, 31 Oct 2020 11:12:40 +0100
+
 file (1:5.38-5) unstable; urgency=medium
 
   * Change default for name/use to 50. Closes: #928009
