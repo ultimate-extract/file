@@ -1,0 +1,19 @@
+Subject: Include # (alternate format) to the list of uninteresting formats (...)
+Origin: FILE5_39-9-g85b7ab83 <https://github.com/file/file/commit/FILE5_39-9-g85b7ab83>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Thu Jun 25 16:52:48 2020 +0000
+
+    Include # (alternate format) to the list of uninteresting formats
+    Reported by Werner Fink
+
+--- a/src/funcs.c
++++ b/src/funcs.c
+@@ -93,7 +93,7 @@
+ 		if (*++p == '%')
+ 			continue;
+ 		// Skip uninteresting.
+-		while (strchr("0.'+- ", *p) != NULL)
++		while (strchr("#0.'+- ", *p) != NULL)
+ 			p++;
+ 		if (*p == '*') {
+ 			if (msg)

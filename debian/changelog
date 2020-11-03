@@ -1,3 +1,11 @@
+file (1:5.39-2) experimental; urgency=medium
+
+  * Upload to experimental
+  * Cherry-pick commit "Include # (alternate format) to the list of
+    uninteresting formats"
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Tue, 03 Nov 2020 08:35:01 +0100
+
 file (1:5.39-1) experimental; urgency=medium
 
   * New upstream version 5.39, upload to experimental
