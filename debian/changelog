@@ -1,3 +1,10 @@
+file (1:5.41-1) experimental; urgency=medium
+
+  * Upload to experimental
+  * New upstream version 5.41. Closes: #810501
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Fri, 29 Oct 2021 19:10:37 +0200
+
 file (1:5.39-3) unstable; urgency=medium
 
   * Upload to unstable

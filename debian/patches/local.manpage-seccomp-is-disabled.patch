@@ -5,9 +5,9 @@ Bug-Debian: https://bugs.debian.org/917930
 
 --- a/doc/file.man
 +++ b/doc/file.man
-@@ -380,6 +380,10 @@
+@@ -387,6 +387,10 @@
  .Fl z
- flag is specified and the built-in decompressors are not available.
+ option is specified and the built-in decompressors are not available.
  On systems where sandboxing is not available, this option has no effect.
 +.Pp
 +.Em Note:

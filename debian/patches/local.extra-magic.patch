@@ -6,7 +6,7 @@ Forwarded: not-yet
 --- a/magic/Makefile.am
 +++ b/magic/Makefile.am
 @@ -10,6 +10,7 @@
- EXTRA_DIST = \
+ MAGIC_FRAGMENTS = \
  $(MAGIC_DIR)/Header \
  $(MAGIC_DIR)/Localstuff \
 +$(MAGIC_FRAGMENT_DIR)/../../debian/debian-extra-magic \
