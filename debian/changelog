@@ -1,3 +1,9 @@
+file (1:5.41-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Fri, 19 Nov 2021 19:16:34 +0100
+
 file (1:5.41-1) experimental; urgency=medium
 
   * Upload to experimental
