@@ -1,3 +1,9 @@
+file (1:5.41-4) unstable; urgency=medium
+
+  * Use the just-built file executable only if it exists
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 24 Apr 2022 12:49:37 +0200
+
 file (1:5.41-3) unstable; urgency=medium
 
   * Cherry-pick commit to avoid mis-detection of .dbf as executable
