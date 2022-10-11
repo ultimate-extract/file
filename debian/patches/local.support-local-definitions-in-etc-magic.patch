@@ -25,7 +25,7 @@ Last-Update: 2016-06-27
 +
 --- a/src/apprentice.c
 +++ b/src/apprentice.c
-@@ -462,7 +462,7 @@
+@@ -497,7 +497,7 @@
  #ifndef COMPILE_ONLY
  	map = apprentice_map(ms, fn);
  	if (map == NULL) {
@@ -47,7 +47,7 @@ Last-Update: 2016-06-27
  libmagic_la_SOURCES = buffer.c magic.c apprentice.c softmagic.c ascmagic.c \
 --- a/src/Makefile.in
 +++ b/src/Makefile.in
-@@ -360,7 +360,7 @@
+@@ -361,7 +361,7 @@
  MAGIC = $(pkgdatadir)/magic
  lib_LTLIBRARIES = libmagic.la
  nodist_include_HEADERS = magic.h

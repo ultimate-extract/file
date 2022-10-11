@@ -1,3 +1,10 @@
+file (1:5.43-1) experimental; urgency=medium
+
+  * Upload to experimental
+  * New upstream version 5.43. Closes: #922874, #1012426
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Tue, 11 Oct 2022 21:41:11 +0200
+
 file (1:5.41-4) unstable; urgency=medium
 
   * Use the just-built file executable only if it exists
