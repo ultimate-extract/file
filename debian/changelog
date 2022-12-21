@@ -1,3 +1,11 @@
+file (1:5.43-2) experimental; urgency=medium
+
+  * Upload to experimental
+  * Include all upstream commits since the 5.43 release.
+    Closes: #1024639, #1026460
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Wed, 21 Dec 2022 22:10:41 +0100
+
 file (1:5.43-1) experimental; urgency=medium
 
   * Upload to experimental

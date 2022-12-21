@@ -1,19 +1,14 @@
 # reverted upstream commits
-1639752170.revert.FILE5_41-51-g30c4d1fc.revert-pr-304-zachs18-allow-whitespace-in-netpbm-sizes.patch
 
 # cherry-picked commits. Keep in upstream's chronological order
-1663939282.FILE5_43-31-g409d43bb.adjust-degas-to-co-exist-with-adobe-photoshop-color-joerg-jenderek.patch
-1664724087.FILE5_43-55-gbd3cac67.handle-negative-numbers-in-overflow-calculation.patch
-1665164526.FILE5_43-57-g39ef647c.comment-out-degas-entries-because-they-get-mixed-with-python-pickle-files.patch
-1665168050.FILE5_43-59-ga960a2ad.for-indirect-magic-reset-printed-something-and-need-separator-so-that.patch
-1665324403.FILE5_43-63-g3503cc0c.maintain-firstline-correctly.patch
+cherry-pick-all-since-5.43-release.patch
 
 # patches that should go upstream
 upstream.disable.att3b.patch
+upstream.mute-debug-warning.patch
 
 # local modifications
 local.support-local-definitions-in-etc-magic.patch
 local.don-t-include-libs-in-build.patch
-local.mention-posixly-correct-dependent-behaviour-in-usage-message.patch
 local.extra-magic.patch
 local.manpage-seccomp-is-disabled.patch

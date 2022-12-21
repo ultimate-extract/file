@@ -25,13 +25,13 @@ Last-Update: 2016-06-27
 +
 --- a/src/apprentice.c
 +++ b/src/apprentice.c
-@@ -497,7 +497,7 @@
+@@ -496,7 +496,7 @@
  #ifndef COMPILE_ONLY
  	map = apprentice_map(ms, fn);
  	if (map == NULL) {
 -		if (ms->flags & MAGIC_CHECK)
 +		if (ms->flags & MAGIC_CHECK && strcmp("/etc/magic", fn) != 0)
- 			file_magwarn(ms, "using regular magic file `%s'", fn);
+ 			file_magwarn(NULL, "using regular magic file `%s'", fn);
  		map = apprentice_load(ms, fn, action);
  		if (map == NULL)
 --- a/src/Makefile.am
