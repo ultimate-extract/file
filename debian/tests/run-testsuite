@@ -6,21 +6,52 @@ export TZ=UTC
 
 cd tests
 
-EXIT=0
+failing=0
 
 for i in *.testfile; do
-    printf 'Testing: %s ... ' "$i"
-    if [ -f ${i%%.testfile}.magic ]; then
-        m="-m ${i%%.testfile}.magic"
+    t=${i%%.testfile}
+    printf "Running test: %s ... " "$t"
+
+    m=
+    for j in $(eval echo "${t}"*.magic); do
+        if [ -f "$j" ]; then
+            if [ -z "$m" ]; then
+                m="$j"
+            else
+                m="$m:$j"
+            fi
+        fi
+    done
+    if [ "$m" ]; then
+        export MAGIC="$m"
     else
-        m=
-    fi;
-    if [ "$(file -b $m "$i")" = "$(cat ${i%%.testfile}.result)" ] ; then
+        unset MAGIC
+    fi
+
+    if [ -f "${t}.flags" ]; then
+        f="-$(cat "${t}.flags")"
+    else
+        f=
+    fi
+
+    expect="$(cat "${i%%.testfile}.result")"
+    # shellcheck disable=SC2086
+    got="$(file -b $f "$i" 2>/dev/null)"
+    if [ "$got" = "$expect" ]; then
         echo 'pass'
     else
-        echo 'FAILED'
-        EXIT=1
+        cat <<__EOS__
+FAIL:
+    expect: $expect
+    got:    $got
+__EOS__
+        failing=$((failing+1))
     fi
 done
 
-exit $EXIT
+if [ "$failing" -gt 0 ]; then
+    echo "Fail count: $failing"
+    exit 1
+fi
+
+exit 0
