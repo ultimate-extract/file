@@ -1,6 +1,6 @@
 
 #------------------------------------------------------------------------------
-# $File: windows,v 1.46 2022/07/02 17:46:09 christos Exp $
+# $File: windows,v 1.50 2022/11/30 20:24:43 christos Exp $
 # windows:  file(1) magic for Microsoft Windows
 #
 # This file is mainly reserved for files where programs
@@ -115,16 +115,55 @@
 
 
 # Summary: Vista Event Log
-# Extension: .evtx
 # Created by: Andreas Schuster (https://computer.forensikblog.de/)
-# Reference (1): https://computer.forensikblog.de/en/2007/05/some_magic.html
-0	string		ElfFile\0	MS Windows Vista Event Log
+# Update:	Joerg Jenderek
+# URL:		https://github.com/libyal/libevtx/blob/main/documentation/Windows%20XML%20Event%20Log%20(EVTX).asciidoc
+# Reference (1): https://web.archive.org/web/20110803085000/
+#		https://computer.forensikblog.de/en/2007/05/some_magic.html
+#		http://mark0.net/download/triddefs_xml.7z/defs/e/evtx.trid.xml
+# Note:		called "Vista Event Log" by TrID and "Event Log" by Windows
+# 		verified partly by `wevtutil.exe gli /lf:true dumpfile.evtx`
+0	string		ElfFile\0	MS Windows
+#!:mime		application/octet-stream
+!:mime		application/x-ms-evtx
+!:ext		evtx
+# Major+Minor format version: 3.1~Vista and later 3.2~Windows 10 (2004) and later 
+>0x24	ulelong		=0x00030001	Vista-8.1 Event Log
+>0x24	ulelong		!0x00030001	10-11 Event Log, version 
+>>0x26	uleshort	x		%u
+>>0x24	uleshort	x		\b.%u
 >0x2a	leshort		x		\b, %d chunks
 >>0x10	lelong		x		\b (no. %d in use)
 >0x18	lelong		>1		\b, next record no. %d
 >0x18	lelong		=1		\b, empty
 >0x78	lelong		&1		\b, DIRTY
 >0x78	lelong		&2		\b, FULL
+
+# Summary:	Windows Event Trace Log
+# From:		Joerg Jenderek
+# URL:		http://fileformats.archiveteam.org/wiki/ETL
+# Reference:	http://mark0.net/download/triddefs_xml.7z/defs/e/etl.trid.xml
+#		https://www.geoffchappell.com/studies/windows/km/ntoskrnl/api/etw/tracelog/trace_logfile_header.htm
+# Note:		called "Window tracing/diagnostic binary log" by TrID
+# 		verified by `tracerpt.EXE Wifi.etl -of EVTX`
+#		and by etl-parser `etl2xml --input AMSITrace.etl --output AMSITrace.xml`
+# Every ETL file begins with a WMI_BUFFER_HEADER, a SYSTEM_TRACE_HEADER and a TRACE_LOGFILE_HEADER
+0	ubyte			0
+# look for corresponding encoded as UTF-16 file name extension like in: boot_BASE+CSWITCH_1.etl
+>0	search/0x699087/b	.\0e\0t\0l\0\0\0
+# GRR: line above only works if in ../../src/file.h FILE_BYTES_MAX is raised above 699086h (6,59 MiB)
+>>0	use			trace-etl
+# display information of Windows Performance Analyzer Trace File (file name)
+0	name		trace-etl
+>0	ubyte			x		Windows Event Trace Log
+#!:mime		application/x-ms-etl
+# http://extension.nirsoft.net/etl
+!:mime		application/etl
+!:ext		etl
+# look for DOS drive letter part of log file name like: PhotosAppTracing_startedInBGMode.etl
+>0	search/0x2b4/sb	:\0\x5c\0	
+# like: "c:\Windows\Logs\NetSetup\service.0.etl" "C:\Windows\System32\LogFiles\WMI\Wifi.etl"
+>>&-2	lestring16		x		"%s"
 
 # Summary: Windows System Deployment Image
 # Created by: Joerg Jenderek
@@ -752,6 +791,27 @@
 # like: 12510866.CPX 
 !:ext	cpx
 # From:		Joerg Jenderek
+# URL:		https://en.wikipedia.org/wiki/File_Explorer
+# Reference:	http://mark0.net/download/triddefs_xml.7z/defs/s/scf-exp.trid.xml,scf-exp-old.trid.xml
+# Note:		called "Windows Explorer Command Shell File" by TrID and "File Explorer Command" by Windows via SHCmdFile
+>>&0	regex/c		\^Shell]\r\n					Windows Explorer Shell Command File
+#!:mime	text/plain
+!:mime	text/x-ms-scf
+# like: channels.scf desktop.scf explorer.scf "Desktop anzeigen.scf"
+!:ext	scf
+# look for icon file directive maybe pointing to malicious file
+>>>1		search/128	IconFile=				\b, icon
+>>>>&0		string		x					"%s"
+# From:		Joerg Jenderek
+# URL:		http://en.wikipedia.org/wiki/VIA_Technologies
+# Reference:	http://mark0.net/download/triddefs_xml.7z/defs/s/scf-via.trid.xml
+# Note:		called "VIA setup configuration file" by TrID
+>>&0	regex/c		\^SCF]\r\n					VIA setup configuration
+#!:mime	text/plain
+!:mime	text/x-via-scf
+# like: SETUP.SCF
+!:ext	scf
+# From:		Joerg Jenderek
 # URL:		https://en.wikipedia.org/wiki/InstallShield
 # Reference:	http://mark0.net/download/triddefs_xml.7z/defs/l/lid-is.trid.xml
 # Note:		contain also 3 keywords like: count Default key0
@@ -871,21 +931,24 @@
 >>>2		uleshort	<3
 # look for colon in WinDirPath after PNF header
 #>>>>0x59	search/18	:
->>>>0	use	PreCompiledInf
+# skip few Adobe Photoshop Color swatch ("Mac OS.aco" TRUMATCH-Farben.aco Windows.aco) and some
+# Targa image (money-256.tga XING_B_UCM8.tga x-fmt-367-signature-id-604.tga) with "invalid low section name" \0
+>>>>(20.l)	ubelong		>0x40004000
+>>>>>0	use	PreCompiledInf
 0	name	PreCompiledInf
 >0		uleshort	x	Windows Precompiled iNF
 !:mime	application/x-pnf
 !:ext	pnf
 # major version 1 for older Windows like XP and 3 since about Windows Vista
-# 101h~98-XP; 301h~Windows Vista-7 ; 302h~Windows 10 14393; 303h~Windows 10 18362
+# 101h~95-XP; 301h~Windows Vista-7 ; 302h~Windows 10 14393; 303h~Windows 10 18362-Windows11
 >1		ubyte		x		\b, version %u
 >0		ubyte		x		\b.%u
 >0		uleshort	=0x0101		(Windows
->>4	ulelong&0x00000001	!0x00000001	98)
+>>4	ulelong&0x00000001	!0x00000001	95-98)
 >>4	ulelong&0x00000001	=0x00000001	XP)
 >0		uleshort	=0x0301		(Windows Vista-8.1)
 >0		uleshort	=0x0302		(Windows 10 older)
->0		uleshort	=0x0303		(Windows 10)
+>0		uleshort	=0x0303		(Windows 10-11)
 # 1 ,2 (windows 98 SE)
 >2		uleshort	!2		\b, InfStyle %u
 #	PNF_FLAG_IS_UNICODE		0x00000001
@@ -927,7 +990,7 @@
 >>(20.l)	string		x		"%s"
 # FILETIME is number of 100-nanosecond intervals since 1 January 1601
 #>24		ulequad		x		\b, InfVersionLastWriteTime %16.16llx
-#>24		foodate-0xbar	x		\b, InfVersionLastWriteTime %s
+>24		qwdate		x		\b, InfVersionLastWriteTime %s
 # for Windows 98, XP
 >0		uleshort	<0x0102
 # only found values lower 0x00ffFFff
@@ -965,6 +1028,7 @@
 >>>>>(72.l)	string		x		OsLoaderPath "%s"
 # 1fdh
 #>>>76		uleshort	x		\b, StringTableHashBucketCount %#x
+# https://docs.microsoft.com/en-us/openspecs/office_standards/ms-oe376/6c085406-a698-4e12-9d4d-c3b0ee3dbc4a
 # only 407h found
 >>>78		uleshort	!0x409		\b, LanguageID %x
 #>>>78		uleshort	=0x409		\b, LanguageID %x
@@ -1342,7 +1406,7 @@
 # 5000010021083f00 50000100b0335600 50000100cbfdf800 50000100dfbc4700
 #>4	ubequad		x		\b, at 4 %#16.16llx
 # copyright text like:	"Stirling Technologies, Inc.  (c) 1990-1994"
-#			"InstallSHIELD Software Coporation  (c) 1990-1997"
+#			"InstallSHIELD Software Corporation  (c) 1990-1997"
 >13	pstring/h	x		"%s"
 # look for specific ASCII variable names
 >1	search/0x121/s	SRCDIR	\b, variable names:

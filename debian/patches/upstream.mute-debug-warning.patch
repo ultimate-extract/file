@@ -7,8 +7,8 @@ Forwarded: https://mailman.astron.com/pipermail/file/2022-December/001018.html
 +++ b/src/softmagic.c
 @@ -1461,7 +1461,7 @@
  	// On purpose not INTMAX_MAX
- 	if (lhs >= INT_MAX || lhs <= INT_MIN ||
- 	    off >= INT_MAX || off <= INT_MIN) {
+ 	if (lhs >= UINT_MAX || lhs <= INT_MIN ||
+ 	    off >= UINT_MAX || off <= INT_MIN) {
 -		fprintf(stderr, "lhs/off overflow %jd %jd\n", lhs, off);
 +/*		fprintf(stderr, "lhs/off overflow %jd %jd\n", lhs, off); */
  		return 1;

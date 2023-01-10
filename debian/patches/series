@@ -1,11 +1,12 @@
 # reverted upstream commits
 
 # cherry-picked commits. Keep in upstream's chronological order
-cherry-pick-all-since-5.43-release.patch
+1672518248.FILE5_44-9-gdc71304b.pyzip-improvements-fc-stegerman.patch
 
 # patches that should go upstream
 upstream.disable.att3b.patch
 upstream.mute-debug-warning.patch
+upstream.detect-smali.patch
 
 # local modifications
 local.support-local-definitions-in-etc-magic.patch

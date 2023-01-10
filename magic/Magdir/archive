@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# $File: archive,v 1.169 2022/09/12 13:13:28 christos Exp $
+# $File: archive,v 1.179 2022/12/21 15:50:59 christos Exp $
 # archive:  file(1) magic for archive formats (see also "msdos" for self-
 #           extracting compressed archives)
 #
@@ -506,11 +506,12 @@
 >>>>0	use	ttcomp
 0	string	\1\4
 # TODO:
-# skip Commodore PET BASIC 4.0 program *.prg
-# variant ASCII, 1K dictionary (strength=48=50-2). With strength=49 wrong order! WHY?
 # skip shared library (strength=50) handled by ./ibm6000
 !:strength	-2
->0	use	ttcomp
+# skip Commodore PET BASIC programs (Mastermind.prg) with last 3 nil bytes (\0~end of line followed by 0000h line offset)
+#>-4	ubelong		x	LAST_BYTES=%8.8x
+>-4	ubelong&0x00FFffFF	!0
+>>0	use	ttcomp
 #	display information of TTComp archive
 0	name	ttcomp
 # (version 5.25) labeled the entry as "TTComp archive data"
@@ -753,6 +754,88 @@
 !:ext	??$
 >>8	ulelong	>0		\b, original size: %u bytes
 
+# Summary:	lzss compressed/EDI Pack
+# From:		Joerg Jenderek
+# URL:		http://fileformats.archiveteam.org/wiki/EDI_Install_packed_file
+# Note:		called "EDI Install LZS compressed data" by TrID and verified by
+#		command like `deark -l -m edi_pack -d2 BOOK01A.IC$` as "EDI Pack LZSS1"
+0	string					EDILZSS
+>7	string					1
+# look for point character before orginal file name extension
+>>8	search/9/b				.
+# check suffix of possible orginal file anme
+#>>>&0		ubelong				x	SUFFIX=%8.8x
+# samples without valid character after point in original file name field like: FENNEL.LZS PLANTAIN.LZS
+>>>&0		ubyte				<0x20
+>>>>0			use				edi-lzs
+# samples with valid character after point in original file name field
+>>>&0		ubyte				>0x1F
+# check 2nd charcter of suffix
+#>>>>&0			ubyte	x			2ND_SUFFIX=%x
+# sample with one valid character after point followed by \0 in original file name field like: SPELMATE.H$
+>>>>&0			ubyte			=0
+>>>>>0				use			edi-pack
+>>>>&0			ubyte			>0x1F
+# check 3rd charcter of suffix
+#>>>>>&0				ubyte		x	3RD_SUFFIX=%x
+# no sample with 2 valid characters after point followed by \0 in original file name field
+>>>>>&0				ubyte		=0
+>>>>>>0					use		edi-pack
+# samples with valid 3rd character after point in original file name field
+>>>>>&0				ubyte		>0x1F
+# sample with 3 valid character after point followed by \0 in original file name field like: BOOK01A.IC$ CTL3D.DL$
+>>>>>>&0				ubyte	=0
+>>>>>>>0					use	edi-pack
+# sample with 3 valid character after point followed by no \0 in original file name field like: HERBTEXT.LZS
+>>>>>>&0				ubyte	!0
+>>>>>>>0					use	edi-lzs
+# no sample with invalid 3rd character after point in original file name field
+>>>>>&0				default		x
+>>>>>>0					use		edi-lzs
+# sample with invalid 2nd character after point in original file name field like: LACERATE.LZS SPLINTER.LZS
+>>>>&0			default			x
+>>>>>0	use						edi-lzs
+# sample without point character in original file name field like GUNSHOT.LZS
+>>8	default					x
+>>>0		use					edi-lzs
+# Reference:	http://mark0.net/download/triddefs_xml.7z/defs/e/edi-lzss2.trid.xml
+# Note:		called "EDI Install Pro LZSS2 compressed data" by TrID and verified by
+#		command like `deark -l -m edi_pack -d2 4WAY.WA$` as "EDI Pack LZSS2"
+>7	string			2			EDI LZSS2 packed
+#!:mime	application/octet-stream
+!:mime	application/x-edi-pack-lzss
+# the name of a compressed file often ends in character '$' or '_'
+!:ext	??$/??_
+# original filename, NUL-terminated, padded to 13 bytes like: mci.vbx 4way.wav skymap.exe cmdialog.vbx
+>>8		string		x			"%-0.13s"
+# original file size, as a 4-byte integer.
+>>21		ulelong		x			\b, %u bytes
+# compressed data like: ff5249464606ec00 ff4d5aa601010000
+>>>25		ubequad		x			\b, data %#16.16llx...
+0	name		edi-pack
+# Note:		verified by command like `deark -l -d2 SPELMATE.H$` as "EDI Pack LZSS1"
+# original filename, NUL-terminated, padded to 13 bytes like: ctl3d.dll spelmate.h filemenu.rc owl.def index-it.exe
+# but not like \377Aloe.lzs\273 (HERBTEXT.LZS)
+>8	string		x				EDI LZSS packed "%-.13s"
+#!:mime	application/octet-stream
+!:mime	application/x-edi-pack-lzss
+# the name of a compressed file often ends in character '$' or '_'
+!:ext	??$/?$
+# compressed data like: f7000001eff02020 ff4d5aa900020000 ff2f2a207370656c
+>21	ubequad		x				\b, data %#16.16llx...
+# URL:		http://fileformats.archiveteam.org/wiki/EDI_LZSSLib
+# Note:		verified partly by command like `deark -l -m edi_pack -d2 GUNSHOT.LZS` as "EDI LZSSLib"
+0	name		edi-lzs
+# Note:		verified by command like `deark -l -d2 GUNSHOT.LZS` as "EDI LZSSLib"
+# no original filename looks like: \277BM\226.\0 \277BM.n\001 \277BM\226.\0 \277BM.g\001 \377Aloe.lzs\273
+>8	string		x				EDI LZSSLib packed
+#!:mime	application/octet-stream
+!:mime	application/x-edi-pack-lzss
+# The name of a compressed file ends with LZS suffix
+!:ext	lzs
+# compressed data like: bf424df6e10100f3 ff416c6f652e6c7a ff416c6f652e6c7a
+>8	ubequad		x				\b, data %#16.16llx...
+
 # Summary:	CAZIP compressed file
 # From:		Joerg Jenderek
 # URL:		http://fileformats.archiveteam.org/wiki/CAZIP
@@ -791,8 +874,6 @@
 3	string	OctSqu Squash archive data
 # Terse
 0	string	\5\1\1\0 Terse archive data
-# PUCrunch
-0	string	\x01\x08\x0b\x08\xef\x00\x9e\x32\x30\x36\x31 PUCrunch archive data
 # UHarc
 0	string	UHA UHarc archive data
 # ABComp
@@ -821,8 +902,10 @@
 # QFC
 0	string	\x1aFC\x1a QFC archive data
 0	string	\x1aQF\x1a QFC archive data
-# PRO-PACK
-0	string	RNC PRO-PACK archive data
+# PRO-PACK https://www.segaretro.org/Rob_Northen_compression
+0	string	RNC
+>3	byte	1	PRO-PACK archive data (compression 1)
+>3	byte	2	PRO-PACK archive data (compression 2)
 # 777
 0	string	777 777 archive data
 # LZS221
@@ -1234,7 +1317,7 @@
 >>>>>>3	regex		\^lh[01]	LHarc 1.x/ARX archive data
 # LHice archiver use ".ICE" as name extension instead usual one ".lzh"
 # FOOBAR archiver use ".foo" as name extension instead usual one
-# "Florain Orjanov's and Olga Bachetska's ARchiver" not found at the moment
+# "Florian Orjanov's and Olga Bachetska's ARchiver" not found at the moment
 >>>>>>>2	string	-lh1		\b 
 !:ext lha/lzh/ice
 >>>>>>3	regex		\^lh[23d]	LHa 2.x? archive data
@@ -1789,6 +1872,14 @@
 !:mime	application/zip
 !:ext zip/cbz
 
+# Recognize ZIP archives with prepended data by end-of-central-directory record
+# https://en.wikipedia.org/wiki/ZIP_(file_format)#End_of_central_directory_record_(EOCD)
+# by Michal Gorny <mgorny@gentoo.org>
+-2	uleshort	0
+>&-22	string	PK\005\006	Zip archive, with extra data prepended
+!:mime	application/zip
+!:ext zip/cbz
+
 # ACE archive (from http://www.wotsit.org/download.asp?f=ace)
 # by Stefan `Sec` Zehl <sec@42.org>
 7	string		**ACE**		ACE archive data
@@ -2066,6 +2157,7 @@
 # https://gitweb.gentoo.org/proj/portage.git/tree/man/xpak.5
 -4	string	STOP
 >-16	string	XPAKSTOP	Gentoo binary package (XPAK)
+!:mime	application/vnd.gentoo.xpak
 
 # From:		Joerg Jenderek
 # URL:		https://kodi.wiki/view/TexturePacker
@@ -2110,3 +2202,71 @@
 
 # From wof (wof@stachelkaktus.net)
 0	string	Unison\ archive\ format	Unison archive format
+
+# https://ankiweb.net
+30	string	collection.anki2	Anki APKG file
+#!:ext	.apkg
+
+# Synology archive (DiskStation Manager 7.0+)
+# From: Alexandre Iooss <erdnaxe@crans.org>
+# Note: These archives are signed and encrypted.
+0		ulelong&0xFFFFFF00	0xEFBEAD00
+# MessagePack header (fixarray of 5 elements starting with a bin of 32 bytes)
+>8  	ulelong&0x00FFFFFF	0x20C495	Synology archive
+!:ext	spk
+# Extract some properties from MessagePack third item
+>>43	search/0x10000		package=
+>>>&0	string				x			\b, package %s
+>>43	search/0x10000		arch=
+>>>&0	string				x			%s
+>>43	search/0x10000		version=
+>>>&0	string				x			%s
+>>43	search/0x10000		create_time=
+>>>&0	string				x			\b, created on %s
+
+# MonoGame/XNA processed assets archive
+# From: Alexandre Iooss <erdnaxe@crans.org>
+# URL: https://github.com/MonoGame/MonoGame/blob/v3.8.1/MonoGame.Framework/Content/ContentManager.cs
+0	string	XNB
+# XNB must be version 4 or 5
+>4	byte	<6
+>>4	byte	>3
+# Size must be positive
+>>>6	lelong	>0	MonoGame/XNA processed assets
+!:ext	xnb
+>>>>3	string	=w	\b, for Windows
+>>>>3	string	=x	\b, for Xbox360
+>>>>3	string	=i	\b, for iOS
+>>>>3	string	=a	\b, for Android
+>>>>3	string	=d	\b, for DesktopGL
+>>>>3	string	=X	\b, for MacOSX
+>>>>3	string	=W	\b, for WindowsStoreApp
+>>>>3	string	=n	\b, for NativeClient
+>>>>3	string	=M	\b, for WindowsPhone8
+>>>>3	string	=r	\b, for RaspberryPi
+>>>>3	string	=P	\b, for PlayStation4
+>>>>3	string	=5	\b, for PlayStation5
+>>>>3	string	=O	\b, for XboxOne
+>>>>3	string	=S	\b, for Nintendo Switch
+>>>>3	string	=G	\b, for Google Stadia
+>>>>3	string	=b	\b, for WebAssembly and Bridge.NET
+>>>>3	string	=m	\b, for WindowsPhone7.0 (XNA)
+>>>>3	string	=p	\b, for PlayStationMobile
+>>>>3	string	=v	\b, for PSVita
+>>>>3	string	=g	\b, for Windows (OpenGL)
+>>>>3	string	=l	\b, for Linux
+>>>>4	byte	x	\b, version %d
+>>>>5	byte	&0x80	\b, LZX compressed
+>>>>>10	lelong	x	\b, decompressed size: %d bytes
+>>>>5	byte	&0x40	\b, LZ4 compressed
+>>>>>10	lelong	x	\b, decompressed size: %d bytes
+
+# Electron ASAR archive
+# From: Alexandre Iooss <erdnaxe@crans.org>
+# URL: https://github.com/electron/asar
+0		ulelong	4
+# Match JSON header start and end
+>16		string	{"files":{"
+>>(12.l+12)	string }}}}		Electron ASAR archive
+!:ext	asar
+>>>12		ulelong	x		\b, header length: %d bytes

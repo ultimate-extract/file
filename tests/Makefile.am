@@ -17,6 +17,14 @@ bcachefs.result \
 bcachefs.testfile \
 cl8m8ocofedso.result \
 cl8m8ocofedso.testfile \
+cmd1.testfile \
+cmd1.result \
+cmd2.testfile \
+cmd2.result \
+cmd3.testfile \
+cmd3.result \
+cmd4.testfile \
+cmd4.result \
 dsd64-dff.result \
 dsd64-dff.testfile \
 dsd64-dsf.result \
@@ -37,6 +45,8 @@ issue311docx.result \
 issue311docx.testfile \
 issue359xlsx.result \
 issue359xlsx.testfile \
+jpeg-text.result \
+jpeg-text.testfile \
 json1.result \
 json1.testfile \
 json2.result \
@@ -57,6 +67,11 @@ jsonlines1.testfile \
 jsonlines1.result \
 matilde.arm.result \
 matilde.arm.testfile \
+multiple-A.magic \
+multiple-B.magic \
+multiple.flags \
+multiple.result \
+multiple.testfile \
 pcjr.result \
 pcjr.testfile \
 pgp-binary-key-v2-phil.result \
@@ -75,11 +90,19 @@ pgp-binary-key-v4-rsa-no-userid-secret.result \
 pgp-binary-key-v4-rsa-no-userid-secret.testfile \
 pgp-binary-key-v4-rsa-secret-key.result \
 pgp-binary-key-v4-rsa-secret-key.testfile \
+pnm1.result \
+pnm1.testfile \
+pnm2.result \
+pnm2.testfile \
+pnm3.result \
+pnm3.testfile \
 regex-eol.magic \
 regex-eol.result \
 regex-eol.testfile \
 uf2.result \
 uf2.testfile \
+xclbin.result \
+xclbin.testfile \
 zstd-3-skippable-frames.result \
 zstd-dictionary-0.result \
 zstd-dictionary-1.result \
@@ -127,14 +150,27 @@ zstd-v0.8-FF.testfile
 
 T = $(top_srcdir)/tests
 check-local:
-	MAGIC=$(top_builddir)/magic/magic ./test
 	set -e; \
 	for i in $T/*.testfile; do \
-		echo Running test: $$i; \
-		if [ -f $${i%%.testfile}.magic ]; then \
-			m=$${i%%.testfile}.magic; \
-		else \
+		t=$${i%%.testfile}; \
+		echo Running test: $$t; \
+		m=; \
+		for j in $$(eval echo $${t}\*.magic); do \
+			if [ -f "$$j" ]; then \
+				if [ -z "$$m" ]; then \
+					m=$$j; \
+				else \
+					m=$$m:$$j; \
+				fi \
+			fi \
+		done; \
+		if [ -z "$$m" ]; then \
 			m=$(top_builddir)/magic/magic; \
 		fi; \
-		TZ=UTC MAGIC=$$m ./test $$i $${i%%.testfile}.result; \
+		f=-e; \
+		if [ -f $${t}.flags ]; then \
+			f=$$f$$(cat $${t}.flags); \
+		fi; \
+		echo TZ=UTC MAGIC=$$m ./test $$f $$i $${t}.result; \
+		TZ=UTC MAGIC=$$m ./test $$f $$i $${t}.result; \
 	done

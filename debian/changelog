@@ -1,3 +1,11 @@
+file (1:5.44-1) unstable; urgency=medium
+
+  * New upstream version 5.44
+  * Cherry-pick "Pyzip improvements". Closes: #1026976
+  * Detect smali files
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Tue, 10 Jan 2023 21:39:37 +0100
+
 file (1:5.43-3) experimental; urgency=medium
 
   * Refine autopkgtest

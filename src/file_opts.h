@@ -37,7 +37,7 @@ OPT('e', "exclude", 1, 0,
     "                               performed for file. Valid tests are:\n"
     "                               %e\n")
 OPT_LONGONLY("exclude-quiet", 1, 0,
-    " TEST         like exclude, but ignore unknown tests\n", OPT_EXCLUDE_QUIET)
+    " TEST   like exclude, but ignore unknown tests\n", OPT_EXCLUDE_QUIET)
 OPT('f', "files-from", 1, 0,
     " FILE      read the filenames to be examined from FILE\n")
 OPT('F', "separator", 1, 0,
@@ -59,9 +59,9 @@ OPT('l', "list", 0, 0,
     "                 list magic strength\n")
 #ifdef S_IFLNK
 OPT('L', "dereference", 0, 1,
-    "          follow symlinks")
+    "          follow symlinks (default if POSIXLY_CORRECT is set)")
 OPT('h', "no-dereference", 0, 2,
-    "       don't follow symlinks")
+    "       don't follow symlinks (default if POSIXLY_CORRECT is not set)")
 #endif
 OPT('n', "no-buffer", 0, 0,
     "            do not buffer output\n")
