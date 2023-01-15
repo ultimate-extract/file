@@ -1,0 +1,31 @@
+Subject: JAR Manifest & Signature File, PKCS#7 Signed Data (FC Stegerman)
+Origin: FILE5_44-14-gbb955ca3 <https://github.com/file/file/commit/FILE5_44-14-gbb955ca3>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Wed Jan 11 23:59:49 2023 +0000
+
+--- a/magic/Magdir/der
++++ b/magic/Magdir/der
+@@ -137,3 +137,10 @@
+ >>>>&0	der	seq
+ >>>>>&0	der     obj_id3=550403
+ >>>>>&0	der     utf8_str=x      \b, Subject=%s
++
++# PKCS#7 Signed Data (e.g. JAR Signature Block File)
++# OID 1.2.840.113549.1.7.2 (2a864886f70d010702)
++# Reference: https://www.rfc-editor.org/rfc/rfc2315
++0	der	seq
++>&0	der	obj_id9=2a864886f70d010702	DER Encoded PKCS#7 Signed Data
++!:ext	RSA/DSA/EC
+--- a/magic/Magdir/java
++++ b/magic/Magdir/java
+@@ -43,3 +43,10 @@
+ >6	leshort	>0x00	\b, version %d
+ >4	leshort	x	\b.%d
+ !:mime	application/x-java-image
++
++# JAR Manifest & Signature File
++# Reference: https://docs.oracle.com/javase/8/docs/technotes/guides/jar/jar.html
++0	string/t	Manifest-Version:\x201.0	JAR Manifest
++!:ext	MF
++0	string/t	Signature-Version:\x201.0	JAR Signature File
++!:ext	SF

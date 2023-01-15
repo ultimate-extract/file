@@ -1,12 +1,19 @@
 # reverted upstream commits
 
 # cherry-picked commits. Keep in upstream's chronological order
+1672082456.FILE5_44-5-g813b3304.pr-410-pandrew-add-bitcoin-and-leveldb-support.patch
 1672518248.FILE5_44-9-gdc71304b.pyzip-improvements-fc-stegerman.patch
+1673481589.FILE5_44-14-gbb955ca3.jar-manifest-signature-file-pkcs-7-signed-data-fc-stegerman.patch
+1673481736.FILE5_44-15-ga2756aa5.improve-javascript-detection-fc-stegerman.patch
+1673482012.FILE5_44-16-gb29519e7.detect-android-apk-files-fc-stegerman.patch
+1673482186.FILE5_44-17-g4c8ee2e7.detect-smali-files-fc-stegerman.patch
+1673482234.FILE5_44-18-g9fa5e784.detect-android-art-baseline-profiles-found-in-apk-files.patch
+1673482275.FILE5_44-19-g4341ed61.detect-android-package-resource-table-arsc-fc-stegerman.patch
+1673725413.FILE5_44-22-g6d565d82.improve-apk-detection-fc-stegerman.patch
 
 # patches that should go upstream
 upstream.disable.att3b.patch
 upstream.mute-debug-warning.patch
-upstream.detect-smali.patch
 
 # local modifications
 local.support-local-definitions-in-etc-magic.patch

@@ -1,3 +1,10 @@
+file (1:5.44-2) unstable; urgency=medium
+
+  * Cherry-pick several commits to improve the detection of APK files.
+    Closes: #849782
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 15 Jan 2023 19:15:20 +0100
+
 file (1:5.44-1) unstable; urgency=medium
 
   * New upstream version 5.44

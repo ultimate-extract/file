@@ -1,0 +1,37 @@
+Subject: PR/410: pandrew: Add bitcoin and leveldb support
+Origin: FILE5_44-5-g813b3304 <https://github.com/file/file/commit/FILE5_44-5-g813b3304>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Mon Dec 26 19:20:56 2022 +0000
+
+--- a/magic/Magdir/crypto
++++ b/magic/Magdir/crypto
+@@ -3,3 +3,29 @@
+ # $File: crypto,v 1.2 2021/03/27 20:15:53 christos Exp $
+ # crypto:  file(1) magic for crypto formats
+ #
++# Bitcoin block files
++0		lelong			0xD9B4BEF9	Bitcoin
++>(4.l+40)	lelong			0xD9B4BEF9	reverse block
++>>4		lelong			x		\b, size %u
++# normal block below
++>0		default			x		block
++>>4		lelong			x		\b, size %u
++>>8		lelong&0xE0000000	0x20000000
++>>>8		lelong			x		\b, BIP9 0x%x
++>>8		lelong&0xE0000000	!0x20000000
++>>>8		lelong			x		\b, version 0x%x
++>>76		ledate			x		\b, %s UTC
++# VarInt counter
++>>88		ubyte			<0xfd		\b, txcount %u
++>>88		ubyte			0xfd
++>>>89		leshort			x		\b, txcount %u
++>>88		ubyte			0xfe
++>>>89		lelong			x		\b, txcount %u
++>>88		ubyte			0xff
++>>>89		lequad			x		\b, txcount %llu
++!:ext	dat
++# option to find more blocks in the file
++#>>(4.l+8)	indirect	x			;
++
++# LevelDB
++-8		lequad		0xdb4775248b80fb57	LevelDB table data

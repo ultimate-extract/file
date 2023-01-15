@@ -1,7 +1,7 @@
-Subject: Detect smali files
-Author: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
-Date: 2022-12-30
-Forwarded: https://mailman.astron.com/pipermail/file/2022-December/001049.html
+Subject: Detect .smali files (FC Stegerman)
+Origin: FILE5_44-17-g4c8ee2e7 <https://github.com/file/file/commit/FILE5_44-17-g4c8ee2e7>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Thu Jan 12 00:09:46 2023 +0000
 
 --- a/magic/Magdir/android
 +++ b/magic/Magdir/android

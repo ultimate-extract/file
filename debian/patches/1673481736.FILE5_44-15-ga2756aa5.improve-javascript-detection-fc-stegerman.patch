@@ -1,0 +1,103 @@
+Subject: Improve JavaScript detection (FC Stegerman)
+Origin: FILE5_44-15-ga2756aa5 <https://github.com/file/file/commit/FILE5_44-15-ga2756aa5>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Thu Jan 12 00:02:16 2023 +0000
+
+--- a/magic/Magdir/javascript
++++ b/magic/Magdir/javascript
+@@ -3,18 +3,68 @@
+ # $File: javascript,v 1.4 2022/09/02 08:08:17 christos Exp $
+ # javascript:  magic for javascript and node.js scripts.
+ #
+-0	string/w	#!/bin/node		Node.js script text executable
++0	string/tw	#!/bin/node		Node.js script executable
+ !:mime application/javascript
+-0	string/w	#!/usr/bin/node		Node.js script text executable
++0	string/tw	#!/usr/bin/node		Node.js script executable
+ !:mime application/javascript
+-0	string/w	#!/bin/nodejs		Node.js script text executable
++0	string/tw	#!/bin/nodejs		Node.js script executable
+ !:mime application/javascript
+-0	string/w	#!/usr/bin/nodejs	Node.js script text executable
+-!:mime application/javascript
+-0	string		#!/usr/bin/env\ node	Node.js script text executable
+-!:mime application/javascript
+-0	string		#!/usr/bin/env\ nodejs	Node.js script text executable
++0	string/tw	#!/usr/bin/nodejs	Node.js script executable
+ !:mime application/javascript
++0	string/t		#!/usr/bin/env\ node	Node.js script executable
++!:mime application/javascript
++0	string/t		#!/usr/bin/env\ nodejs	Node.js script executable
++!:mime application/javascript
++
++# JavaScript
++# The strength is increased to beat the C++ & HTML rules
++0	search	"use\x20strict"	JavaScript source
++!:strength +30
++!:mime	application/javascript
++!:ext 	js
++0	search	'use\x20strict'	JavaScript source
++!:strength +30
++!:mime	application/javascript
++!:ext 	js
++0	regex	module(\\.|\\[["'])exports.*=	JavaScript source
++!:strength +30
++!:mime	application/javascript
++!:ext 	js
++0	regex	\^(const|var|let).*=.*require\\(	JavaScript source
++!:strength +30
++!:mime	application/javascript
++!:ext 	js
++0	regex	\^export\x20(function|class|default|const|var|let|async)\x20	JavaScript source
++!:strength +30
++!:mime	application/javascript
++!:ext 	js
++0	regex	\\((async\x20)?function[(\x20]	JavaScript source
++!:strength +30
++!:mime	application/javascript
++!:ext 	js
++0	regex	\^(import|export).*\x20from\x20	JavaScript source
++!:strength +30
++!:mime	application/javascript
++!:ext 	js
++0	regex	\^(import|export)\x20["']\\./	JavaScript source
++!:strength +30
++!:mime	application/javascript
++!:ext 	js
++0	regex	\^require\\(["']	JavaScript source
++!:strength +30
++!:mime	application/javascript
++!:ext 	js
++0	regex	typeof.*[!=]==	JavaScript source
++!:strength +30
++!:mime	application/javascript
++!:ext 	js
++
++# React Native minified JavaScript
++0	search/128	__BUNDLE_START_TIME__=	React Native minified JavaScript
++!:strength +30
++!:mime	application/javascript
++!:ext	bundle/jsbundle
++
+ # Hermes by Facebook https://hermesengine.dev/
+ # https://github.com/facebook/hermes/blob/master/include/hermes/\
+ # BCGen/HBC/BytecodeFileFormat.h#L24
+--- a/magic/Magdir/sgml
++++ b/magic/Magdir/sgml
+@@ -50,6 +50,16 @@
+ !:mime	text/html
+ !:strength + 5
+ 
++# avoid misdetection as JavaScript
++0	string/cWt	\<!doctype\ html	HTML document text
++!:mime	text/html
++0	string/ct	\<html>	HTML document text
++!:mime	text/html
++0	string/ct	\<!--
++>&0	search/4096/cWt	\<!doctype\ html	HTML document text
++>&0	search/4096/ct	\<html>	HTML document text
++!:mime	text/html
++
+ # SVG document
+ # https://www.w3.org/TR/SVG/single-page.html
+ 0	search/4096/cWbt	\<!doctype\ svg	SVG XML document
