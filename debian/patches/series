@@ -10,6 +10,9 @@
 1673482234.FILE5_44-18-g9fa5e784.detect-android-art-baseline-profiles-found-in-apk-files.patch
 1673482275.FILE5_44-19-g4341ed61.detect-android-package-resource-table-arsc-fc-stegerman.patch
 1673725413.FILE5_44-22-g6d565d82.improve-apk-detection-fc-stegerman.patch
+1674058221.FILE5_44-23-gbaf1f4b4.add-mime-type-to-html-fc-stegerman.patch
+1674058358.FILE5_44-24-gc4361a10.improve-detection-of-apk-files-if-we-find-a-manifest-file-at-least-say.patch
+1674400026.FILE5_44-29-g1e4b7389.increase-strength-to-beat-targa-fc-stegerman.patch
 
 # patches that should go upstream
 upstream.disable.att3b.patch

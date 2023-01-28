@@ -1,0 +1,17 @@
+Subject: Increase strength to beat targa (FC Stegerman)
+Origin: FILE5_44-29-g1e4b7389 <https://github.com/file/file/commit/FILE5_44-29-g1e4b7389>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Sun Jan 22 15:07:06 2023 +0000
+
+--- a/magic/Magdir/android
++++ b/magic/Magdir/android
+@@ -180,7 +180,9 @@
+ # In include/androidfw/ResourceTypes.h:
+ # RES_XML_TYPE = 0x0003 followed by the size of the header (ResXMLTree_header),
+ # which is 8 bytes (2 bytes type + 2 bytes header size + 4 bytes size).
++# The strength is increased to avoid misidentifying as Targa image data
+ 0	lelong	0x00080003	Android binary XML
++!:strength +1
+ 
+ # Android cryptfs footer
+ # From https://android.googlesource.com/\

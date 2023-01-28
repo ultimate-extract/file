@@ -1,0 +1,15 @@
+Subject: Add mime type to html (FC Stegerman)
+Origin: FILE5_44-23-gbaf1f4b4 <https://github.com/file/file/commit/FILE5_44-23-gbaf1f4b4>
+Upstream-Author: Christos Zoulas <christos@zoulas.com>
+Date: Wed Jan 18 16:10:21 2023 +0000
+
+--- a/magic/Magdir/sgml
++++ b/magic/Magdir/sgml
+@@ -57,6 +57,7 @@
+ !:mime	text/html
+ 0	string/ct	\<!--
+ >&0	search/4096/cWt	\<!doctype\ html	HTML document text
++!:mime	text/html
+ >&0	search/4096/ct	\<html>	HTML document text
+ !:mime	text/html
+ 
