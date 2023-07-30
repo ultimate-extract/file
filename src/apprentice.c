@@ -32,7 +32,7 @@
 #include "file.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: apprentice.c,v 1.339 2022/12/26 17:31:14 christos Exp $")
+FILE_RCSID("@(#)$File: apprentice.c,v 1.342 2023/07/17 14:38:35 christos Exp $")
 #endif	/* lint */
 
 #include "magic.h"
@@ -121,7 +121,6 @@ file_private int parse(struct magic_set *, struct magic_entry *, const char *,
 file_private void eatsize(const char **);
 file_private int apprentice_1(struct magic_set *, const char *, int);
 file_private ssize_t apprentice_magic_strength_1(const struct magic *);
-file_private size_t apprentice_magic_strength(const struct magic *, size_t);
 file_private int apprentice_sort(const void *, const void *);
 file_private void apprentice_list(struct mlist *, int );
 file_private struct magic_map *apprentice_load(struct magic_set *,
@@ -578,6 +577,7 @@ file_ms_alloc(int flags)
 	ms->indir_max = FILE_INDIR_MAX;
 	ms->name_max = FILE_NAME_MAX;
 	ms->elf_shnum_max = FILE_ELF_SHNUM_MAX;
+	ms->elf_shsize_max = FILE_ELF_SHSIZE_MAX;
 	ms->elf_phnum_max = FILE_ELF_PHNUM_MAX;
 	ms->elf_notes_max = FILE_ELF_NOTES_MAX;
 	ms->regex_max = FILE_REGEX_MAX;
@@ -1067,8 +1067,8 @@ apprentice_magic_strength_1(const struct magic *m)
 
 
 /*ARGSUSED*/
-file_private size_t
-apprentice_magic_strength(const struct magic *m,
+file_protected size_t
+file_magic_strength(const struct magic *m,
     size_t nmagic __attribute__((__unused__)))
 {
 	ssize_t val = apprentice_magic_strength_1(m);
@@ -1133,8 +1133,8 @@ apprentice_sort(const void *a, const void *b)
 {
 	const struct magic_entry *ma = CAST(const struct magic_entry *, a);
 	const struct magic_entry *mb = CAST(const struct magic_entry *, b);
-	size_t sa = apprentice_magic_strength(ma->mp, ma->cont_count);
-	size_t sb = apprentice_magic_strength(mb->mp, mb->cont_count);
+	size_t sa = file_magic_strength(ma->mp, ma->cont_count);
+	size_t sb = file_magic_strength(mb->mp, mb->cont_count);
 	if (sa == sb)
 		return 0;
 	else if (sa > sb)
@@ -1180,7 +1180,7 @@ apprentice_list(struct mlist *mlist, int mode)
 			}
 
 			printf("Strength = %3" SIZE_T_FORMAT "u@%u: %s [%s]\n",
-			    apprentice_magic_strength(m, ml->nmagic - magindex),
+			    file_magic_strength(m, ml->nmagic - magindex),
 			    ml->magic[lineindex].lineno,
 			    ml->magic[descindex].desc,
 			    ml->magic[mimeindex].mimetype);
@@ -2566,7 +2566,9 @@ parse_ext(struct magic_set *ms, struct magic_entry *me, const char *line,
 {
 	return parse_extra(ms, me, line, len,
 	    CAST(off_t, offsetof(struct magic, ext)),
-	    sizeof(me->mp[0].ext), "EXTENSION", ",!+-/@?_$&", 0); /* & for b&w */
+	    sizeof(me->mp[0].ext), "EXTENSION", ",!+-/@?_$&~", 0);
+	    /* & for b&w */
+	    /* ~ for journal~ */
 }
 
 /*

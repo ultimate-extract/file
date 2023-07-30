@@ -1,5 +1,5 @@
-.\" $File: magic.man,v 1.101 2022/10/09 18:51:04 christos Exp $
-.Dd October 9, 2022
+.\" $File: magic.man,v 1.103 2023/07/20 14:32:07 christos Exp $
+.Dd Arpil 18, 2023
 .Dt MAGIC __FSECTION__
 .Os
 .\" install as magic.4 on USG, magic.5 on V7, Berkeley and Linux systems.
@@ -542,6 +542,20 @@ An APPLE 4+4 character APPLE creator and type can be specified as:
 !:apple	CREATYPE
 .Ed
 .Pp
+A slash-separated list of commonly found filename extensions can be specified
+as:
+.Bd -literal -offset indent
+!:ext	ext[/ext...]
+.Ed
+.Pp
+i.e. the literal string
+.Dq !:ext
+followed by a slash-separated list of commonly found extensions; for example
+for JPEG images:
+.Bd -literal -offset indent
+!:ext jpeg/jpg/jpe/jfif
+.Ed
+.Pp
 A MIME type is given on a separate line, which must be the next
 non-blank or comment line after the magic line that identifies the
 file type, and has the following format:
@@ -774,8 +788,8 @@ and
 .Dv long
 on the platform, even though the Single
 .Ux
-Specification implies that they do.  However, as OS X Mountain Lion has
-passed the Single
+Specification implies that they do.
+However, as OS X Mountain Lion has passed the Single
 .Ux
 Specification validation suite, and supplies a version of
 .Xr file __CSECTION__

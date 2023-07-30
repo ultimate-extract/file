@@ -27,7 +27,7 @@
 #include "file.h"
 
 #ifndef lint
-FILE_RCSID("@(#)$File: readelf.c,v 1.187 2022/12/26 17:31:14 christos Exp $")
+FILE_RCSID("@(#)$File: readelf.c,v 1.190 2023/07/27 19:39:06 christos Exp $")
 #endif
 
 #ifdef BUILTIN_ELF
@@ -42,11 +42,11 @@ FILE_RCSID("@(#)$File: readelf.c,v 1.187 2022/12/26 17:31:14 christos Exp $")
 #include "magic.h"
 
 #ifdef	ELFCORE
-file_private int dophn_core(struct magic_set *, int, int, int, off_t, int, size_t,
-    off_t, int *, uint16_t *);
+file_private int dophn_core(struct magic_set *, int, int, int, off_t, int,
+    size_t, off_t, int *, uint16_t *);
 #endif
-file_private int dophn_exec(struct magic_set *, int, int, int, off_t, int, size_t,
-    off_t, int, int *, uint16_t *);
+file_private int dophn_exec(struct magic_set *, int, int, int, off_t, int,
+    size_t, off_t, int, int *, uint16_t *);
 file_private int doshn(struct magic_set *, int, int, int, off_t, int, size_t,
     off_t, int, int, int *, uint16_t *);
 file_private size_t donote(struct magic_set *, void *, size_t, size_t, int,
@@ -60,9 +60,6 @@ file_private uint16_t getu16(int, uint16_t);
 file_private uint32_t getu32(int, uint32_t);
 file_private uint64_t getu64(int, uint64_t);
 
-#define MAX_PHNUM	128
-#define	MAX_SHNUM	32768
-#define MAX_SHSIZE	(64 * 1024 * 1024)
 #define SIZE_UNKNOWN	CAST(off_t, -1)
 
 file_private int
@@ -1453,10 +1450,10 @@ doshn(struct magic_set *ms, int clazz, int swap, int fd, off_t off, int num,
 					return -1;
 				return 0;
 			}
-			if (xsh_size > MAX_SHSIZE) {
+			if (xsh_size > ms->elf_shsize_max) {
 				file_error(ms, errno, "Note section size too "
-				    "big (%ju > %u)", (uintmax_t)xsh_size,
-				    MAX_SHSIZE);
+				    "big (%ju > %zu)", (uintmax_t)xsh_size,
+				    ms->elf_shsize_max);
 				return -1;
 			}
 			if ((nbuf = malloc(xsh_size)) == NULL) {

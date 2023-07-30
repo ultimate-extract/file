@@ -25,7 +25,7 @@ Last-Update: 2016-06-27
 +
 --- a/src/apprentice.c
 +++ b/src/apprentice.c
-@@ -496,7 +496,7 @@
+@@ -495,7 +495,7 @@
  #ifndef COMPILE_ONLY
  	map = apprentice_map(ms, fn);
  	if (map == NULL) {
@@ -47,7 +47,7 @@ Last-Update: 2016-06-27
  libmagic_la_SOURCES = buffer.c magic.c apprentice.c softmagic.c ascmagic.c \
 --- a/src/Makefile.in
 +++ b/src/Makefile.in
-@@ -360,7 +360,7 @@
+@@ -361,7 +361,7 @@
  MAGIC = $(pkgdatadir)/magic
  lib_LTLIBRARIES = libmagic.la
  nodist_include_HEADERS = magic.h
@@ -55,7 +55,7 @@ Last-Update: 2016-06-27
 +AM_CPPFLAGS = -DMAGIC='"/etc/magic:$(MAGIC)"'
  AM_CFLAGS = $(CFLAG_VISIBILITY) @WARNINGS@
  libmagic_la_SOURCES = buffer.c magic.c apprentice.c softmagic.c ascmagic.c \
- 	encoding.c compress.c is_csv.c is_json.c is_tar.c readelf.c print.c \
+ 	encoding.c compress.c is_csv.c is_json.c is_simh.c is_tar.c readelf.c \
 --- a/doc/file.man
 +++ b/doc/file.man
 @@ -59,7 +59,7 @@
@@ -77,7 +77,7 @@ Last-Update: 2016-06-27
  magic file
  .Pa __MAGIC__.mgc ,
  or the files in the directory
-@@ -572,12 +573,6 @@
+@@ -575,12 +576,6 @@
  The order of entries in the magic file is significant.
  Depending on what system you are using, the order that
  they are put together may be incorrect.

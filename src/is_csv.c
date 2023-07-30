@@ -32,7 +32,7 @@
 #include "file.h"
 
 #ifndef lint
-FILE_RCSID("@(#)$File: is_csv.c,v 1.10 2022/09/24 20:30:13 christos Exp $")
+FILE_RCSID("@(#)$File: is_csv.c,v 1.13 2023/07/17 16:08:17 christos Exp $")
 #endif
 
 #include <string.h>
@@ -125,12 +125,13 @@ csv_parse(const unsigned char *uc, const unsigned char *ue)
 			break;
 		}
 	}
-	return tf && nl > 2;
+	return tf && nl >= 2;
 }
 
 #ifndef TEST
 int
-file_is_csv(struct magic_set *ms, const struct buffer *b, int looks_text)
+file_is_csv(struct magic_set *ms, const struct buffer *b, int looks_text,
+    const char *code)
 {
 	const unsigned char *uc = CAST(const unsigned char *, b->fbuf);
 	const unsigned char *ue = uc + b->flen;
@@ -154,7 +155,8 @@ file_is_csv(struct magic_set *ms, const struct buffer *b, int looks_text)
 		return 1;
 	}
 
-	if (file_printf(ms, "CSV text") == -1)
+	if (file_printf(ms, "CSV %s%stext", code ? code : "",
+	    code ? " " : "") == -1)
 		return -1;
 
 	return 1;

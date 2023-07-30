@@ -1,6 +1,6 @@
 
 #------------------------------------------------------------------------------
-# $File: animation,v 1.91 2022/11/30 20:34:47 christos Exp $
+# $File: animation,v 1.94 2023/06/16 20:06:50 christos Exp $
 # animation:  file(1) magic for animation/movie formats
 #
 # animation formats
@@ -18,8 +18,8 @@
 >12     string          rmra            \b multiple URLs
 4       string          mdat            Apple QuickTime movie (unoptimized)
 !:mime	video/quicktime
-#4       string          wide            Apple QuickTime movie (unoptimized)
-#!:mime	video/quicktime
+4       string          wide            Apple QuickTime movie (unoptimized)
+!:mime	video/quicktime
 #4       string          skip            Apple QuickTime movie (modified)
 #!:mime	video/quicktime
 #4       string          free            Apple QuickTime movie (modified)
@@ -37,6 +37,7 @@
 4	string		ftyp		ISO Media
 # https://aeroquartet.com/wordpress/2016/03/05/3-xavc-s/
 >8	string		XAVC		\b, MPEG v4 system, Sony XAVC Codec
+!:mime	video/mp4
 >>96	string		x		\b, Audio "%.4s"
 >>118	beshort		x		at %dHz
 >>140	string		x		\b, Video "%.4s"
@@ -1194,3 +1195,12 @@
 >30	lelong	x	\b, height: %d
 >34	lelong	x	\b, %d bit
 >38	lelong	x	\b, frames: %d
+
+# https://wiki.multimedia.cx/index.php/Duck_IVF
+0	string	DKIF	Duck IVF video file
+!:mime	video/x-ivf
+>4	leshort	>0	\b, version %d
+>8	string	x	\b, codec %s
+>12	leshort x	\b, %d
+>14	leshort x	\bx%d
+>24	lelong	>0	\b, %d frames

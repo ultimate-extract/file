@@ -35,7 +35,7 @@
 #include "file.h"
 
 #ifndef	lint
-FILE_RCSID("@(#)$File: ascmagic.c,v 1.113 2022/12/26 17:31:14 christos Exp $")
+FILE_RCSID("@(#)$File: ascmagic.c,v 1.116 2023/05/21 16:08:50 christos Exp $")
 #endif	/* lint */
 
 #include "magic.h"
@@ -121,10 +121,10 @@ file_ascmagic_with_encoding(struct magic_set *ms, const struct buffer *b,
 	int has_backspace = 0;
 	int seen_cr = 0;
 
-	int n_crlf = 0;
-	int n_lf = 0;
-	int n_cr = 0;
-	int n_nel = 0;
+	size_t n_crlf = 0;
+	size_t n_lf = 0;
+	size_t n_cr = 0;
+	size_t n_nel = 0;
 	int executable = 0;
 
 	size_t last_line_end = CAST(size_t, -1);
@@ -148,8 +148,10 @@ file_ascmagic_with_encoding(struct magic_set *ms, const struct buffer *b,
 			goto done;
 		}
 		if ((utf8_end = encode_utf8(utf8_buf, mlen, ubuf, ulen))
-		    == NULL)
+		    == NULL) {
+			rv = 0;
 			goto done;
+		}
 		buffer_init(&bb, b->fd, &b->st, utf8_buf,
 		    CAST(size_t, utf8_end - utf8_buf));
 
@@ -203,13 +205,6 @@ file_ascmagic_with_encoding(struct magic_set *ms, const struct buffer *b,
 			has_backspace = 1;
 	}
 
-	/* Beware, if the data has been truncated, the final CR could have
-	   been followed by a LF.  If we have ms->bytes_max bytes, it indicates
-	   that the data might have been truncated, probably even before
-	   this function was called. */
-	if (seen_cr && nbytes < ms->bytes_max)
-		n_cr++;
-
 	if (strcmp(type, "binary") == 0) {
 		rv = 0;
 		goto done;
@@ -228,10 +223,9 @@ file_ascmagic_with_encoding(struct magic_set *ms, const struct buffer *b,
 				}
 				if (need_separator && file_separator(ms) == -1)
 					goto done;
-			} else {
-				if (file_printf(ms, "text/plain") == -1)
-					goto done;
 			}
+			if (file_printf(ms, "text/plain") == -1)
+				goto done;
 		}
 	} else {
 		if (len) {

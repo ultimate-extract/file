@@ -5,7 +5,7 @@ Bug-Debian: https://bugs.debian.org/917930
 
 --- a/doc/file.man
 +++ b/doc/file.man
-@@ -387,6 +387,10 @@
+@@ -390,6 +390,10 @@
  .Fl z
  option is specified and the built-in decompressors are not available.
  On systems where sandboxing is not available, this option has no effect.
