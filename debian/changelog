@@ -1,3 +1,9 @@
+file (1:5.45-2) unstable; urgency=medium
+
+  * Upload to unstable
+
+ -- Christoph Biedl <debian.axhn@manchmal.in-ulm.de>  Sun, 03 Sep 2023 11:40:05 +0200
+
 file (1:5.45-1) experimental; urgency=medium
 
   * New upstream version 5.45

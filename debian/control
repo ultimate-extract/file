@@ -1,7 +1,7 @@
 Source: file
 Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
 Homepage: https://www.darwinsys.com/file/
-Standards-Version: 4.6.0
+Standards-Version: 4.6.2
 Vcs-Browser: https://git.in-ulm.de/cbiedl/file
 Vcs-Git: https://git.in-ulm.de/cbiedl/file.git
 Build-Depends: debhelper-compat (= 13),
