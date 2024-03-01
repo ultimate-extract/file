@@ -4,7 +4,8 @@ Homepage: https://www.darwinsys.com/file/
 Standards-Version: 4.6.2
 Vcs-Browser: https://git.in-ulm.de/cbiedl/file
 Vcs-Git: https://git.in-ulm.de/cbiedl/file.git
-Build-Depends: dpkg-dev (>= 1.22.5), debhelper-compat (= 13),
+Build-Depends: debhelper-compat (= 13),
+    dpkg-dev (>= 1.22.5),
     libbz2-dev,
     liblzma-dev,
     zlib1g-dev,
@@ -26,16 +27,18 @@ Description: Recognize the type of data in a file using "magic" numbers
  This package contains the file program itself.
 
 Package: libmagic1t64
-Provides: ${t64:Provides}
-Replaces: libmagic1
-Breaks: libmagic1 (<< ${source:Version})
 Architecture: any
-Pre-Depends:
-    ${misc:Pre-Depends},
+Pre-Depends: ${misc:Pre-Depends},
 Depends: ${misc:Depends}, ${shlibs:Depends},
     libmagic-mgc (= ${binary:Version}),
 Suggests:
     file,
+Breaks:
+    libmagic1 (<< ${source:Version}),
+Replaces:
+    libmagic1,
+Provides:
+    ${t64:Provides},
 Section: libs
 Priority: optional
 Multi-Arch: same
