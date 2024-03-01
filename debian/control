@@ -4,7 +4,7 @@ Homepage: https://www.darwinsys.com/file/
 Standards-Version: 4.6.2
 Vcs-Browser: https://git.in-ulm.de/cbiedl/file
 Vcs-Git: https://git.in-ulm.de/cbiedl/file.git
-Build-Depends: debhelper-compat (= 13),
+Build-Depends: dpkg-dev (>= 1.22.5), debhelper-compat (= 13),
     libbz2-dev,
     liblzma-dev,
     zlib1g-dev,
@@ -15,7 +15,7 @@ Section: utils
 Package: file
 Architecture: any
 Depends: ${misc:Depends}, ${shlibs:Depends},
-    libmagic1 (= ${binary:Version}),
+    libmagic1t64 (= ${binary:Version}),
 Breaks:
     debhelper (<< 12.2~),
 Multi-Arch: foreign
@@ -25,7 +25,10 @@ Description: Recognize the type of data in a file using "magic" numbers
  .
  This package contains the file program itself.
 
-Package: libmagic1
+Package: libmagic1t64
+Provides: ${t64:Provides}
+Replaces: libmagic1
+Breaks: libmagic1 (<< ${source:Version})
 Architecture: any
 Pre-Depends:
     ${misc:Pre-Depends},
@@ -44,22 +47,22 @@ Package: libmagic-mgc
 Architecture: any
 Depends: ${misc:Depends},
 Breaks:
-    libmagic1 (<< 1:5.28-4~),
+    libmagic1t64 (<< 1:5.28-4~),
 Replaces:
-    libmagic1 (<< 1:5.28-4~),
+    libmagic1t64 (<< 1:5.28-4~),
 Section: libs
 Priority: optional
 Multi-Arch: foreign
 Description: File type determination library using "magic" numbers (compiled magic file)
  This package provides the compiled magic file "magic.mgc". It has
- been separated from libmagic1 in order to meet the multiarch
+ been separated from libmagic1t64 in order to meet the multiarch
  requirements without breaking applications that expect this file
  at its absolute path.
 
 Package: libmagic-dev
 Architecture: any
 Depends: ${misc:Depends},
-    libmagic1 (= ${binary:Version}),
+    libmagic1t64 (= ${binary:Version}),
 Suggests:
     file,
 Section: libdevel
