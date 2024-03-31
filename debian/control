@@ -1,5 +1,6 @@
 Source: file
-Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+XSBC-Original-Maintainer: Christoph Biedl <debian.axhn@manchmal.in-ulm.de>
 Homepage: https://www.darwinsys.com/file/
 Standards-Version: 4.6.2
 Vcs-Browser: https://git.in-ulm.de/cbiedl/file

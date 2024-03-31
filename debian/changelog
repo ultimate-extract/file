@@ -1,3 +1,9 @@
+file (1:5.45-3build1) noble; urgency=medium
+
+  * No-change rebuild for CVE-2024-3094
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 31 Mar 2024 07:35:22 +0000
+
 file (1:5.45-3) unstable; urgency=medium
 
   * Cherry-pick "Recognize unified diff output". Closes: #1063522
